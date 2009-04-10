@@ -34,7 +34,7 @@ class RantTest::Generator < Test::Unit::TestCase
       assert_equal a, b
     }
     property_of {
-      lo, hi = [integer(10),integer(10)].sort
+      lo, hi = [integer(100),integer(100)].sort
       [lo,hi,range(lo,hi)]
     }.check { |(lo,hi,int)|
       assert((lo..hi).include?(int)) 
@@ -61,6 +61,42 @@ class RantTest::Generator < Test::Unit::TestCase
   should "generate Boolean" do
     property_of { bool }.check { |t|
       assert t == true || t == false
+    }
+  end
+
+  should "generate empty strings" do
+    property_of {
+      sized(0) { string }
+    }.check { |s|
+      assert s.empty?
+    }
+  end
+
+  should "generate strings with the right regexp char classes" do
+    char_classes = Rant::Chars::CLASSES.keys
+    property_of {
+      char_class = choose(*char_classes)
+      len = range(0,10)
+      sized(len) { [len,char_class,string(char_class)]}
+    }.check { |(len,char_class,str)|
+      t = true
+      chars = Rant::Chars::CLASSES[char_class]
+      str.each_byte { |c|
+        unless chars.include?(c)
+          t = false
+          break
+        end
+      }
+      assert_equal len, str.length
+      assert t
+    }
+  end
+
+  should "generate strings matching regexp" do
+    property_of {
+      sized(10) { string(/[abcd]/) }
+    }.check { |s|
+      assert s =~ /[abcd]+/
     }
   end
 
@@ -171,11 +207,10 @@ class RantTest::Generator < Test::Unit::TestCase
 
   # freq
 
-  should "never pick an element with 0 frequency" do
+  should "not pick an element with 0 frequency" do
     property_of {
       sized(10) {
-        pairs = array(Proc.new {bool ? [0,:string] : [1,:integer]})
-        array Proc.new { freq(*pairs) }
+        array Proc.new { freq([0,:string],[1,:integer]) }
       }
     }.check { |arr|
       assert arr.all? { |o| o.is_a?(Integer)}
@@ -197,6 +232,14 @@ class RantTest::Generator < Test::Unit::TestCase
   end
 
   # array
+
+  should "generate empty array" do
+    property_of {
+      sized(0) { array(:integer)}
+    }.check { |o|
+      assert o.empty?
+    }
+  end
   
   should "generate the right sized nested arrays" do
     property_of {
@@ -230,11 +273,12 @@ class RantTest::Generator < Test::Unit::TestCase
       Rant.gen.value { array(:integer) }
     }
   end
+
 end
   
 
 
-# check that distribution looks roughly correct.
+# TODO: check that distributions of different methods look roughly correct.
 class RantTest::Distribution
   
 end
