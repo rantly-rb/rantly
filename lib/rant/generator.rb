@@ -43,7 +43,7 @@ class Rant
     acc
   end
 
-  def value(limit=MAX_TRIES,&block)
+  def value(limit=10,&block)
     generate(1,limit,block) do |val|
       return val
     end
@@ -122,26 +122,30 @@ class Rant
     rand(hi+1-lo) + lo
   end
 
-  def eval(gen,*args)
+  def call(gen,*args)
     case gen
     when Symbol
       return self.send(gen,*args)
-    when Range
-      return self.range(gen.begin,gen.end)
     when Array
-      return gen[range(0,gen.length-1)]
+      raise "empty array" if gen.empty?
+      return self.send(gen[0],*gen[1..-1])
     when Proc
       return self.instance_eval(&gen)
     else
-      # return literal value as is
-      return gen
+      raise "don't know how to call type: #{gen}"
     end
   end
-  
-  def choose(*from)
-    args = from[range(0,from.length-1)]
-    args = [args] unless args.is_a?(Array)
-    self.eval(*args)
+
+  def branch(*gens)
+    self.call(choose(gens))
+  end
+
+  def choose(*vals)
+    vals[range(0,vals.length-1)]
+  end
+
+  def literal(value)
+    value
   end
 
   def bool
@@ -167,7 +171,7 @@ class Rant
     pairs.each do |p|
       weight, gen, *args = p
       if pos <= p[0]
-        return self.eval(gen,*args)
+        return self.call(gen,*args)
       else
         pos -= weight
       end
