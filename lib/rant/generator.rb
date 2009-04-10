@@ -154,7 +154,11 @@ class Rant
       when Symbol, String, Proc
         [1,pair]
       when Array
-        pair
+        unless pair.first.is_a?(Integer)
+          [1] + pair
+        else
+          pair
+        end
       end
     end
     total = pairs.inject(0) { |sum,p| sum + p.first }
@@ -163,7 +167,7 @@ class Rant
     pairs.each do |p|
       weight, gen, *args = p
       if pos <= p[0]
-        self.eval(gen,*args)
+        return self.eval(gen,*args)
       else
         pos -= weight
       end
