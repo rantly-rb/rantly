@@ -49,8 +49,6 @@ class Rant
     end
   end
 
-  private
-
   def generate(n,limit,gen_block,&handler)
     limit = n * 10
     nfailed = 0
@@ -69,8 +67,6 @@ class Rant
       handler.call(val) if handler
     end
   end
-
-  public
   
   attr_accessor :classifiers
 
@@ -97,6 +93,7 @@ class Rant
   end
   
   def sized(n,&block)
+    raise "size needs to be greater than zero" if n < 0
     old_size = @size
     @size = n
     r = self.instance_eval(&block)
@@ -104,10 +101,17 @@ class Rant
     return r
   end
 
-  FIXNUM_MAX = 2**(0.size * 8 -1)
+  # wanna avoid going into Bignum when calling range with these.
+  INTEGER_MAX = (2**(0.size * 8 -2) -1) / 2
+  INTEGER_MIN = -(INTEGER_MAX)
   def integer(n=nil)
-    n = @size || FIXNUM_MAX
-    range(-n,n)
+    if n
+      raise "n should be greater than zero" if n < 0
+      hi, lo = n, -n
+    else
+      hi, lo = INTEGER_MAX, INTEGER_MIN
+    end
+    range(lo,hi)
   end
 
   def float
@@ -118,6 +122,22 @@ class Rant
     rand(hi+1-lo) + lo
   end
 
+  def eval(gen,*args)
+    case gen
+    when Symbol
+      return self.send(gen,*args)
+    when Range
+      return self.range(gen.begin,gen.end)
+    when Array
+      return gen[range(0,gen.length-1)]
+    when Proc
+      return self.instance_eval(&gen)
+    else
+      # return literal value as is
+      return gen
+    end
+  end
+  
   def choose(*from)
     args = from[range(0,from.length-1)]
     args = [args] unless args.is_a?(Array)
@@ -215,22 +235,6 @@ class Rant
       str << choose(*chars)
     end
     str
-  end
-
-  def eval(gen,*args)
-    case gen
-    when Symbol
-      return self.send(gen,*args)
-    when Range
-      return self.range(gen.begin,gen.end)
-    when Array
-      return gen[range(0,gen.length-1)]
-    when Proc
-      return self.instance_eval(&gen)
-    else
-      # return literal value as is
-      return gen
-    end
   end
 end
 
