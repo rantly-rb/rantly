@@ -137,7 +137,7 @@ class Rant
   end
 
   def branch(*gens)
-    self.call(choose(gens))
+    self.call(choose(*gens))
   end
 
   def choose(*vals)
@@ -166,7 +166,7 @@ class Rant
       end
     end
     total = pairs.inject(0) { |sum,p| sum + p.first }
-    raise(RuntimeError, "Illegal frequency:#{xs.inspect}") if total == 0
+    raise(RuntimeError, "Illegal frequency:#{pairs.inspect}") if total == 0
     pos = range(1,total)
     pairs.each do |p|
       weight, gen, *args = p
