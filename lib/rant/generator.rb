@@ -26,7 +26,7 @@ class Rant
     end
 
     def to_s
-      "Exceed gen limit(#{@limit}: #{@nfailed} failed guards)"
+      "Exceed gen limit #{@limit}: #{@nfailed} failed guards)"
     end
   end
 
@@ -49,12 +49,12 @@ class Rant
     end
   end
 
-  def generate(n,limit,gen_block,&handler)
-    limit = n * 10
+  def generate(n,limit_arg,gen_block,&handler)
+    limit = n * limit_arg
     nfailed = 0
     nsuccess = 0
     while nsuccess < n
-      raise TooManyTries.new(limit,nfailed) if limit < 0
+      raise TooManyTries.new(limit_arg*n,nfailed) if limit < 0
       begin
         val = self.instance_eval(&gen_block)
       rescue GuardFailure

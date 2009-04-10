@@ -1,0 +1,296 @@
+h1. Imperative Random Data Generator and Quickcheck
+
+You can use Rant to generate random test data, and use its Test::Unit extension for property-based testing.
+
+Rant is basically a recursive descent interpreter, each of its method returns a random value of some type (string, integer, float, etc.).
+
+Its implementation has no alien mathematics inside. Completely side-effect-free-free.
+
+h1. Install
+
+<pre><code>
+$ gem install hayeah-rant --source http://gems.github.com
+</code></pre>
+
+<pre><code>
+$ irb
+> gem 'rant'
+> require 'rant'
+> Rant.gen.value { [integer,float] }
+=> [20991307, 0.025756845811823]
+> Rant.gen.value { [integer,float]}
+=> [-376856492, 0.452245765751706]
+</code></pre>
+
+
+h1. Data Generation
+
+You can create random generators from the Rant class. Rant.gen is just returns a class instance of Rant.
+
+<pre><code>
+> gen = Rant.new
+> gen.value { [integer,float] }
+=> [-163260081, 0.356075765934108]
+</code></pre>
+
+h2. Getting Random Data Values
+
+<pre><code>
+Rant#map(n,limit=10)
+  call the generator n times, and collect values
+Rant#each(n,limit=10)
+  call a random block n times
+Rant#value(limit=10)
+  call a random block once, and get its value.
+</code></pre>
+
+To collect an array of random data,
+
+<pre><code>
+# we want 5
+> gen.map(5) { integer }
+=> [-380638946, -29645239, 344840868, 308052180, -154360970]
+</code></pre>
+
+To iterate over random data,
+
+<pre><code>
+> gen.each(5) { puts integer }
+296971291
+504994512
+-402790444
+113152364
+502842783
+=> nil
+</code></pre>
+
+To get one value of random data,
+
+<pre><code>
+> gen.value { integer }
+=> 278101042
+</code></pre>
+
+The optional argument @limit@ is used with generator guard. By default, if you want to generate n items, the generator tries at most n * 10 times.
+
+This almost always succeeds,
+
+<pre><code>
+> gen.map(5) { i = integer; guard i > 0; i }
+=> [511765059, 250554234, 305947804, 127809156, 285960387]
+</code></pre>
+
+This always fails,
+
+<pre><code>
+> gen.map(10) { guard integer.is_a?(Float) }
+Rant::TooManyTries: Exceed gen limit 100: 101 failed guards)
+</code></pre>
+
+h2. Random Generating Methods
+
+The API is similiar to QuickCheck, but not exactly the same. In particular @choose@ picks a random element from an array, and @range@ picks a integer from an interval.
+
+h3. Simple Randomness
+
+<pre><code>
+Rant#integer(n=nil)
+  random positive or negative integer. Fixnum only.
+Rant#range(lo,hi)
+  random integer between lo and hi.
+Rant#float
+  random float
+Rant#bool
+  true or false
+Rant#literal(value)
+  No-op. returns value.
+Rant#choose(*vals)
+  Pick one value from among vals.
+</code></pre>
+
+h3. Meta Randomness
+
+A rant generator is just a mini interpreter. It's often useful to go meta,
+
+<pre><code>
+Rant#call(gen)
+  If gen is a Symbol, just do a method call with send.
+  If gen is an Array, the first element of the array is the method name, the rest are args.
+  If gen is a Proc, instance_eval it with the generator.
+</code></pre>
+
+<pre><code>
+> gen.value { call(:integer) }
+=> -240998958
+</code></pre>
+
+<pre><code>
+> gen.value { call([:range,0,10]) }
+=> 2
+</code></pre>
+
+<pre><code>
+> gen.value { call(Proc.new { [integer] })}
+=> [522807620]
+</code></pre>
+
+The @call@ method is useful to implement other abstractions (See next subsection).
+
+<pre><code>
+Rant#branch(*args)
+  Pick a random arg among args, and Rant#call it.
+</code></pre>
+
+50-50 chance getting an integer or float,
+
+<pre><code>
+> gen.value { branch :integer, :float }
+=> 0.0489446702931332
+> gen.value { branch :integer, :float }
+=> 494934533
+</code></pre>
+
+
+h3. Frequencies
+
+<pre><code>
+Rant#freq(*pairs)
+  Takes a list of 2-tuples, the first of which is the weight, and the second a Rant#callable value, and returns a random value picked from the pairs. Follows the distribution pattern specified by the weights.
+</code></pre>
+
+Twice as likely to get a float than integer. Never gets a ranged integer.
+
+<pre><code>
+> gen.value { freq [1,:integer], [2,:float], [0,:range,0,10] }
+</code></pre>
+
+If the "pair" is not an array, but just a symbol, @freq@ assumes that the weight is 1.
+
+<pre><code>
+# 50-50 between integer and float
+> gen.value { freq :integer, :float }
+</code></pre>
+
+If a "pair" is an Array, but the first element is not an Integer, @freq@ assumes that it's a Rant method-call with arguments, and the weight is one.
+
+<pre><code>
+# 50-50 chance generating integer limited by 10, or by 20.
+> gen.value { freq [:integer,10], [:integer 20] }
+</code></pre>
+
+
+
+h3. Sized Structure
+
+A Rant generator keeps track of how large a datastructure it should generate with its @size@ attribute.
+
+<pre><code>
+Rant#size
+ returns the current size
+Rant#sized(n,&block)
+ sets the size for the duration of recursive call of block. Block is instance_eval with the generator.
+</code></pre>
+
+Rant provides two methods that depends on the size
+
+<pre><code>
+Rant#array(*branches)
+  returns a sized array consisted of elements by Rant#calling random branches.
+Rant#string(char_class=:print)
+  returns a sized random string, consisted of only chars from a char_class.
+</code></pre>
+
+The avaiable char classes for strings are:
+
+<pre><code>
+:alnum
+:alpha
+:blank
+:cntrl
+:digit
+:graph
+:lower
+:print
+:punct
+:space
+:upper
+:xdigit
+:ascii
+</code></pre>
+
+<pre><code>
+# sized 10 array of integer or float
+> gen.value { sized(10) { array(:integer,:float)}}
+=> [417733046, -375385433, 0.967812380000118, 26478621, 0.888588160450082, 250944144, 305584916, -151858342, 0.308123867823313, 0.316824642414253]
+
+# fails if you forget to set the size.
+> gen.value { array(:integer,:float)}
+RuntimeError: size not set
+
+</code></pre>
+
+If you set the size once, it applies to all subsequent recursive structures. Here's a sized 10 array of sized 10 strings,
+
+<pre><code>
+> gen.value { sized(10) { array(:string)} }
+=> ["1c}C/,9I#}", "hpA/UWPJ\\j", "H'~ERtI`|]", "%OUaW\\%uQZ", "Z2QdY=G~G!", "H<o|<FARGQ", "g>ojnxGDT3", "]a:L[B>bhb", "_Kl=&{tH^<", "ly]Yfb?`6c"]
+</code></pre>
+
+Or a sized 10 array of sized 5 strings,
+
+<pre><code>
+> gen.value { sized(10) { array Proc.new {sized(5) {string}}}}
+=> ["S\"jf ", "d\\F-$", "-_8pa", "IN0iF", "SxRV$", ".{kQ7", "6>;fo", "}.D8)", "P(tS'", "y0v/v"]
+</code></pre>
+
+Rant#array actually just delegate to Rant#freq, so you can use freq pairs:
+
+<pre><code>
+> gen.value { sized(10) {array [1,:integer],[2,:float] }}
+=> [0.983334733158678, -418176338, 0.976947175363592, 0.703390570421286, -478680395, 5483631, 0.966944106783513, 110469205, 0.540859146793544, 0.521813810037025]
+</code></pre>
+
+
+h1. Property Testing
+
+Rant extends Test::Unit for property testing. The extension is in its own module. So you need to require it.
+
+<pre><code>
+require 'rant/check'
+</code></pre>
+
+It defines,
+
+<pre><code>
+Test::Unit::Assertions#property_of(&block)
+  The block is used to generate random data with a generator. The method returns a Rant::Property instance, that has the method 'check'.
+</code></pre>
+
+It's like this, using the gem 'shoulda'
+
+<pre><code>
+# checks that integer only generates fixnum.
+should "generate Fixnum only" do
+   property_of  { integer }.check { |i| assert i.is_a?(Integer) }
+end
+</code></pre>
+
+The check block takes the generated data as its argument. One idiom I find useful is to include a parameter of the random data for the check argument. For example, if I want to check that Rant#array generates the right sized array, I could say,
+
+<pre><code>
+should "generate right sized array" do
+  property_of {
+    len = integer
+    [len,sized(len) { array :integer }]
+  }.check { |(len,arr)|
+    assert_equal len, arr.length
+  }
+end
+</code></pre>
+
+That's about it. Enjoy :)
+
+
+h1. Copyright
+
+Copyright (c) 2009 Howard Yeh. See LICENSE for details.

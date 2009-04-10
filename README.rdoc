@@ -1,7 +1,0 @@
-= rant
-
-Description goes here.
-
-== Copyright
-
-Copyright (c) 2009 Howard Yeh. See LICENSE for details.
