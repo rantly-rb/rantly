@@ -1,5 +1,16 @@
 class Rant
 
+  class << self
+    def singleton
+      @singleton ||= Rant.new
+      @singleton
+    end
+
+    def gen
+      self.singleton
+    end
+  end
+
   class GuardFailure < RuntimeError
   end
 
