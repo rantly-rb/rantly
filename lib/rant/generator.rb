@@ -1,9 +1,14 @@
 class Rant
 
   class << self
+    attr_writer :default_size
     def singleton
       @singleton ||= Rant.new
       @singleton
+    end
+
+    def default_size
+      @default_size || 6
     end
 
     def gen
@@ -88,8 +93,7 @@ class Rant
   end
 
   def size
-    raise "size not set" unless @size
-    @size
+    @size || Rant.default_size
   end
   
   def sized(n,&block)
@@ -114,11 +118,17 @@ class Rant
     range(lo,hi)
   end
 
+  def positive_integer
+    range(0)
+  end
+
   def float
     rand
   end
 
-  def range(lo,hi)
+  def range(lo=nil,hi=nil)
+    lo ||= INTEGER_MIN
+    hi ||= INTEGER_MAX
     rand(hi+1-lo) + lo
   end
 

@@ -76,7 +76,7 @@ EOS
   end
 
   def groveler
-    choose ["slave","servant","captive","lapdog"]
+    choose "slave","servant","captive","lapdog"
   end
 
   def post_script
