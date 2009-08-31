@@ -188,9 +188,11 @@ class Rant
     end
   end
 
-  def array(*freq_pairs)
+  def array(*freq_pairs,&block)
     acc = []
-    self.size.times { acc << freq(*freq_pairs) }
+    self.size.times {
+      acc << (block ? self.instance_eval(&block) : self.freq(*freq_pairs))
+    }
     acc
   end
 
