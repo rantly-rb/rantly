@@ -4,12 +4,12 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{Rant}
+  s.name = %q{rant}
   s.version = "0.0.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Howard Yeh"]
-  s.date = %q{2009-10-01}
+  s.date = %q{2009-10-09}
   s.email = %q{hayeah@gmail.com}
   s.extra_rdoc_files = [
     "LICENSE",
@@ -24,10 +24,10 @@ Gem::Specification.new do |s|
      "Rant.gemspec",
      "VERSION.yml",
      "lib/rant.rb",
-     "lib/rant/check.rb",
      "lib/rant/data.rb",
      "lib/rant/generator.rb",
      "lib/rant/silly.rb",
+     "lib/rant/spec.rb",
      "test/rant_test.rb",
      "test/test_helper.rb"
   ]
@@ -38,7 +38,8 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.1}
   s.summary = %q{Ruby Imperative Random Data Generator and Quickcheck}
   s.test_files = [
-    "test/rant_test.rb",
+    "spec/rant_spec.rb",
+     "test/rant_test.rb",
      "test/test_helper.rb"
   ]
 

@@ -108,10 +108,14 @@ class Rant
   # wanna avoid going into Bignum when calling range with these.
   INTEGER_MAX = (2**(0.size * 8 -2) -1) / 2
   INTEGER_MIN = -(INTEGER_MAX)
-  def integer(n=nil)
-    if n
-      raise "n should be greater than zero" if n < 0
-      hi, lo = n, -n
+  def integer(limit=nil)
+    case limit
+    when Range
+      hi = limit.end
+      lo = limit.begin
+    when Integer
+      raise "n should be greater than zero" if limit < 0
+      hi, lo = limit, -limit
     else
       hi, lo = INTEGER_MAX, INTEGER_MIN
     end
@@ -158,7 +162,7 @@ class Rant
     value
   end
 
-  def bool
+  def boolean
     range(0,1) == 0 ? true : false
   end
 
@@ -188,11 +192,9 @@ class Rant
     end
   end
 
-  def array(*freq_pairs,&block)
+  def array(*freq_pairs)
     acc = []
-    self.size.times {
-      acc << (block ? self.instance_eval(&block) : self.freq(*freq_pairs))
-    }
+    self.size.times { acc << freq(*freq_pairs) }
     acc
   end
 

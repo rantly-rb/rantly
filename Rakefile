@@ -4,7 +4,7 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "Rant"
+    gem.name = "rant"
     gem.summary = %Q{Ruby Imperative Random Data Generator and Quickcheck}
     gem.email = "hayeah@gmail.com"
     gem.homepage = "http://github.com/hayeah/rant"
