@@ -4,10 +4,10 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "rant"
+    gem.name = "rantly"
     gem.summary = %Q{Ruby Imperative Random Data Generator and Quickcheck}
     gem.email = "hayeah@gmail.com"
-    gem.homepage = "http://github.com/hayeah/rant"
+    gem.homepage = "http://github.com/hayeah/rantly"
     gem.authors = ["Howard Yeh"]
 
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
