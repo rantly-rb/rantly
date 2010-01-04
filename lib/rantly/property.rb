@@ -1,8 +1,8 @@
-require 'rant'
+require 'rantly'
 require 'test/unit'
 require 'pp'
 
-class Rant::Property
+class Rantly::Property
 
   def initialize(property)
     @property = property
@@ -12,7 +12,7 @@ class Rant::Property
     i = 0
     test_data = nil
     begin
-      Rant.singleton.generate(n,limit,@property) do |val|
+      Rantly.singleton.generate(n,limit,@property) do |val|
         test_data = val
         assertion.call(val) if assertion
         puts "" if i % 100 == 0
@@ -21,7 +21,7 @@ class Rant::Property
       end
       puts
       puts "success: #{i} tests"
-    rescue Rant::TooManyTries => e
+    rescue Rantly::TooManyTries => e
       puts
       puts "too many tries: #{e.tries}"
       raise e
@@ -44,7 +44,7 @@ end
 
 module Test::Unit::Assertions
   def property_of(&block)
-    Rant::Property.new(block)
+    Rantly::Property.new(block)
   end
 end
 

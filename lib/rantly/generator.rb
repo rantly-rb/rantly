@@ -1,9 +1,9 @@
-class Rant
+class Rantly
 
   class << self
     attr_writer :default_size
     def singleton
-      @singleton ||= Rant.new
+      @singleton ||= Rantly.new
       @singleton
     end
 
@@ -93,7 +93,7 @@ class Rant
   end
 
   def size
-    @size || Rant.default_size
+    @size || Rantly.default_size
   end
   
   def sized(n,&block)

@@ -1,13 +1,13 @@
-require 'rant'
-module Rant::Silly
+require 'rantly'
+module Rantly::Silly
   class << self
     def love_letter(n)
-      Rant.new.extend(Rant::Silly::Love).value { letter(n) }
+      Rantly.new.extend(Rantly::Silly::Love).value { letter(n) }
     end
   end
 end
 
-module Rant::Silly::Love
+module Rantly::Silly::Love
 
   def letter(n=3)
     body = sized(n) { array(:paragraph) }.join "\n\n"

@@ -1,4 +1,4 @@
-module Rant::Data
+module Rantly::Data
   def email
     "#{string(:alnum)}@#{string(:alnum)}.#{sized(3){string(:alpha)}}".downcase
   end
@@ -8,6 +8,6 @@ module Rant::Data
   end
 end
 
-class Rant
-  include Rant::Data
+class Rantly
+  include Rantly::Data
 end

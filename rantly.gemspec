@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{rantly}
-  s.version = "0.0.0"
+  s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Howard Yeh"]
-  s.date = %q{2009-11-30}
+  s.date = %q{2010-01-04}
   s.email = %q{hayeah@gmail.com}
   s.extra_rdoc_files = [
     "LICENSE",
@@ -23,12 +23,6 @@ Gem::Specification.new do |s|
      "Rakefile",
      "Rant.gemspec",
      "VERSION.yml",
-     "lib/rant.rb",
-     "lib/rant/data.rb",
-     "lib/rant/generator.rb",
-     "lib/rant/property.rb",
-     "lib/rant/silly.rb",
-     "lib/rant/spec.rb",
      "rantly.gemspec",
      "test/rant_test.rb",
      "test/test_helper.rb"
@@ -40,6 +34,7 @@ Gem::Specification.new do |s|
   s.summary = %q{Ruby Imperative Random Data Generator and Quickcheck}
   s.test_files = [
     "test/rant_test.rb",
+     "test/rantly_test.rb",
      "test/test_helper.rb"
   ]
 
