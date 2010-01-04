@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{rantly}
-  s.version = "0.1.0"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Howard Yeh"]
@@ -21,10 +21,15 @@ Gem::Specification.new do |s|
      "LICENSE",
      "README.textile",
      "Rakefile",
-     "Rant.gemspec",
      "VERSION.yml",
+     "lib/rantly.rb",
+     "lib/rantly/data.rb",
+     "lib/rantly/generator.rb",
+     "lib/rantly/property.rb",
+     "lib/rantly/silly.rb",
+     "lib/rantly/spec.rb",
      "rantly.gemspec",
-     "test/rant_test.rb",
+     "test/rantly_test.rb",
      "test/test_helper.rb"
   ]
   s.homepage = %q{http://github.com/hayeah/rantly}
@@ -33,8 +38,7 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{Ruby Imperative Random Data Generator and Quickcheck}
   s.test_files = [
-    "test/rant_test.rb",
-     "test/rantly_test.rb",
+    "test/rantly_test.rb",
      "test/test_helper.rb"
   ]
 
