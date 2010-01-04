@@ -11,6 +11,18 @@ class Rantly
       @default_size || 6
     end
 
+    def each(n,limit=10,&block)
+      gen.each(n,limit,&block)
+    end
+
+    def map(n,limit=10,&block)
+      gen.map(n,limit,&block)
+    end
+
+    def value(limit=10,&block)
+      gen.value(limit,&block)
+    end
+    
     def gen
       self.singleton
     end
@@ -259,5 +271,3 @@ class Rantly
     str
   end
 end
-
-
