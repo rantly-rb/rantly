@@ -10,7 +10,7 @@ end
 module Rantly::Silly::Love
 
   def letter(n=3)
-    body = sized(n) { array(:paragraph) }.join "\n\n"
+    body = array(n){paragraph}.join "\n\n"
     <<-EOS
 #{address}:
 
@@ -43,7 +43,7 @@ EOS
   end
 
   def paragraph
-    sized(range(2,4)) { array(:sentence)}.join " "
+    array(range(2,4)){ sentence}.join " "
   end
 
   def sentence
