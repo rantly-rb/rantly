@@ -189,14 +189,14 @@ class RantlyTest::Generator < Test::Unit::TestCase
       assert o == 1 || o == 2
     }
     property_of {
-      arr = sized(10) { array(:integer) }
+      arr = sized(10) { array { integer } }
       choose(*arr) 
     }.check { |o|
       assert o.is_a?(Fixnum)
     }
     property_of {
       # array of array of ints
-      arr = sized(10) { array(Proc.new { array(:integer)})}
+      arr = sized(10) { array { array { integer }}}
       # choose an array from an array of arrays of ints
       choose(*arr)
     }.check { |arr|
@@ -210,7 +210,7 @@ class RantlyTest::Generator < Test::Unit::TestCase
   should "not pick an element with 0 frequency" do
     property_of {
       sized(10) {
-        array Proc.new { freq([0,:string],[1,:integer]) }
+        array { freq([0,:string],[1,:integer]) }
       }
     }.check { |arr|
       assert arr.all? { |o| o.is_a?(Integer)}
@@ -235,7 +235,7 @@ class RantlyTest::Generator < Test::Unit::TestCase
 
   should "generate empty array" do
     property_of {
-      sized(0) { array(:integer)}
+      sized(0) { array { integer }}
     }.check { |o|
       assert o.empty?
     }
@@ -245,7 +245,7 @@ class RantlyTest::Generator < Test::Unit::TestCase
     property_of {
       size1 = range(5,10)
       size2 = range(0,size1-1)
-      array = sized(size1) { array(Proc.new { sized(size2) { array(:integer)}})}
+      array = sized(size1) { array { array(size2) { integer }}}
       [size1,array]
     }.check { |(size1,outter_array)|
       assert_equal size1, outter_array.size
@@ -255,7 +255,7 @@ class RantlyTest::Generator < Test::Unit::TestCase
   
   should "generate array with right types" do
     property_of {
-      sized(10) { array :integer,:string,:float }
+      sized(10) { array { freq(:integer,:string,:float)}  }
     }.check { |arr|
       assert arr.all? { |o|
         case o

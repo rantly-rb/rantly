@@ -194,7 +194,7 @@ Rant#sized(n,&block)
 Rant provides two methods that depends on the size
 
 <pre><code>
-Rant#array(*branches)
+Rant#array(size=default_size)
   returns a sized array consisted of elements by Rant#calling random branches.
 Rant#string(char_class=:print)
   returns a sized random string, consisted of only chars from a char_class.
@@ -220,13 +220,8 @@ The avaiable char classes for strings are:
 
 <pre><code>
 # sized 10 array of integer or float
-> gen.value { sized(10) { array(:integer,:float)}}
+> gen.value { array(10) { branch(:integer,:float)}}
 => [417733046, -375385433, 0.967812380000118, 26478621, 0.888588160450082, 250944144, 305584916, -151858342, 0.308123867823313, 0.316824642414253]
-
-# fails if you forget to set the size.
-> gen.value { array(:integer,:float)}
-RuntimeError: size not set
-
 </code></pre>
 
 If you set the size once, it applies to all subsequent recursive structures. Here's a sized 10 array of sized 10 strings,
@@ -239,7 +234,7 @@ If you set the size once, it applies to all subsequent recursive structures. Her
 Or a sized 10 array of sized 5 strings,
 
 <pre><code>
-> gen.value { sized(10) { array Proc.new {sized(5) {string}}}}
+> gen.value { array(10) { array(5) { string}}}
 => ["S\"jf ", "d\\F-$", "-_8pa", "IN0iF", "SxRV$", ".{kQ7", "6>;fo", "}.D8)", "P(tS'", "y0v/v"]
 </code></pre>
 
@@ -281,7 +276,7 @@ The check block takes the generated data as its argument. One idiom I find usefu
 should "generate right sized array" do
   property_of {
     len = integer
-    [len,sized(len) { array :integer }]
+    [len,array(len){integer}]
   }.check { |(len,arr)|
     assert_equal len, arr.length
   }

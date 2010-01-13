@@ -204,9 +204,9 @@ class Rantly
     end
   end
 
-  def array(*freq_pairs)
+  def array(n=self.size,&block)
     acc = []
-    self.size.times { acc << freq(*freq_pairs) }
+    n.times { acc << self.instance_eval(&block) }
     acc
   end
 
