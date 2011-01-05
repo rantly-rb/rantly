@@ -9,26 +9,24 @@ Its implementation has no alien mathematics inside. Completely side-effect-free-
 h1. Install
 
 <pre><code>
-$ gem install hayeah-rant --source http://gems.github.com
+$ gem install rantly
 </code></pre>
 
 <pre><code>
-$ irb
-> gem 'rant'
-> require 'rant'
-> Rant.gen.value { [integer,float] }
+$ irb -rrantly
+> Rantly.gen.value { [integer,float] }
 => [20991307, 0.025756845811823]
-> Rant.gen.value { [integer,float]}
+> Rantly.gen.value { [integer,float]}
 => [-376856492, 0.452245765751706]
 </code></pre>
 
 
 h1. Data Generation
 
-You can create random generators from the Rant class. Rant.gen is just returns a class instance of Rant.
+You can create random generators from the Rantly class. Rantly.gen is just returns a class instance of Rantly.
 
 <pre><code>
-> gen = Rant.new
+> gen = Rantly.new
 > gen.value { [integer,float] }
 => [-163260081, 0.356075765934108]
 </code></pre>
@@ -36,11 +34,11 @@ You can create random generators from the Rant class. Rant.gen is just returns a
 h2. Getting Random Data Values
 
 <pre><code>
-Rant#map(n,limit=10)
+Rantly#map(n,limit=10)
   call the generator n times, and collect values
-Rant#each(n,limit=10)
+Rantly#each(n,limit=10)
   call a random block n times
-Rant#value(limit=10)
+Rantly#value(limit=10)
   call a random block once, and get its value.
 </code></pre>
 
@@ -84,7 +82,7 @@ This always fails,
 
 <pre><code>
 > gen.map(10) { guard integer.is_a?(Float) }
-Rant::TooManyTries: Exceed gen limit 100: 101 failed guards)
+Rantly::TooManyTries: Exceed gen limit 100: 101 failed guards)
 </code></pre>
 
 h2. Random Generating Methods
@@ -94,17 +92,17 @@ The API is similiar to QuickCheck, but not exactly the same. In particular @choo
 h3. Simple Randomness
 
 <pre><code>
-Rant#integer(n=nil)
+Rantly#integer(n=nil)
   random positive or negative integer. Fixnum only.
-Rant#range(lo,hi)
+Rantly#range(lo,hi)
   random integer between lo and hi.
-Rant#float
+Rantly#float
   random float
-Rant#bool
+Rantly#bool
   true or false
-Rant#literal(value)
+Rantly#literal(value)
   No-op. returns value.
-Rant#choose(*vals)
+Rantly#choose(*vals)
   Pick one value from among vals.
 </code></pre>
 
@@ -113,7 +111,7 @@ h3. Meta Randomness
 A rant generator is just a mini interpreter. It's often useful to go meta,
 
 <pre><code>
-Rant#call(gen)
+Rantly#call(gen)
   If gen is a Symbol, just do a method call with send.
   If gen is an Array, the first element of the array is the method name, the rest are args.
   If gen is a Proc, instance_eval it with the generator.
@@ -137,8 +135,8 @@ Rant#call(gen)
 The @call@ method is useful to implement other abstractions (See next subsection).
 
 <pre><code>
-Rant#branch(*args)
-  Pick a random arg among args, and Rant#call it.
+Rantly#branch(*args)
+  Pick a random arg among args, and Rantly#call it.
 </code></pre>
 
 50-50 chance getting an integer or float,
@@ -154,8 +152,8 @@ Rant#branch(*args)
 h3. Frequencies
 
 <pre><code>
-Rant#freq(*pairs)
-  Takes a list of 2-tuples, the first of which is the weight, and the second a Rant#callable value, and returns a random value picked from the pairs. Follows the distribution pattern specified by the weights.
+Rantly#freq(*pairs)
+  Takes a list of 2-tuples, the first of which is the weight, and the second a Rantly#callable value, and returns a random value picked from the pairs. Follows the distribution pattern specified by the weights.
 </code></pre>
 
 Twice as likely to get a float than integer. Never gets a ranged integer.
@@ -171,7 +169,7 @@ If the "pair" is not an array, but just a symbol, @freq@ assumes that the weight
 > gen.value { freq :integer, :float }
 </code></pre>
 
-If a "pair" is an Array, but the first element is not an Integer, @freq@ assumes that it's a Rant method-call with arguments, and the weight is one.
+If a "pair" is an Array, but the first element is not an Integer, @freq@ assumes that it's a Rantly method-call with arguments, and the weight is one.
 
 <pre><code>
 # 50-50 chance generating integer limited by 10, or by 20.
@@ -182,21 +180,21 @@ If a "pair" is an Array, but the first element is not an Integer, @freq@ assumes
 
 h3. Sized Structure
 
-A Rant generator keeps track of how large a datastructure it should generate with its @size@ attribute.
+A Rantly generator keeps track of how large a datastructure it should generate with its @size@ attribute.
 
 <pre><code>
-Rant#size
+Rantly#size
  returns the current size
-Rant#sized(n,&block)
+Rantly#sized(n,&block)
  sets the size for the duration of recursive call of block. Block is instance_eval with the generator.
 </code></pre>
 
-Rant provides two methods that depends on the size
+Rantly provides two methods that depends on the size
 
 <pre><code>
-Rant#array(size=default_size)
-  returns a sized array consisted of elements by Rant#calling random branches.
-Rant#string(char_class=:print)
+Rantly#array(size=default_size)
+  returns a sized array consisted of elements by Rantly#calling random branches.
+Rantly#string(char_class=:print)
   returns a sized random string, consisted of only chars from a char_class.
 </code></pre>
 
@@ -238,7 +236,7 @@ Or a sized 10 array of sized 5 strings,
 => ["S\"jf ", "d\\F-$", "-_8pa", "IN0iF", "SxRV$", ".{kQ7", "6>;fo", "}.D8)", "P(tS'", "y0v/v"]
 </code></pre>
 
-Rant#array actually just delegate to Rant#freq, so you can use freq pairs:
+Rantly#array actually just delegate to Rantly#freq, so you can use freq pairs:
 
 <pre><code>
 > gen.value { sized(10) {array [1,:integer],[2,:float] }}
@@ -248,7 +246,7 @@ Rant#array actually just delegate to Rant#freq, so you can use freq pairs:
 
 h1. Property Testing
 
-Rant extends Test::Unit for property testing. The extension is in its own module. So you need to require it.
+Rantly extends Test::Unit for property testing. The extension is in its own module. So you need to require it.
 
 <pre><code>
 require 'rant/check'
@@ -258,7 +256,7 @@ It defines,
 
 <pre><code>
 Test::Unit::Assertions#property_of(&block)
-  The block is used to generate random data with a generator. The method returns a Rant::Property instance, that has the method 'check'.
+  The block is used to generate random data with a generator. The method returns a Rantly::Property instance, that has the method 'check'.
 </code></pre>
 
 It's like this, using the gem 'shoulda'
@@ -270,7 +268,7 @@ should "generate Fixnum only" do
 end
 </code></pre>
 
-The check block takes the generated data as its argument. One idiom I find useful is to include a parameter of the random data for the check argument. For example, if I want to check that Rant#array generates the right sized array, I could say,
+The check block takes the generated data as its argument. One idiom I find useful is to include a parameter of the random data for the check argument. For example, if I want to check that Rantly#array generates the right sized array, I could say,
 
 <pre><code>
 should "generate right sized array" do
