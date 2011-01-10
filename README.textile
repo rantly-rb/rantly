@@ -14,46 +14,39 @@ $ gem install rantly
 
 <pre><code>
 $ irb -rrantly
-> Rantly.gen.value { [integer,float] }
+> Rantly { [integer,float] } # same as Rantly.value { integer }
 => [20991307, 0.025756845811823]
-> Rantly.gen.value { [integer,float]}
+> Rantly { [integer,float]}
 => [-376856492, 0.452245765751706]
+> Rantly(5) { integer } # same as Rantly.map(5) { integer }
+=> [-1843396915550491870, -1683855015308353854, -2291347782549033959, -951461511269053584, 483265231542292652] 
 </code></pre>
-
 
 h1. Data Generation
-
-You can create random generators from the Rantly class. Rantly.gen is just returns a class instance of Rantly.
-
-<pre><code>
-> gen = Rantly.new
-> gen.value { [integer,float] }
-=> [-163260081, 0.356075765934108]
-</code></pre>
 
 h2. Getting Random Data Values
 
 <pre><code>
-Rantly#map(n,limit=10)
+Rantly#map(n,limit=10,&block)
   call the generator n times, and collect values
-Rantly#each(n,limit=10)
+Rantly#each(n,limit=10,&block)
   call a random block n times
-Rantly#value(limit=10)
+Rantly#value(limit=10,&block)
   call a random block once, and get its value.
 </code></pre>
 
 To collect an array of random data,
 
 <pre><code>
-# we want 5
-> gen.map(5) { integer }
+# we want 5 random integers
+> Rantly(5) { integer }
 => [-380638946, -29645239, 344840868, 308052180, -154360970]
 </code></pre>
 
 To iterate over random data,
 
 <pre><code>
-> gen.each(5) { puts integer }
+> Rantly.each(5) { puts integer }
 296971291
 504994512
 -402790444
@@ -65,7 +58,7 @@ To iterate over random data,
 To get one value of random data,
 
 <pre><code>
-> gen.value { integer }
+> Rantly { integer }
 => 278101042
 </code></pre>
 
@@ -74,14 +67,14 @@ The optional argument @limit@ is used with generator guard. By default, if you w
 This almost always succeeds,
 
 <pre><code>
-> gen.map(5) { i = integer; guard i > 0; i }
+> Rantly(5) { i = integer; guard i > 0; i }
 => [511765059, 250554234, 305947804, 127809156, 285960387]
 </code></pre>
 
 This always fails,
 
 <pre><code>
-> gen.map(10) { guard integer.is_a?(Float) }
+> Rantly(10) { guard integer.is_a?(Float) }
 Rantly::TooManyTries: Exceed gen limit 100: 101 failed guards)
 </code></pre>
 
@@ -118,17 +111,17 @@ Rantly#call(gen)
 </code></pre>
 
 <pre><code>
-> gen.value { call(:integer) }
+> Rantly { call(:integer) }
 => -240998958
 </code></pre>
 
 <pre><code>
-> gen.value { call([:range,0,10]) }
+> Rantly { call([:range,0,10]) }
 => 2
 </code></pre>
 
 <pre><code>
-> gen.value { call(Proc.new { [integer] })}
+> Rantly { call(Proc.new { [integer] })}
 => [522807620]
 </code></pre>
 
@@ -142,9 +135,9 @@ Rantly#branch(*args)
 50-50 chance getting an integer or float,
 
 <pre><code>
-> gen.value { branch :integer, :float }
+> Rantly { branch :integer, :float }
 => 0.0489446702931332
-> gen.value { branch :integer, :float }
+> Rantly { branch :integer, :float }
 => 494934533
 </code></pre>
 
@@ -159,21 +152,21 @@ Rantly#freq(*pairs)
 Twice as likely to get a float than integer. Never gets a ranged integer.
 
 <pre><code>
-> gen.value { freq [1,:integer], [2,:float], [0,:range,0,10] }
+> Rantly { freq [1,:integer], [2,:float], [0,:range,0,10] }
 </code></pre>
 
 If the "pair" is not an array, but just a symbol, @freq@ assumes that the weight is 1.
 
 <pre><code>
 # 50-50 between integer and float
-> gen.value { freq :integer, :float }
+> Rantly { freq :integer, :float }
 </code></pre>
 
 If a "pair" is an Array, but the first element is not an Integer, @freq@ assumes that it's a Rantly method-call with arguments, and the weight is one.
 
 <pre><code>
 # 50-50 chance generating integer limited by 10, or by 20.
-> gen.value { freq [:integer,10], [:integer 20] }
+> Rantly { freq [:integer,10], [:integer 20] }
 </code></pre>
 
 
@@ -217,32 +210,24 @@ The avaiable char classes for strings are:
 </code></pre>
 
 <pre><code>
-# sized 10 array of integer or float
-> gen.value { array(10) { branch(:integer,:float)}}
+# sized 10 array of integers
+> Rantly { array(10) { integer }}
 => [417733046, -375385433, 0.967812380000118, 26478621, 0.888588160450082, 250944144, 305584916, -151858342, 0.308123867823313, 0.316824642414253]
 </code></pre>
 
 If you set the size once, it applies to all subsequent recursive structures. Here's a sized 10 array of sized 10 strings,
 
 <pre><code>
-> gen.value { sized(10) { array(:string)} }
+> Rantly { sized(10) { array {string}} }
 => ["1c}C/,9I#}", "hpA/UWPJ\\j", "H'~ERtI`|]", "%OUaW\\%uQZ", "Z2QdY=G~G!", "H<o|<FARGQ", "g>ojnxGDT3", "]a:L[B>bhb", "_Kl=&{tH^<", "ly]Yfb?`6c"]
 </code></pre>
 
 Or a sized 10 array of sized 5 strings,
 
 <pre><code>
-> gen.value { array(10) { array(5) { string}}}
+> Rantly {array(10){sized(5) {string}}}
 => ["S\"jf ", "d\\F-$", "-_8pa", "IN0iF", "SxRV$", ".{kQ7", "6>;fo", "}.D8)", "P(tS'", "y0v/v"]
 </code></pre>
-
-Rantly#array actually just delegate to Rantly#freq, so you can use freq pairs:
-
-<pre><code>
-> gen.value { sized(10) {array [1,:integer],[2,:float] }}
-=> [0.983334733158678, -418176338, 0.976947175363592, 0.703390570421286, -478680395, 5483631, 0.966944106783513, 110469205, 0.540859146793544, 0.521813810037025]
-</code></pre>
-
 
 h1. Property Testing
 
