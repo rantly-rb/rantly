@@ -185,10 +185,12 @@ Rantly#sized(n,&block)
 Rantly provides two methods that depends on the size
 
 <pre><code>
-Rantly#array(size=default_size)
+Rantly#array(size=default_size,&block)
   returns a sized array consisted of elements by Rantly#calling random branches.
 Rantly#string(char_class=:print)
   returns a sized random string, consisted of only chars from a char_class.
+Rantly#dict(size=default_size,&block)
+  returns a sized random hash. The generator block should generate tuples of keys and values (arrays that have two elements, the first one is used as key, and the second as value).
 </code></pre>
 
 The avaiable char classes for strings are:
@@ -227,6 +229,25 @@ Or a sized 10 array of sized 5 strings,
 <pre><code>
 > Rantly {array(10){sized(5) {string}}}
 => ["S\"jf ", "d\\F-$", "-_8pa", "IN0iF", "SxRV$", ".{kQ7", "6>;fo", "}.D8)", "P(tS'", "y0v/v"]
+</code></pre>
+
+Generate a hash that has 5 elements,
+
+<pre><code>
+> Rantly { dict { [string,integer] }}
+{"bR\\qHn"=>247003509502595457,
+ "-Mp '."=>653206579583741142,
+ "gY%<SV"=>-888111605212388599,
+ "+SMn:r"=>-1159506450084197716,
+ "^3gYfQ"=>-2154064981943219558,
+ "= :/\\,"=>433790301059833691}
+</code></pre>
+
+The @dict@ generator retries if a key is duplicated. If it fails to generate a unique key after too many tries, it gives up by raising an error:
+
+<pre><code>
+> Rantly { dict { ["a",integer] }}
+Rantly::TooManyTries: Exceed gen limit 60: 60 failed guards)
 </code></pre>
 
 h1. Property Testing
