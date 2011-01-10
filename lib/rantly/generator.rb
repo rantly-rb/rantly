@@ -205,9 +205,11 @@ class Rantly
   end
 
   def array(n=self.size,&block)
-    acc = []
-    n.times { acc << self.instance_eval(&block) }
-    acc
+    n.times.map { self.instance_eval(&block) }
+  end
+
+  def dict(n,&block)
+    array(n,&block).inject({}) {|h,(k,v)| h[k] = v; h }
   end
 
   module Chars
