@@ -101,7 +101,11 @@ class Rantly
   end
 
   def guard(test)
-    raise GuardFailure.new unless test
+    unless test
+      raise GuardFailure.new
+    else
+      true
+    end
   end
 
   def size
@@ -208,8 +212,13 @@ class Rantly
     n.times.map { self.instance_eval(&block) }
   end
 
-  def dict(n,&block)
-    array(n,&block).inject({}) {|h,(k,v)| h[k] = v; h }
+  def dict(n=self.size,&block)
+    h = {}
+    each(n) do
+      k,v = instance_eval(&block)
+      h[k] = v if guard(!h.has_key?(k))
+    end
+    h
   end
 
   module Chars
