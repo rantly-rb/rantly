@@ -230,7 +230,7 @@ class Rantly
       end
 
       def of(regexp)
-        ASCII.scan(regexp).to_a.map! { |char| char[0] }
+        ASCII.scan(regexp).to_a.map! { |char| char[0].ord }
       end
     end
     
