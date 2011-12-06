@@ -48,3 +48,13 @@ module Test::Unit::Assertions
   end
 end
 
+begin
+  require 'rspec'
+  class RSpec::Core::ExampleGroup
+    def property_of(&block)
+      Rantly::Property.new(block)
+    end
+  end
+rescue LoadError
+  "No RSpec loaded. Oh, well."
+end
