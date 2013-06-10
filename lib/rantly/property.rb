@@ -1,5 +1,4 @@
 require 'rantly'
-require 'test/unit'
 require 'pp'
 
 class Rantly::Property
@@ -7,7 +6,7 @@ class Rantly::Property
   def initialize(property)
     @property = property
   end
-  
+
   def check(n=100,limit=10,&assertion)
     i = 0
     test_data = nil
@@ -40,21 +39,4 @@ class Rantly::Property
       format "%10.5f%% of => %s", count, classifier
     end
   end
-end
-
-module Test::Unit::Assertions
-  def property_of(&block)
-    Rantly::Property.new(block)
-  end
-end
-
-begin
-  require 'rspec'
-  class RSpec::Core::ExampleGroup
-    def property_of(&block)
-      Rantly::Property.new(block)
-    end
-  end
-rescue LoadError
-  "No RSpec loaded. Oh, well."
 end
