@@ -26,10 +26,10 @@ Gem::Specification.new do |s|
      "lib/rantly/data.rb",
      "lib/rantly/generator.rb",
      "lib/rantly/property.rb",
-     "lib/rantly/rspec_extension.rb",
+     "lib/rantly/rspec_extensions.rb",
      "lib/rantly/silly.rb",
      "lib/rantly/spec.rb",
-     "lib/rantly/testunit_extension.rb",
+     "lib/rantly/testunit_extensions.rb",
      "rantly.gemspec",
      "test/rantly_test.rb",
      "test/test_helper.rb"
