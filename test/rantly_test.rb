@@ -1,5 +1,5 @@
 require 'test_helper'
-require 'rantly/property'
+require 'rantly/testunit_extensions'
 
 module RantlyTest
 end
