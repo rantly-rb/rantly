@@ -255,14 +255,20 @@ h1. Property Testing
 Rantly extends Test::Unit for property testing. The extension is in its own module. So you need to require it.
 
 <pre><code>
-require 'rant/check'
+require 'rantly/testunit_extension'
 </code></pre>
 
-It defines,
+It defines
 
 <pre><code>
 Test::Unit::Assertions#property_of(&block)
   The block is used to generate random data with a generator. The method returns a Rantly::Property instance, that has the method 'check'.
+</code></pre>
+
+Rantly also extends RSpec in a similar way. Again you need to require it:
+
+<pre><code>
+require 'rantly/rspec_extension'
 </code></pre>
 
 It's like this, using the gem 'shoulda'
