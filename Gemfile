@@ -4,4 +4,5 @@ group :development, :test do
   gem 'jeweler'
   gem 'shoulda'
   gem 'simplecov'
+  gem 'coveralls', :require => false
 end
