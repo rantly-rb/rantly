@@ -1,4 +1,4 @@
-Build Status:
+!https://travis-ci.org/hayeah/rantly.png?branch=master!:https://travis-ci.org/hayeah/rantly
 
 h1. Imperative Random Data Generator and Quickcheck
 
