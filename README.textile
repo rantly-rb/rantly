@@ -1,3 +1,5 @@
+Build Status:
+
 h1. Imperative Random Data Generator and Quickcheck
 
 You can use Rant to generate random test data, and use its Test::Unit extension for property-based testing.
