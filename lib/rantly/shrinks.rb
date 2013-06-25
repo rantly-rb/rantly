@@ -31,7 +31,7 @@ end
 
 class Array
   def shrink
-    idx = find_index{|e| e.shrinkable?}
+    idx = find_index{|e| e.respond_to?(:shrinkable?) && e.shrinkable?}
     if idx != nil
       clone = self.dup
       clone[idx] = clone[idx].shrink
@@ -42,6 +42,6 @@ class Array
   end
 
   def shrinkable?
-    self.any?{|e| e.shrinkable? }
+    self.any?{|e| e.respond_to?(:shrinkable?) && e.shrinkable? }
   end
 end
