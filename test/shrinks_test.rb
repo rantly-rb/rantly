@@ -65,3 +65,18 @@ class RantlyTest::Shrinkers::Array < Test::Unit::TestCase
     }
   end
 end
+
+class RantlyTest::Shrinkers::Hash< Test::Unit::TestCase
+  should "not be able to shrink empty hash" do
+    assert !{}.shrinkable?
+  end
+
+  should "shrink a value if one of the values is shrinkable" do
+    assert_equal({foo: 0, bar: 0}, {foo: 1, bar: 0}.shrink)
+    assert_equal({foo: 0, bar: 0}, {foo: 0, bar: 1}.shrink)
+  end
+
+  should "shrink by deleting an element in it if none of the values is shrinkable" do
+    assert_equal({},{foo: 0}.shrink)
+  end
+end
