@@ -1,7 +1,7 @@
 class Integer
   def shrink
     if self < 0 then (self / 2).floor + 1
-    elsif self > 0 then (self / 2) - 1
+    elsif self > 0 then ((self + 1) / 2).ceil - 1
     else
       return 0
     end
