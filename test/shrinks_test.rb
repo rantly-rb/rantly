@@ -31,3 +31,16 @@ class RantlyTest::Shrinkers::Integer < Test::Unit::TestCase
   end
 end
 
+class RantlyTest::Shrinkers::String< Test::Unit::TestCase
+  should "not be able to shrink empty string" do
+    assert !"".shrinkable?
+  end
+
+  should "shrink a string one char shorter" do
+    property_of {
+      sized(10) { string }
+    }.check { |str|
+      assert_equal 9, str.shrink.length
+    }
+  end
+end
