@@ -36,13 +36,19 @@ class Array
       clone = self.dup
       clone[idx] = clone[idx].shrink
       return clone
+    elsif !self.empty?
+      i = Random::rand(self.length)
+      a2 = self.dup
+      a2.delete_at(i)
+      return a2
     else
       return self
     end
   end
 
   def shrinkable?
-    self.any?{|e| e.respond_to?(:shrinkable?) && e.shrinkable? }
+    self.any?{|e| e.respond_to?(:shrinkable?) && e.shrinkable? } ||
+      !self.empty?
   end
 end
 

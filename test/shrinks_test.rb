@@ -44,3 +44,24 @@ class RantlyTest::Shrinkers::String< Test::Unit::TestCase
     }
   end
 end
+
+class RantlyTest::Shrinkers::Array < Test::Unit::TestCase
+  should "not be able to shrink empty array" do
+    assert ![].shrinkable?
+  end
+
+  should "shrink array by trying to shrink the first shrinkable element available" do
+    assert_equal [0,1], [1,1].shrink
+    assert_equal [0,0,1], [0,1,1].shrink
+  end
+
+  should "shrink array by 1 if none of the element in it is shrinkable" do
+    property_of {
+      n = integer(1..10)
+      a = Array.new(n,0)
+      [n,a]
+    }.check { |n,a|
+      assert_equal n-1, a.shrink.length
+    }
+  end
+end
