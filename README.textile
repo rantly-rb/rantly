@@ -93,7 +93,7 @@ Rantly#range(lo,hi)
   random integer between lo and hi.
 Rantly#float
   random float
-Rantly#bool
+Rantly#boolean
   true or false
 Rantly#literal(value)
   No-op. returns value.
