@@ -5,7 +5,6 @@ class Rantly
 end
 
 require 'rantly/generator'
-require 'rantly/shrinks'
 
 def Rantly(n=1,&block)
   if n > 1
