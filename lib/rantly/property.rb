@@ -2,7 +2,7 @@ require 'rantly'
 require 'pp'
 
 class Rantly::Property
-
+  attr_reader :failed_data, :shrunk_failed_data
   def initialize(property)
     @property = property
   end
@@ -24,35 +24,36 @@ class Rantly::Property
       puts
       puts "too many tries: #{e.tries}"
       raise e
-    rescue => boom
+    rescue Exception => boom
       puts
       puts "failure: #{i} tests, on:"
       pp test_data
-      if test_data.respond_to?(:shrink)
-        @original_test_data = test_data
-        @shrunk_data = @orginial_test_data
-        shrunk = shrinkify(assertion, test_data)
-        puts "shrunk to: "
-        pp shrunk
+      @failed_data = test_data
+      if @failed_data.respond_to?(:shrink)
+        @shrunk_failed_data = shrinkify(assertion, @failed_data)
+        puts "minimal failed data is:"
+        pp @shrunk_failed_data
       end
       raise boom
     end
   end
 
+  # return the first success case
   def shrinkify(assertion, data)
+    # We assume that data.shrink is non-destructive
+    return data if !data.shrinkable?
     val = data.shrink
     begin
-      if assertion
-        assertion.call(val)
-        shrinkify(assertion, data.shrink) if val.shrinkable?
-      end
-    rescue => boom
-      @shrunk_data = val
-      if val.shrinkable?
-        shrinkify(assertion, val)
-      end
+      assertion.call(val)
+      puts "found a reduced success:"
+      pp val
+      return data
+    rescue Exception
+      puts "found a reduced failure case:"
+      pp val
+      # recursively shrink failure case
+      return shrinkify(assertion,val)
     end
-    @shrunk_data || @orginial_test_data
   end
 
   def report

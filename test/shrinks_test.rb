@@ -80,3 +80,24 @@ class RantlyTest::Shrinkers::Hash< Test::Unit::TestCase
     assert_equal({},{foo: 0}.shrink)
   end
 end
+
+class RantlyTest::Shrinkers::Test < Test::Unit::TestCase
+  should "shrink data to smallest value that fails assertion" do
+    # We try to generate an array of 10 elements, filled with ones.
+    # The property we try to test is that non of the element is
+    # larger than 1, and the array's length is less than 4.
+    test = property_of {
+      a = Array.new(10,1)
+      i = Random::rand(a.length)
+      a[i] = 1
+      a
+    }
+    assert_raise MiniTest::Assertion do
+      test.check { |a|
+        assert(!a.any? { |e| e > 0 } && a.length < 4,"contains 1")
+      }
+    end
+    
+    assert_equal [0,0,0,0], test.shrunk_failed_data 
+  end
+end
