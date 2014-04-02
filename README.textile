@@ -254,13 +254,14 @@ Rantly::TooManyTries: Exceed gen limit 60: 60 failed guards)
 
 h1. Property Testing
 
-Rantly extends Test::Unit for property testing. The extension is in its own module. So you need to require it.
+Rantly extends Test::Unit and MiniTest::Test (5.0)/MiniTest::Unit::TestCase (< 5.0) for property testing. The extensions are in their own modules. So you need to require them explicitly:
 
 <pre><code>
-require 'rantly/testunit_extension'
+require 'rantly/testunit_extensions' # for 'test/unit'
+require 'rantly/minitest_extensions' # for 'minitest'
 </code></pre>
 
-It defines
+They define:
 
 <pre><code>
 Test::Unit::Assertions#property_of(&block)
@@ -270,7 +271,7 @@ Test::Unit::Assertions#property_of(&block)
 Rantly also extends RSpec in a similar way. Again you need to require it:
 
 <pre><code>
-require 'rantly/rspec_extension'
+require 'rantly/rspec_extensions'
 </code></pre>
 
 It's like this, using the gem 'shoulda'
