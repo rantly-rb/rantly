@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
      "lib/rantly/data.rb",
      "lib/rantly/generator.rb",
      "lib/rantly/property.rb",
+     "lib/rantly/minitest_extensions.rb",
      "lib/rantly/rspec_extensions.rb",
      "lib/rantly/silly.rb",
      "lib/rantly/spec.rb",
