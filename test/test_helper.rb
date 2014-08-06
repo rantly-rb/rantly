@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'minitest/autorun'
 require 'test/unit'
 require 'shoulda'
 
@@ -17,6 +18,3 @@ rescue LoadError
 end
 
 require 'rantly'
-
-class Test::Unit::TestCase
-end
