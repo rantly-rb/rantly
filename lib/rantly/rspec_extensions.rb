@@ -1,4 +1,5 @@
 require 'rspec'
+require 'rantly/property'
 
 class RSpec::Core::ExampleGroup
   def property_of(&block)
