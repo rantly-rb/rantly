@@ -300,6 +300,16 @@ should "generate right sized array" do
 end
 </code></pre>
 
+h1. Shrinking
+
+To shrink basic values you just need to require the shrinking methods
+
+<pre><code>
+require 'rantly/shrinks'
+</code></pre>
+
+This will cause strings, integers, arrays and hashes to be automatically shrunk.
+
 That's about it. Enjoy :)
 
 
