@@ -269,12 +269,21 @@ Test::Unit::Assertions#property_of(&block)
   The block is used to generate random data with a generator. The method returns a Rantly::Property instance, that has the method 'check'.
 </code></pre>
 
-It's like this, using the gem 'shoulda'
+Asserting properties, when using the gem 'shoulda' is done like this,
 
 <pre><code>
 # checks that integer only generates fixnum.
 should "generate Fixnum only" do
    property_of  { integer }.check { |i| assert i.is_a?(Integer) }
+end
+</code></pre>
+
+In RSpec, for example, we can do
+
+<pre><code>
+# checks that integer only generates fixnum.
+it "generate Fixnum only" do
+   property_of  { integer }.check { |i| expect(i).to be_a(Integer) }
 end
 </code></pre>
 
