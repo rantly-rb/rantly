@@ -21,7 +21,7 @@ $ irb -rrantly
 > Rantly { [integer,float]}
 => [-376856492, 0.452245765751706]
 > Rantly(5) { integer } # same as Rantly.map(5) { integer }
-=> [-1843396915550491870, -1683855015308353854, -2291347782549033959, -951461511269053584, 483265231542292652] 
+=> [-1843396915550491870, -1683855015308353854, -2291347782549033959, -951461511269053584, 483265231542292652]
 </code></pre>
 
 h1. Data Generation
@@ -259,6 +259,7 @@ Rantly extends Test::Unit and MiniTest::Test (5.0)/MiniTest::Unit::TestCase (< 5
 <pre><code>
 require 'rantly/testunit_extensions' # for 'test/unit'
 require 'rantly/minitest_extensions' # for 'minitest'
+require 'rantly/rspec_extensions'    # for RSpec
 </code></pre>
 
 They define:
@@ -266,12 +267,6 @@ They define:
 <pre><code>
 Test::Unit::Assertions#property_of(&block)
   The block is used to generate random data with a generator. The method returns a Rantly::Property instance, that has the method 'check'.
-</code></pre>
-
-Rantly also extends RSpec in a similar way. Again you need to require it:
-
-<pre><code>
-require 'rantly/rspec_extensions'
 </code></pre>
 
 It's like this, using the gem 'shoulda'
