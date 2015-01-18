@@ -10,7 +10,7 @@ class RantlyTest::Generator < Test::Unit::TestCase
   def setup
     Rantly.gen.reset
   end
-  
+
   should "fail test generation" do
     assert_raises(Rantly::TooManyTries) {
       property_of { guard range(0,1) < 0 }.check
@@ -37,7 +37,7 @@ class RantlyTest::Generator < Test::Unit::TestCase
       lo, hi = [integer(100),integer(100)].sort
       [lo,hi,range(lo,hi)]
     }.check { |(lo,hi,int)|
-      assert((lo..hi).include?(int)) 
+      assert((lo..hi).include?(int))
     }
   end
 
@@ -128,7 +128,7 @@ class RantlyTest::Generator < Test::Unit::TestCase
       assert_equal a, b
     }
   end
-  
+
   should "call Proc with generator.instance_eval" do
     property_of {
       call Proc.new { true }
@@ -147,7 +147,7 @@ class RantlyTest::Generator < Test::Unit::TestCase
       assert i1 > i0
     }
   end
-  
+
   should "raise if calling on any other value" do
     assert_raise(RuntimeError) {
       Rantly.gen.call 0
@@ -169,9 +169,8 @@ class RantlyTest::Generator < Test::Unit::TestCase
     }
   end
 
-  
   # choose
-  
+
   should "choose a value from args " do
     property_of {
       choose
@@ -190,7 +189,7 @@ class RantlyTest::Generator < Test::Unit::TestCase
     }
     property_of {
       arr = sized(10) { array { integer } }
-      choose(*arr) 
+      choose(*arr)
     }.check { |o|
       assert o.is_a?(Fixnum)
     }
@@ -240,7 +239,7 @@ class RantlyTest::Generator < Test::Unit::TestCase
       assert o.empty?
     }
   end
-  
+
   should "generate the right sized nested arrays" do
     property_of {
       size1 = range(5,10)
@@ -252,7 +251,7 @@ class RantlyTest::Generator < Test::Unit::TestCase
       assert outter_array.all? { |inner_array| inner_array.size < size1 }
     }
   end
-  
+
   should "generate array with right types" do
     property_of {
       sized(10) { array { freq(:integer,:string,:float)}  }
@@ -275,10 +274,9 @@ class RantlyTest::Generator < Test::Unit::TestCase
 #   end
 
 end
-  
+
 
 
 # TODO: check that distributions of different methods look roughly correct.
 class RantlyTest::Distribution
-  
 end
