@@ -6,9 +6,9 @@ begin
   Jeweler::Tasks.new do |gem|
     gem.name = "rantly"
     gem.summary = %Q{Ruby Imperative Random Data Generator and Quickcheck}
-    gem.email = "hayeah@gmail.com"
-    gem.homepage = "http://github.com/hayeah/rantly"
-    gem.authors = ["Howard Yeh"]
+    gem.email = ["hayeah@gmail.com", "abargnesi@gmail.com"]
+    gem.homepage = "https://github.com/abargnesi/rantly"
+    gem.authors = ["Howard Yeh", "Anthony Bargnesi"]
 
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
