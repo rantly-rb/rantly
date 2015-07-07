@@ -2,7 +2,7 @@
 
 h1. Repository move (Beginning 2015-07-07)
 
-The official _rantly_ repository has moved from "hayeah/rantly":https://github.com/hayeah/rantly to "abargnesi/rantly":https://github.com/abargnesi/rantly. The creator of _rantly_ is "Howard Yeh":https://github.com/hayeah.
+The official _rantly_ repository has moved from "hayeah/rantly":https://github.com/hayeah/rantly to "abargnesi/rantly":https://github.com/abargnesi/rantly. The creator of _rantly_ is "Howard Yeh":https://github.com/hayeah. "Anthony Bargnesi":https://github.com/abargnesi is the current maintainer.
 
 New development will occur in "abargnesi/rantly":https://github.com/abargnesi/rantly.
 
