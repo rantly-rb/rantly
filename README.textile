@@ -4,13 +4,16 @@ h1. Official Fork
 
 The official _rantly_ repository was moved from "hayeah/rantly":https://github.com/hayeah/rantly to this repository ("abargnesi/rantly":https://github.com/abargnesi/rantly). The creator of _rantly_ is "Howard Yeh":https://github.com/hayeah.
 
-New development will occur in this fork. The transition plan is as follows:
+New development will occur in this fork.
 
-#1 Investigate and move open issues.
-#2 Move over any closed issues that have relevant discourse.
-#3 Fix open issues.
-#4 Push new gem version after testing functionality.
-#5 Continue new development; Changes will be pushed back upstream to "hayeah/rantly":https://github.com/hayeah/rantly over the course of the next month.
+The transition plan is as follows:
+
+#1 Investigate and move open issues from hayeah/rantly to abargnesi/rantly.
+#2 Evaluate and likely merge pull requests into hayeah/rantly. Push to abargnesi/rantly.
+#3 Move over any closed issues that have relevant discourse.
+#4 Fix open issues.
+#5 Push new gem version after testing functionality.
+#6 Continue new development; Changes will be pushed back upstream to "hayeah/rantly":https://github.com/hayeah/rantly over the course of the next month.
 
 h1. Imperative Random Data Generator and Quickcheck
 
