@@ -22,7 +22,7 @@ class Rantly
     def value(limit=10,&block)
       gen.value(limit,&block)
     end
-    
+
     def gen
       self.singleton
     end
@@ -32,7 +32,6 @@ class Rantly
   end
 
   class TooManyTries < RuntimeError
-    
     def initialize(limit,nfailed)
       @limit = limit
       @nfailed = nfailed
@@ -84,7 +83,7 @@ class Rantly
       handler.call(val) if handler
     end
   end
-  
+
   attr_accessor :classifiers
 
   def initialize
@@ -111,7 +110,7 @@ class Rantly
   def size
     @size || Rantly.default_size
   end
-  
+
   def sized(n,&block)
     raise "size needs to be greater than zero" if n < 0
     old_size = @size
@@ -222,18 +221,15 @@ class Rantly
   end
 
   module Chars
-    
+
     class << self
-      ASCII = ""
-      (0..127).to_a.each do |i|
-        ASCII << i
-      end
+      ASCII = (0..127).to_a.each_with_object("") { |i, obj| obj << i }
 
       def of(regexp)
         ASCII.scan(regexp).to_a.map! { |char| char[0].ord }
       end
     end
-    
+
     ALNUM = Chars.of /[[:alnum:]]/
     ALPHA = Chars.of /[[:alpha:]]/
     BLANK = Chars.of /[[:blank:]]/
@@ -247,8 +243,8 @@ class Rantly
     UPPER = Chars.of /[[:upper:]]/
     XDIGIT = Chars.of /[[:xdigit:]]/
     ASCII = Chars.of /./
-    
-    
+
+
     CLASSES = {
       :alnum => ALNUM,
       :alpha => ALPHA,
@@ -264,7 +260,7 @@ class Rantly
       :xdigit => XDIGIT,
       :ascii => ASCII,
     }
-    
+
   end
 
   def string(char_class=:print)

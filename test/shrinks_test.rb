@@ -97,7 +97,7 @@ class RantlyTest::Shrinkers::Test < Test::Unit::TestCase
         assert(!a.any? { |e| e > 0 } && a.length < 4,"contains 1")
       }
     end
-    
-    assert_equal [0,0,0,0], test.shrunk_failed_data 
+
+    assert_equal [0,0,0,0], test.shrunk_failed_data
   end
 end
