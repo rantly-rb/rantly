@@ -3,3 +3,6 @@
 coverage
 rdoc
 pkg
+.bundle
+.gems
+Gemfile.lock
