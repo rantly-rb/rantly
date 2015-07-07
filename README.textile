@@ -36,7 +36,7 @@ $ irb -rrantly
 > Rantly { [integer,float]}
 => [-376856492, 0.452245765751706]
 > Rantly(5) { integer } # same as Rantly.map(5) { integer }
-=> [-1843396915550491870, -1683855015308353854, -2291347782549033959, -951461511269053584, 483265231542292652] 
+=> [-1843396915550491870, -1683855015308353854, -2291347782549033959, -951461511269053584, 483265231542292652]
 </code></pre>
 
 h1. Data Generation
@@ -274,6 +274,7 @@ Rantly extends Test::Unit and MiniTest::Test (5.0)/MiniTest::Unit::TestCase (< 5
 <pre><code>
 require 'rantly/testunit_extensions' # for 'test/unit'
 require 'rantly/minitest_extensions' # for 'minitest'
+require 'rantly/rspec_extensions'    # for RSpec
 </code></pre>
 
 They define:
@@ -283,18 +284,21 @@ Test::Unit::Assertions#property_of(&block)
   The block is used to generate random data with a generator. The method returns a Rantly::Property instance, that has the method 'check'.
 </code></pre>
 
-Rantly also extends RSpec in a similar way. Again you need to require it:
-
-<pre><code>
-require 'rantly/rspec_extensions'
-</code></pre>
-
-It's like this, using the gem 'shoulda'
+Asserting properties, when using the gem 'shoulda' is done like this,
 
 <pre><code>
 # checks that integer only generates fixnum.
 should "generate Fixnum only" do
    property_of  { integer }.check { |i| assert i.is_a?(Integer) }
+end
+</code></pre>
+
+In RSpec, for example, we can do
+
+<pre><code>
+# checks that integer only generates fixnum.
+it "generate Fixnum only" do
+   property_of  { integer }.check { |i| expect(i).to be_a(Integer) }
 end
 </code></pre>
 
@@ -317,6 +321,16 @@ RANTLY_VERBOSE=0 # silent
 RANTLY_VERBOSE=1 # verbose and default if env is not set
 </code></pre>
 This will silence the puts, print, and pretty_print statements in property.rb.
+
+h1. Shrinking
+
+To shrink basic values you just need to require the shrinking methods
+
+<pre><code>
+require 'rantly/shrinks'
+</code></pre>
+
+This will cause strings, integers, arrays and hashes to be automatically shrunk.
 
 That's about it. Enjoy :)
 
