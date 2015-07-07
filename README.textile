@@ -311,6 +311,13 @@ should "generate right sized array" do
 end
 </code></pre>
 
+If you wish to have quiet output from Rantly, set environmental variable:
+<pre><code>
+RANTLY_VERBOSE=0 # silent
+RANTLY_VERBOSE=1 # verbose and default if env is not set
+</code></pre>
+This will silence the puts, print, and pretty_print statements in property.rb.
+
 That's about it. Enjoy :)
 
 

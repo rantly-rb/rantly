@@ -1,8 +1,24 @@
 require 'rantly'
 require 'pp'
+require 'stringio'
 
 class Rantly::Property
-  attr_reader :failed_data, :shrunk_failed_data
+  attr_reader :failed_data, :shrunk_failed_data, :io
+
+  VERBOSITY = ENV.fetch('RANTLY_VERBOSE'){ 1 }.to_i
+
+  def io
+    @io ||= if VERBOSITY >= 1
+              STDOUT
+            else
+              StringIO.new
+            end
+  end
+
+  def pretty_print(object)
+    PP.pp(object, io)
+  end
+
   def initialize(property)
     @property = property
   end
@@ -14,25 +30,25 @@ class Rantly::Property
       Rantly.singleton.generate(n,limit,@property) do |val|
         test_data = val
         assertion.call(val) if assertion
-        puts "" if i % 100 == 0
-        print "." if i % 10 == 0
+        io.puts "" if i % 100 == 0
+        io.print "." if i % 10 == 0
         i += 1
       end
-      puts
-      puts "success: #{i} tests"
+      io.puts
+      io.puts "success: #{i} tests"
     rescue Rantly::TooManyTries => e
-      puts
-      puts "too many tries: #{e.tries}"
+      io.puts
+      io.puts "too many tries: #{e.tries}"
       raise e
     rescue Exception => boom
-      puts
-      puts "failure: #{i} tests, on:"
-      pp test_data
+      io.puts
+      io.puts "failure: #{i} tests, on:"
+      pretty_print test_data
       @failed_data = test_data
       if @failed_data.respond_to?(:shrink)
         @shrunk_failed_data = shrinkify(assertion, @failed_data)
-        puts "minimal failed data is:"
-        pp @shrunk_failed_data
+        io.puts "minimal failed data is:"
+        pretty_print @shrunk_failed_data
       end
       raise boom
     end
@@ -45,12 +61,12 @@ class Rantly::Property
     val = data.shrink
     begin
       assertion.call(val)
-      puts "found a reduced success:"
-      pp val
+      io.puts "found a reduced success:"
+      pretty_print val
       return data
     rescue Exception
-      puts "found a reduced failure case:"
-      pp val
+      io.puts "found a reduced failure case:"
+      pretty_print val
       # recursively shrink failure case
       return shrinkify(assertion,val)
     end

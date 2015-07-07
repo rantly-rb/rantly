@@ -21,7 +21,7 @@ module Rantly::Silly::Love
 #{post_script}
 EOS
   end
-  
+
   def address
     "my #{extremifier} #{pedestal_label}"
   end
@@ -60,9 +60,8 @@ EOS
   end
 
   def caused_by
-    
   end
-  
+
   def whoami
     "#{extremifier} #{humbleizer} #{groveler}"
   end
@@ -113,4 +112,3 @@ EOS
     choose "once in a while","night","day","hour","minute"
   end
 end
-
