@@ -8,12 +8,12 @@ New development will occur in "abargnesi/rantly":https://github.com/abargnesi/ra
 
 The transition plan is as follows:
 
-#1 Investigate and move open issues from "hayeah/rantly":https://github.com/hayeah/rantly to "abargnesi/rantly":https://github.com/abargnesi/rantly.
-#2 Evaluate and likely merge pull requests into hayeah/rantly. Push these changes to "abargnesi/rantly":https://github.com/abargnesi/rantly.
-#3 Move over any closed issues that have relevant discourse.
-#4 Fix open issues.
-#5 Push new gem version after testing functionality.
-#6 Continue new development; Changes will be pushed back upstream to "hayeah/rantly":https://github.com/hayeah/rantly over the course of the next month.
+#1 [x] Investigate and move open issues from "hayeah/rantly":https://github.com/hayeah/rantly to "abargnesi/rantly":https://github.com/abargnesi/rantly.
+#2 [x] Evaluate and likely merge pull requests into hayeah/rantly. Push these changes to "abargnesi/rantly":https://github.com/abargnesi/rantly.
+#3 [x] Move over any closed issues that have relevant discourse.
+#4 [ ] Fix open issues.
+#5 [ ] Push new gem version after testing functionality.
+#6 [ ] Continue new development; Changes will be pushed back upstream to "hayeah/rantly":https://github.com/hayeah/rantly over the course of the next month.
 
 h1. Imperative Random Data Generator and Quickcheck
 
