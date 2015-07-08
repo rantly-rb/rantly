@@ -1,23 +1,22 @@
 require 'test_helper'
-require 'rantly/testunit_extensions'
+require 'rantly/minitest_extensions'
 
 module RantlyTest
 end
 
-# check we generate the right kind of data.
-## doesn't check for distribution
-class RantlyTest::Generator < Test::Unit::TestCase
-  def setup
+describe Rantly::Property do
+
+  before do
     Rantly.gen.reset
   end
 
-  should "fail test generation" do
+  it "fail test generation" do
     assert_raises(Rantly::TooManyTries) {
       property_of { guard range(0,1) < 0 }.check
     }
   end
 
-  should "generate literal value by returning itself" do
+  it "generate literal value by returning itself" do
     property_of {
       i = integer
       [i,literal(i)]
@@ -26,7 +25,7 @@ class RantlyTest::Generator < Test::Unit::TestCase
     }
   end
 
-  should "generate integer in range" do
+  it "generate integer in range" do
     property_of {
       i = integer
       [i,range(i,i)]
@@ -41,11 +40,11 @@ class RantlyTest::Generator < Test::Unit::TestCase
     }
   end
 
-  should "generate Fixnum only" do
+  it "generate Fixnum only" do
     property_of  { integer }.check { |i| assert i.is_a?(Integer) }
   end
 
-  should "generate integer less than abs(n)" do
+  it "generate integer less than abs(n)" do
     property_of {
       n = range(0,10)
       [n,integer(n)]
@@ -54,17 +53,17 @@ class RantlyTest::Generator < Test::Unit::TestCase
     }
   end
 
-  should "generate Float" do
+  it "generate Float" do
     property_of { float }.check { |f| assert f.is_a?(Float)}
   end
 
-  should "generate Boolean" do
+  it "generate Boolean" do
     property_of { boolean }.check { |t|
       assert t == true || t == false
     }
   end
 
-  should "generate empty strings" do
+  it "generate empty strings" do
     property_of {
       sized(0) { string }
     }.check { |s|
@@ -72,7 +71,7 @@ class RantlyTest::Generator < Test::Unit::TestCase
     }
   end
 
-  should "generate strings with the right regexp char classes" do
+  it "generate strings with the right regexp char classes" do
     char_classes = Rantly::Chars::CLASSES.keys
     property_of {
       char_class = choose(*char_classes)
@@ -92,7 +91,7 @@ class RantlyTest::Generator < Test::Unit::TestCase
     }
   end
 
-  should "generate strings matching regexp" do
+  it "generate strings matching regexp" do
     property_of {
       sized(10) { string(/[abcd]/) }
     }.check { |s|
@@ -102,11 +101,11 @@ class RantlyTest::Generator < Test::Unit::TestCase
 
   # call
 
-  should "call Symbol as method call (no arg)" do
+  it "call Symbol as method call (no arg)" do
     property_of {call(:integer)}.check { |i| i.is_a?(Integer)}
   end
 
-  should "call Symbol as method call (with arg)" do
+  it "call Symbol as method call (with arg)" do
     property_of {
       n = range(0,100)
       [n,call(:integer,n)]
@@ -115,8 +114,8 @@ class RantlyTest::Generator < Test::Unit::TestCase
     }
   end
 
-  should "call Array by calling first element as method, the rest as args" do
-    assert_raise(RuntimeError) {
+  it "call Array by calling first element as method, the rest as args" do
+    assert_raises(RuntimeError) {
       Rantly.gen.value {
         call []
       }
@@ -129,7 +128,7 @@ class RantlyTest::Generator < Test::Unit::TestCase
     }
   end
 
-  should "call Proc with generator.instance_eval" do
+  it "call Proc with generator.instance_eval" do
     property_of {
       call Proc.new { true }
     }.check { |o|
@@ -148,15 +147,15 @@ class RantlyTest::Generator < Test::Unit::TestCase
     }
   end
 
-  should "raise if calling on any other value" do
-    assert_raise(RuntimeError) {
+  it "raise if calling on any other value" do
+    assert_raises(RuntimeError) {
       Rantly.gen.call 0
     }
   end
 
   # branch
 
-  should "branch by Rantly#calling one of the args" do
+  it "branch by Rantly#calling one of the args" do
     property_of {
       branch :integer, :integer, :integer
     }.check { |o|
@@ -171,7 +170,7 @@ class RantlyTest::Generator < Test::Unit::TestCase
 
   # choose
 
-  should "choose a value from args " do
+  it "choose a value from args " do
     property_of {
       choose
     }.check {|o|
@@ -206,7 +205,7 @@ class RantlyTest::Generator < Test::Unit::TestCase
 
   # freq
 
-  should "not pick an element with 0 frequency" do
+  it "not pick an element with 0 frequency" do
     property_of {
       sized(10) {
         array { freq([0,:string],[1,:integer]) }
@@ -216,8 +215,8 @@ class RantlyTest::Generator < Test::Unit::TestCase
     }
   end
 
-  should "handle degenerate freq pairs" do
-    assert_raise(RuntimeError) {
+  it "handle degenerate freq pairs" do
+    assert_raises(RuntimeError) {
       Rantly.gen.value {
         freq
       }
@@ -232,7 +231,7 @@ class RantlyTest::Generator < Test::Unit::TestCase
 
   # array
 
-  should "generate empty array" do
+  it "generate empty array" do
     property_of {
       sized(0) { array { integer }}
     }.check { |o|
@@ -240,7 +239,7 @@ class RantlyTest::Generator < Test::Unit::TestCase
     }
   end
 
-  should "generate the right sized nested arrays" do
+  it "generate the right sized nested arrays" do
     property_of {
       size1 = range(5,10)
       size2 = range(0,size1-1)
@@ -252,7 +251,7 @@ class RantlyTest::Generator < Test::Unit::TestCase
     }
   end
 
-  should "generate array with right types" do
+  it "generate array with right types" do
     property_of {
       sized(10) { array { freq(:integer,:string,:float)}  }
     }.check { |arr|
@@ -267,16 +266,24 @@ class RantlyTest::Generator < Test::Unit::TestCase
     }
   end
 
-  # should "raise if generating an array without size" do
-#     assert_raise(RuntimeError) {
-#       Rantly.gen.value { array(:integer) }
-#     }
-#   end
+  # it "raise if generating an array without size" do
+  #   assert_raises(RuntimeError) {
+  #     Rantly.gen.value { array(:integer) }
+  #   }
+  # end
 
 end
 
+# TODO: Determine type of tests required here.
 
+# check we generate the right kind of data.
+## doesn't check for distribution
+class RantlyTest::Generator < Minitest::Test
+  def setup
+    Rantly.gen.reset
+  end
+end
 
 # TODO: check that distributions of different methods look roughly correct.
-class RantlyTest::Distribution
+class RantlyTest::Distribution < Minitest::Test
 end

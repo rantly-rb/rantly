@@ -1,6 +1,6 @@
 require 'test_helper'
 require 'rantly/shrinks'
-require 'rantly/testunit_extensions'
+require 'rantly/minitest_extensions'
 
 module RantlyTest
 end
@@ -8,35 +8,37 @@ end
 module RantlyTest::Shrinkers
 end
 
-class RantlyTest::Shrinkers::Integer < Test::Unit::TestCase
-  should "not be able to shrink 0 integer" do
+describe Integer do
+
+  it "not be able to shrink 0 integer" do
     assert !0.shrinkable?
   end
 
-  should "shrink positive integers to something less than itself" do
+  it "shrink positive integers to something less than itself" do
     assert(3.shrink < 3)
     assert(2.shrink < 2)
     assert_equal(0,1.shrink)
   end
 
-  should "shrink negative integers to something larger than itself" do
+  it "shrink negative integers to something larger than itself" do
     assert(-3.shrink > -3)
     assert(-2.shrink > -2)
     assert_equal(0,-1.shrink)
   end
 
-  should "shrink 0 to itself" do
+  it "shrink 0 to itself" do
     # hmm. should this be undefined?
     assert_equal 0.shrink, 0
   end
 end
 
-class RantlyTest::Shrinkers::String< Test::Unit::TestCase
-  should "not be able to shrink empty string" do
+describe String do
+
+  it "not be able to shrink empty string" do
     assert !"".shrinkable?
   end
 
-  should "shrink a string one char shorter" do
+  it "shrink a string one char shorter" do
     property_of {
       sized(10) { string }
     }.check { |str|
@@ -45,17 +47,18 @@ class RantlyTest::Shrinkers::String< Test::Unit::TestCase
   end
 end
 
-class RantlyTest::Shrinkers::Array < Test::Unit::TestCase
-  should "not be able to shrink empty array" do
+describe Array do
+
+  it "not be able to shrink empty array" do
     assert ![].shrinkable?
   end
 
-  should "shrink array by trying to shrink the first shrinkable element available" do
+  it "shrink array by trying to shrink the first shrinkable element available" do
     assert_equal [0,1], [1,1].shrink
     assert_equal [0,0,1], [0,1,1].shrink
   end
 
-  should "shrink array by 1 if none of the element in it is shrinkable" do
+  it "shrink array by 1 if none of the element in it is shrinkable" do
     property_of {
       n = integer(1..10)
       a = Array.new(n,0)
@@ -66,23 +69,25 @@ class RantlyTest::Shrinkers::Array < Test::Unit::TestCase
   end
 end
 
-class RantlyTest::Shrinkers::Hash< Test::Unit::TestCase
-  should "not be able to shrink empty hash" do
+describe Hash do
+
+  it "not be able to shrink empty hash" do
     assert !{}.shrinkable?
   end
 
-  should "shrink a value if one of the values is shrinkable" do
+  it "shrink a value if one of the values is shrinkable" do
     assert_equal({foo: 0, bar: 0}, {foo: 1, bar: 0}.shrink)
     assert_equal({foo: 0, bar: 0}, {foo: 0, bar: 1}.shrink)
   end
 
-  should "shrink by deleting an element in it if none of the values is shrinkable" do
+  it "shrink by deleting an element in it if none of the values is shrinkable" do
     assert_equal({},{foo: 0}.shrink)
   end
 end
 
-class RantlyTest::Shrinkers::Test < Test::Unit::TestCase
-  should "shrink data to smallest value that fails assertion" do
+describe "Shrinker Test" do
+
+  it "shrink data to smallest value that fails assertion" do
     # We try to generate an array of 10 elements, filled with ones.
     # The property we try to test is that non of the element is
     # larger than 1, and the array's length is less than 4.
@@ -92,7 +97,7 @@ class RantlyTest::Shrinkers::Test < Test::Unit::TestCase
       a[i] = 1
       a
     }
-    assert_raise MiniTest::Assertion do
+    assert_raises MiniTest::Assertion do
       test.check { |a|
         assert(!a.any? { |e| e > 0 } && a.length < 4,"contains 1")
       }
