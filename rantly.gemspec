@@ -52,20 +52,17 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_development_dependency(%q<minitest>, ["~> 5.7.0"])
       s.add_development_dependency(%q<jeweler>, [">= 0"])
-      s.add_development_dependency(%q<shoulda>, [">= 0"])
       s.add_development_dependency(%q<simplecov>, [">= 0"])
       s.add_development_dependency(%q<coveralls>, [">= 0"])
     else
       s.add_dependency(%q<minitest>, ["~> 5.7.0"])
       s.add_dependency(%q<jeweler>, [">= 0"])
-      s.add_dependency(%q<shoulda>, [">= 0"])
       s.add_dependency(%q<simplecov>, [">= 0"])
       s.add_dependency(%q<coveralls>, [">= 0"])
     end
   else
     s.add_dependency(%q<minitest>, ["~> 5.7.0"])
     s.add_dependency(%q<jeweler>, [">= 0"])
-    s.add_dependency(%q<shoulda>, [">= 0"])
     s.add_dependency(%q<simplecov>, [">= 0"])
     s.add_dependency(%q<coveralls>, [">= 0"])
   end
