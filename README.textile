@@ -284,35 +284,50 @@ Test::Unit::Assertions#property_of(&block)
   The block is used to generate random data with a generator. The method returns a Rantly::Property instance, that has the method 'check'.
 </code></pre>
 
-Asserting properties, when using the gem 'shoulda' is done like this,
+Property assertions within Test::Unit could be done like this,
 
 <pre><code>
 # checks that integer only generates fixnum.
-should "generate Fixnum only" do
-   property_of  { integer }.check { |i| assert i.is_a?(Integer) }
-end
+property_of {
+  integer
+}.check { |i|
+  assert(i.is_a?(Integer), "integer property did not return Integer type")
+}
 </code></pre>
 
-In RSpec, for example, we can do
+Property assertions within Minitest could be done like this,
 
 <pre><code>
 # checks that integer only generates fixnum.
-it "generate Fixnum only" do
-   property_of  { integer }.check { |i| expect(i).to be_a(Integer) }
+property_of {
+  integer
+}.check { |i|
+  assert_kind_of Integer, i, "integer property did not return Integer type"
+}
+</code></pre>
+
+Property assertions within RSpec could be done like this,
+
+<pre><code>
+# checks that integer only generates fixnum.
+it "integer property only returns Integer type" do
+   property_of {
+     integer
+   }.check { |i|
+     expect(i).to be_a(Integer)
+   }
 end
 </code></pre>
 
 The check block takes the generated data as its argument. One idiom I find useful is to include a parameter of the random data for the check argument. For example, if I want to check that Rantly#array generates the right sized array, I could say,
 
 <pre><code>
-should "generate right sized array" do
-  property_of {
-    len = integer
-    [len,array(len){integer}]
-  }.check { |(len,arr)|
-    assert_equal len, arr.length
-  }
-end
+property_of {
+  len = integer
+  [len,array(len){integer}]
+}.check { |(len,arr)|
+  assert_equal len, arr.length
+}
 </code></pre>
 
 If you wish to have quiet output from Rantly, set environmental variable:
