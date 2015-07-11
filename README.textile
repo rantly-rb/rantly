@@ -339,13 +339,25 @@ This will silence the puts, print, and pretty_print statements in property.rb.
 
 h1. Shrinking
 
-To shrink basic values you just need to require the shrinking methods
+Shrinking reduces the value of common types to some terminal lower bound. These functions are added to the Ruby types <code>Integer</code>, <code>String</code>, <code>Array</code>, and <code>Hash</code>.
+
+For example a <code>String</code> is shrinkable until it is empty (e.g. <code>""</code>),
+
+<pre><code>
+"foo".shrink               # => "fo"
+"foo".shrink.shrink        # => "f"
+"foo".shrink.shrink.shrink # => ""
+"".shrinkable?             # => false
+</code></pre>
+
+Shrinking allows <code>Property#check</code> to find the minimum value needed to pass the check conditions.
+
+Enable shrinking with
 
 <pre><code>
 require 'rantly/shrinks'
 </code></pre>
 
-This will cause strings, integers, arrays and hashes to be automatically shrunk.
 
 That's about it. Enjoy :)
 
