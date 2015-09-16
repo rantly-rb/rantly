@@ -12,8 +12,9 @@ The transition plan is as follows:
 * [x] Evaluate and likely merge pull requests into hayeah/rantly. Push these changes to "abargnesi/rantly":https://github.com/abargnesi/rantly.
 * [x] Move over any closed issues that have relevant discourse.
 * [ ] Fix open issues.
-* [ ] Push new gem version after testing functionality.
+* [x] Push new gem version after testing functionality.
 * [ ] Continue new development; Changes will be pushed back upstream to "hayeah/rantly":https://github.com/hayeah/rantly over the course of the next month.
+* [x] Added CHANGELOG markdown file. Includes what was added between 0.3.1 (2011-12-15) and 0.3.2 (2015-09-16).
 
 h1. Imperative Random Data Generator and Quickcheck
 
