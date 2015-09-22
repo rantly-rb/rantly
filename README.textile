@@ -18,9 +18,9 @@ The transition plan is as follows:
 
 h1. Imperative Random Data Generator and Quickcheck
 
-You can use Rant to generate random test data, and use its Test::Unit extension for property-based testing.
+You can use Rantly to generate random test data, and use its Test::Unit extension for property-based testing.
 
-Rant is basically a recursive descent interpreter, each of its method returns a random value of some type (string, integer, float, etc.).
+Rantly is basically a recursive descent interpreter, each of its method returns a random value of some type (string, integer, float, etc.).
 
 Its implementation has no alien mathematics inside. Completely side-effect-free-free.
 
