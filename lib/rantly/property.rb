@@ -46,30 +46,39 @@ class Rantly::Property
       pretty_print test_data
       @failed_data = test_data
       if @failed_data.respond_to?(:shrink)
-        @shrunk_failed_data = shrinkify(assertion, @failed_data)
-        io.puts "minimal failed data is:"
+        @depth, @shrunk_failed_data = shrinkify(0, assertion, @failed_data)
+        io.puts "minimal failed data (depth #{@depth}) is:"
         pretty_print @shrunk_failed_data
       end
       raise boom
     end
   end
 
-  # return the first success case
-  def shrinkify(assertion, data)
-    # We assume that data.shrink is non-destructive
-    return data if !data.shrinkable?
-    val = data.shrink
-    begin
-      assertion.call(val)
-      io.puts "found a reduced success:"
-      pretty_print val
-      return data
-    rescue Exception
-      io.puts "found a reduced failure case:"
-      pretty_print val
-      # recursively shrink failure case
-      return shrinkify(assertion,val)
+  # Explore the failures tree
+  def shrinkify(depth, assertion, data)
+    io.puts "Shrinking at depth #{depth}:"
+    pretty_print data
+
+    max_depth = depth
+    min_data = data
+    if data.shrinkable?
+      loop do
+        # We assume that data.shrink is non-destructive
+        shrunk_data = data.shrink
+        begin
+          assertion.call(shrunk_data)
+        rescue Exception
+          # If the assertion was verified, recursively shrink failure case
+          branch_depth, branch_data = shrinkify(depth + 1, assertion, shrunk_data)
+          if branch_depth > max_depth
+            max_depth = branch_depth
+            min_data = branch_data
+          end
+        end
+        break if !data.retry?
+      end
     end
+    return max_depth, min_data
   end
 
   def report
