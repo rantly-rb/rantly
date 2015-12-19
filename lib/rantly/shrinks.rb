@@ -44,29 +44,6 @@ class String
   end
 end
 
-# Completly unshrinkable array
-class Static
-  def initialize(a)
-    @array = a
-  end
-
-  def [](i)
-    @array[i]
-  end
-
-  def []=(i, value)
-    @array[i] = value
-  end
-
-  def to_s
-    @array.to_s.insert(1, "S ")
-  end
-
-  def inspect
-    self.to_s
-  end
-end
-
 # Array where elements can be shrunk but not removed
 class Tuple
   def initialize(a)
@@ -82,12 +59,24 @@ class Tuple
     @array[i] = value
   end
 
+  def length
+    @array.length
+  end
+
+  def size
+    self.length
+  end
+
   def to_s
     @array.to_s.insert(1, "T ")
   end
 
   def inspect
     self.to_s
+  end
+
+  def each(&block)
+    @array.each(&block)
   end
 
   def shrink
@@ -115,15 +104,45 @@ class Tuple
   end
 end
 
-# Normal array: if elements can't be shrunk, they are removed
-class Array
+# Array where the elements that can't be shrunk are removed
+class Deflating
+  def initialize(a)
+    @array = a
+    @position = a.size - 1
+  end
+
+  def [](i)
+    @array[i]
+  end
+
+  def []=(i, value)
+    @array[i] = value
+  end
+
+  def length
+    @array.length
+  end
+
+  def size
+    self.length
+  end
+
+  def to_s
+    @array.to_s.insert(1, "D ")
+  end
+
+  def inspect
+    self.to_s
+  end
+
+  def each(&block)
+    @array.each(&block)
+  end
+
   def shrink
-    if (defined? @position).nil?
-      @position = self.length - 1
-    end
-    shrunk = Array.new(self)
+    shrunk = @array.dup
     if @position >= 0
-      e = self.at(@position)
+      e = @array.at(@position)
       if e.respond_to?(:shrinkable?) && e.shrinkable?
         shrunk[@position] = e.shrink
       else
@@ -131,49 +150,14 @@ class Array
       end
       @position -= 1
     end
-    return shrunk
+    return Deflating.new(shrunk)
   end
 
   def retry?
-    if (defined? @position).nil?
-      @position = self.length - 1
-    end
     @position >= 0
   end
 
   def shrinkable?
-    !self.empty?
-  end
-end
-
-class Hash
-  def shrink
-    if (defined? @position).nil?
-      @position = self.length - 1
-    end
-    shrunk = Hash.new(self)
-    keys = shrunk.keys
-    if @position >= 0
-      k = keys.at(@position)
-      e = self[k]
-      if e.respond_to?(:shrinkable?) && e.shrinkable?
-        shrunk[k] = e.shrink
-      else
-        shrunk.delete(k)
-      end
-      @position -= 1
-    end
-    return shrunk
-  end
-
-  def retry?
-    if (defined? @position).nil?
-      @position = self.length - 1
-    end
-    @position >= 0
-  end
-
-  def shrinkable?
-    !self.empty?
+    !@array.empty?
   end
 end
