@@ -331,6 +331,26 @@ property_of {
 }
 </code></pre>
 
+To control the number of property tests to generate, you have three options. In order of precedence:
+
+# Pass an integer argument to @check@
+
+<pre><code>
+property_of {
+  integer
+}.check(9000) { |i|
+  assert_kind_of Integer, i
+}
+</code></pre>
+
+#_ Set the @RANTLY_COUNT@ environment variable
+
+<pre><code>
+RANTLY_COUNT=9000 ruby my_property_test.rb
+</code></pre>
+
+#_ If neither of the above are set, the default will be to run the @check@ block 100 times.
+
 If you wish to have quiet output from Rantly, set environmental variable:
 <pre><code>
 RANTLY_VERBOSE=0 # silent
