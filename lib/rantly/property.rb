@@ -6,6 +6,7 @@ class Rantly::Property
   attr_reader :failed_data, :shrunk_failed_data, :io
 
   VERBOSITY = ENV.fetch('RANTLY_VERBOSE'){ 1 }.to_i
+  RANTLY_COUNT = ENV.fetch('RANTLY_COUNT'){ 100 }.to_i
 
   def io
     @io ||= if VERBOSITY >= 1
@@ -23,7 +24,7 @@ class Rantly::Property
     @property = property
   end
 
-  def check(n=100,limit=10,&assertion)
+  def check(n=RANTLY_COUNT,limit=10,&assertion)
     i = 0
     test_data = nil
     begin
