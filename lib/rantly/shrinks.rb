@@ -1,11 +1,22 @@
+# Integer : shrink to zero
 class Integer
   def shrink
-    if self < 0 then (self / 2).floor + 1
-    elsif self <= 10 && self > 0 then self - 1
-    elsif self > 0 then ((self + 1) / 2).ceil - 1
+    shrunk = if self > 8
+      self / 2
+    elsif self > 0
+      self - 1
+    elsif self < -8
+      (self + 1) / 2
+    elsif self < 0
+      self + 1
     else
-      return 0
+      0
     end
+    return shrunk
+  end
+
+  def retry?
+    false
   end
 
   def shrinkable?
@@ -13,16 +24,19 @@ class Integer
   end
 end
 
+# String : shrink to ""
 class String
   def shrink
+    shrunk = self.dup
     if self.size > 0
       idx = Random::rand(self.size)
-      shrunk = self.dup
       shrunk[idx] = ""
-      return shrunk
-    else
-      return ""
     end
+    return shrunk
+  end
+
+  def retry?
+    false
   end
 
   def shrinkable?
@@ -30,48 +44,120 @@ class String
   end
 end
 
-class Array
+# Array where elements can be shrunk but not removed
+class Tuple
+  def initialize(a)
+    @array = a
+    @position = a.size - 1
+  end
+
+  def [](i)
+    @array[i]
+  end
+
+  def []=(i, value)
+    @array[i] = value
+  end
+
+  def length
+    @array.length
+  end
+
+  def size
+    self.length
+  end
+
+  def to_s
+    @array.to_s.insert(1, "T ")
+  end
+
+  def inspect
+    self.to_s
+  end
+
+  def each(&block)
+    @array.each(&block)
+  end
+
   def shrink
-    idx = find_index{|e| e.respond_to?(:shrinkable?) && e.shrinkable?}
-    if idx != nil
-      clone = self.dup
-      clone[idx] = clone[idx].shrink
-      return clone
-    elsif !self.empty?
-      i = Random::rand(self.length)
-      a2 = self.dup
-      a2.delete_at(i)
-      return a2
-    else
-      return self
+    shrunk = @array.dup
+    while @position >= 0
+      e = @array.at(@position)
+      if e.respond_to?(:shrinkable?) && e.shrinkable?
+        break
+      end
+      @position -= 1
     end
+    if @position >= 0
+      shrunk[@position] = e.shrink
+      @position -= 1
+    end
+    return Tuple.new(shrunk)
+  end
+
+  def retry?
+    @position >= 0
   end
 
   def shrinkable?
-    self.any?{|e| e.respond_to?(:shrinkable?) && e.shrinkable? } ||
-      !self.empty?
+    @array.any? {|e| e.respond_to?(:shrinkable?) && e.shrinkable? }
   end
 end
 
-class Hash
+# Array where the elements that can't be shrunk are removed
+class Deflating
+  def initialize(a)
+    @array = a
+    @position = a.size - 1
+  end
+
+  def [](i)
+    @array[i]
+  end
+
+  def []=(i, value)
+    @array[i] = value
+  end
+
+  def length
+    @array.length
+  end
+
+  def size
+    self.length
+  end
+
+  def to_s
+    @array.to_s.insert(1, "D ")
+  end
+
+  def inspect
+    self.to_s
+  end
+
+  def each(&block)
+    @array.each(&block)
+  end
+
   def shrink
-    if self.any?{|_,v| v.respond_to?(:shrinkable?) && v.shrinkable? }
-      key,_ = self.detect{|_,v| v.respond_to?(:shrinkable?) && v.shrinkable? }
-      clone = self.dup
-      clone[key] = clone[key].shrink
-      return clone
-    elsif !self.empty?
-      key = self.keys.first
-      h2 = self.dup
-      h2.delete(key)
-      return h2
-    else
-      return self
+    shrunk = @array.dup
+    if @position >= 0
+      e = @array.at(@position)
+      if e.respond_to?(:shrinkable?) && e.shrinkable?
+        shrunk[@position] = e.shrink
+      else
+        shrunk.delete_at(@position)
+      end
+      @position -= 1
     end
+    return Deflating.new(shrunk)
+  end
+
+  def retry?
+    @position >= 0
   end
 
   def shrinkable?
-    self.any?{|_,v| v.respond_to?(:shrinkable?) && v.shrinkable? } ||
-      !self.empty?
+    !@array.empty?
   end
 end

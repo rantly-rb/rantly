@@ -365,13 +365,14 @@ Shrinking reduces the value of common types to some terminal lower bound. These 
 For example a <code>String</code> is shrinkable until it is empty (e.g. <code>""</code>),
 
 <pre><code>
-"foo".shrink               # => "fo"
-"foo".shrink.shrink        # => "f"
-"foo".shrink.shrink.shrink # => ""
-"".shrinkable?             # => false
+"foo".shrinkable?     # => true
+"foo".shrink          # => "fo"
+"fo".shrink           # => "f"
+"f".shrink            # => ""
+"".shrinkable?        # => false
 </code></pre>
 
-Shrinking allows <code>Property#check</code> to find the minimum value that still fails the condition.
+Shrinking allows <code>Property#check</code> to find a reduced value that still fails the condition. The value is not truely minimal as we do not perform a complete in-depth traversal of the failure tree, but is usually reduced enough to start debugging.
 
 Enable shrinking with
 
@@ -379,8 +380,8 @@ Enable shrinking with
 require 'rantly/shrinks'
 </code></pre>
 
-
-That's about it. Enjoy :)
+Use <code>Tuple</code> class if you want an array whose elements are individually shrinked, but are not removed.
+Use <code>Static</code> class if you want an array with no shrinking at all.
 
 
 h1. Copyright
