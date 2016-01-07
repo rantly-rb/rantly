@@ -1,0 +1,19 @@
+HOW TO RUN
+
+  $ cd examples/00-even-numbers
+  $ rspec spec/tests.rb
+
+WHAT IT DOES
+
+  It creates an array of random small numbers.
+  It then verifies they are all even (which they are not, of course).
+
+EXTERNAL TESTED PROGRAM
+
+  None, everything is in the test.
+
+USED CLASSES
+
+  Integer:   standard Ruby integer
+  Deflating: deflating array (here: of integers)
+
