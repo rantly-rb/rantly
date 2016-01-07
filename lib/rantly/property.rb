@@ -56,21 +56,21 @@ class Rantly::Property
   end
 
   # Explore the failures tree
-  def shrinkify(assertion, data, depth=0)
+  def shrinkify(assertion, data, depth=0, iteration=0)
     io.puts "Shrinking at depth #{depth}:"
     pretty_print data
 
     min_data = data
     max_depth = depth
     if data.shrinkable?
-      loop do
+      while iteration < 1024 do
         # We assume that data.shrink is non-destructive
         shrunk_data = data.shrink
         begin
           assertion.call(shrunk_data)
         rescue Exception
           # If the assertion was verified, recursively shrink failure case
-          branch_data, branch_depth = shrinkify(assertion, shrunk_data, depth + 1)
+          branch_data, branch_depth, iteration = shrinkify(assertion, shrunk_data, depth + 1, iteration + 1)
           if branch_depth > max_depth
             min_data = branch_data
             max_depth = branch_depth
@@ -79,7 +79,7 @@ class Rantly::Property
         break if !data.retry?
       end
     end
-    return min_data, max_depth
+    return min_data, max_depth, iteration
   end
 
   def report
