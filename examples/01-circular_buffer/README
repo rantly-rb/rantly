@@ -1,0 +1,32 @@
+HOW TO RUN
+
+  $ cd examples-01-circular-buffer
+  $ gcc -o circular_buffer circular_buffer_bugged.c
+  $ rspec tests/tests.rb
+
+WHAT IT DOES
+
+  This example takes its inspiration from the must-see video
+
+    https://www.youtube.com/watch?v=zi0rHwfiX1Q
+    John Hughes - Testing the Hard Stuff and Staying Sane
+
+EXTERNAL TESTED PROGRAM
+
+   circular_buffer_bugged.c tries to implement a queue of integers
+   with a circular buffer that is stored into a text file.
+   This is an intentionally bugged version.
+
+   circular_buffer.c is the fixed version that applies the old trick
+   of allocating one more element in the buffer than we want to use.
+
+USED CLASSES:
+
+  Integer:   standard Ruby integer
+  Operation: modelize one of three operations put(value), get() or size();
+             we could simply have used a symbol, but this convenience class
+             enables to pretty-print
+  Deflating: deflating array (here: of operations)
+  Tuple:     array of shrinking values values
+             (here: two elements, the operations and the size of the queue)
+

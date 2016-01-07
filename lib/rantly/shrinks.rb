@@ -79,6 +79,10 @@ class Tuple
     @array.each(&block)
   end
 
+  def array
+    return @array
+  end
+
   def shrink
     shrunk = @array.dup
     while @position >= 0
@@ -137,6 +141,10 @@ class Deflating
 
   def each(&block)
     @array.each(&block)
+  end
+
+  def array
+    return @array
   end
 
   def shrink
