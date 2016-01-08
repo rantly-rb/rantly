@@ -3,14 +3,23 @@ HOW TO RUN
   $ cd examples/00-even-numbers
   $ rspec spec/tests.rb
 
+
 WHAT IT DOES
 
   It creates an array of random small numbers.
   It then verifies they are all even (which they are not, of course).
+  Rantly then shrinks that sample of data to a smaller failing set.
+
 
 EXTERNAL TESTED PROGRAM
 
   None, everything is in the test.
+
+
+INTERNAL MODEL
+
+  None, the random data are tested directly.
+
 
 USED CLASSES
 

@@ -4,12 +4,19 @@ HOW TO RUN
   $ gcc -o circular_buffer circular_buffer_bugged.c
   $ rspec tests/tests.rb
 
+
 WHAT IT DOES
 
   This example takes its inspiration from the must-see video
 
     https://www.youtube.com/watch?v=zi0rHwfiX1Q
     John Hughes - Testing the Hard Stuff and Staying Sane
+
+  It makes sure whether an external program managing a
+  circular buffer behaves properly. If not, Rantly tries to reduce
+  the two parameters, the sequence of operations and the size
+  of the buffer, to a minimal failing sample.
+
 
 EXTERNAL TESTED PROGRAM
 
@@ -20,13 +27,21 @@ EXTERNAL TESTED PROGRAM
    circular_buffer.c is the fixed version that applies the old trick
    of allocating one more element in the buffer than we want to use.
 
-USED CLASSES:
 
-  Integer:   standard Ruby integer
-  Operation: modelize one of three operations put(value), get() or size();
-             we could simply have used a symbol, but this convenience class
-             enables to pretty-print
+INTERNAL MODEL
+
+   The circular buffer managed by the external program
+   is modelized internally with a simple Ruby array.
+
+
+USED CLASSES
+
+  Operation: represents one of three operations put(value), get() or size();
+             we could have simply used an array with a symbol (the operation)
+             and an integer (the parameter), but this convenience class
+             enables to print the operation in a nicer looking way
   Deflating: deflating array (here: of operations)
-  Tuple:     array of shrinking values values
-             (here: two elements, the operations and the size of the queue)
+  Integer:   standard Ruby integer (here: the size of the circular buffer)
+  Tuple:     array of shrinking values
+             (here: two elements, the operations and the size of the buffer)
 
