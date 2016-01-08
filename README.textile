@@ -372,7 +372,12 @@ For example a <code>String</code> is shrinkable until it is empty (e.g. <code>""
 "".shrinkable?        # => false
 </code></pre>
 
-Shrinking allows <code>Property#check</code> to find a reduced value that still fails the condition. The value is not truely minimal as we do not perform a complete in-depth traversal of the failure tree, but is usually reduced enough to start debugging.
+Shrinking allows <code>Property#check</code> to find a reduced value that still fails the condition. The value is not truely minimal because:
+
+* we do not perform a complete in-depth traversal of the failure tree
+* we limit the search to a maximum 1024 shrinking operations
+
+but is usually reduced enough to start debugging.
 
 Enable shrinking with
 
@@ -381,7 +386,9 @@ require 'rantly/shrinks'
 </code></pre>
 
 Use <code>Tuple</code> class if you want an array whose elements are individually shrinked, but are not removed.
-Use <code>Static</code> class if you want an array with no shrinking at all.
+Use <code>Deflating</code> class if you want an array whose elements are individully shrinked whenever possible, and removed otherwise.
+
+Normal arrays or hashes are not shrinked.
 
 
 h1. Copyright
