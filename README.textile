@@ -385,8 +385,27 @@ Enable shrinking with
 require 'rantly/shrinks'
 </code></pre>
 
-Use <code>Tuple</code> class if you want an array whose elements are individually shrinked, but are not removed.
-Use <code>Deflating</code> class if you want an array whose elements are individully shrinked whenever possible, and removed otherwise.
+Use <code>Tuple</code> class if you want an array whose elements are individually shrinked, but are not removed. Example:
+
+<pre><code>
+property_of {
+  len = range(0, 10)
+  Tuple.new( array(len) { integer } )
+}.check {
+  # .. property check here ..
+}
+</code></pre>
+
+Use <code>Deflating</code> class if you want an array whose elements are individully shrinked whenever possible, and removed otherwise. Example:
+
+<pre><code>
+property_of {
+  len = range(0, 10)
+  Deflated.new( array(len) { integer } )
+}.check {
+  # .. property check here ..
+}
+</code></pre>
 
 Normal arrays or hashes are not shrinked.
 
