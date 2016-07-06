@@ -1,20 +1,6 @@
-!https://travis-ci.org/hayeah/rantly.png?branch=master!:https://travis-ci.org/hayeah/rantly
+!https://badge.fury.io/rb/rantly.svg!:https://badge.fury.io/rb/rantly
 
-h1. Repository move (Beginning 2015-07-07)
-
-The official _rantly_ repository has moved from "hayeah/rantly":https://github.com/hayeah/rantly to "abargnesi/rantly":https://github.com/abargnesi/rantly. The creator of _rantly_ is "Howard Yeh":https://github.com/hayeah. "Anthony Bargnesi":https://github.com/abargnesi is the current maintainer.
-
-New development will occur in "abargnesi/rantly":https://github.com/abargnesi/rantly.
-
-The transition plan is as follows:
-
-* [x] Investigate and move open issues from "hayeah/rantly":https://github.com/hayeah/rantly to "abargnesi/rantly":https://github.com/abargnesi/rantly.
-* [x] Evaluate and likely merge pull requests into hayeah/rantly. Push these changes to "abargnesi/rantly":https://github.com/abargnesi/rantly.
-* [x] Move over any closed issues that have relevant discourse.
-* [ ] Fix open issues.
-* [x] Push new gem version after testing functionality.
-* [ ] Continue new development; Changes will be pushed back upstream to "hayeah/rantly":https://github.com/hayeah/rantly over the course of the next month.
-* [x] Added CHANGELOG markdown file. Includes what was added between 0.3.1 (2011-12-15) and 0.3.2 (2015-09-16).
+!https://travis-ci.org/abargnesi/rantly.svg?branch=master!:https://travis-ci.org/abargnesi/rantly
 
 h1. Imperative Random Data Generator and Quickcheck
 
