@@ -169,3 +169,26 @@ class Deflating
     !@array.empty?
   end
 end
+
+class Hash
+  def shrink
+    if self.any?{|_,v| v.respond_to?(:shrinkable?) && v.shrinkable? }
+      key,_ = self.detect{|_,v| v.respond_to?(:shrinkable?) && v.shrinkable? }
+      clone = self.dup
+      clone[key] = clone[key].shrink
+      return clone
+    elsif !self.empty?
+      key = self.keys.first
+      h2 = self.dup
+      h2.delete(key)
+      return h2
+    else
+      return self
+    end
+  end
+
+  def shrinkable?
+    self.any?{|_,v| v.respond_to?(:shrinkable?) && v.shrinkable? } ||
+      !self.empty?
+  end
+end
