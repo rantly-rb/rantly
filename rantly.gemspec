@@ -15,7 +15,8 @@ Gem::Specification.new do |s|
   s.email = ["hayeah@gmail.com", "abargnesi@gmail.com", "ebischoff@nerim.net"]
   s.extra_rdoc_files = [
     "LICENSE",
-    "README.textile"
+    "README.textile",
+    "CHANGELOG.md"
   ]
   s.files = [
     ".document",
@@ -23,6 +24,7 @@ Gem::Specification.new do |s|
     "Gemfile",
     "LICENSE",
     "README.textile",
+    "CHANGELOG.md",
     "Rakefile",
     "VERSION.yml",
     "lib/rantly.rb",
