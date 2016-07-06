@@ -3,10 +3,15 @@ All notable changes to rantly will be documented in this file. The curated log b
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [0.4.0][0.4.0] - 2015-12-14
+## [1.0.0][1.0.0] - 2016-07-06
 ### Added
-- Trying harder to shrink collections instead of giving up on first success of property.
-- Added convenience classes Static and Tuple for more control on shrinking
+- Trying harder to shrink collections instead of giving up on first success of property (thanks [Eric Bischoff][Eric Bischoff]).
+- Added convenience classes Deflating and Tuple for more control on shrinking (thanks [Eric Bischoff][Eric Bischoff]).
+- Added usage examples for Deflating and Tuple shrinking strategies (thanks [Oleksii Fedorov][Oleksii Fedorov]).
+- `Property#check` will now use the `RANTLY_COUNT` environment variable to control the number of values generated (thanks [Jamie English][Jamie English]).
+
+### Major changes
+- Array shrink was removed in favor of Tuple and Deflating.
 
 ## [0.3.2][0.3.2] - 2015-09-16
 ### Added
@@ -17,6 +22,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Improved readability and execution of test suite ([Issue #4][4]).
 - Updates to documentation.
 
-[0.4.0]:    https://github.com/abargnesi/rantly/compare/0.3.2...0.4.0
-[0.3.2]:    https://github.com/abargnesi/rantly/compare/0.3.1...0.3.2
-[4]:        https://github.com/abargnesi/rantly/issues/13
+[1.0.0]:           https://github.com/abargnesi/rantly/compare/0.3.2...1.0.0
+[0.3.2]:           https://github.com/abargnesi/rantly/compare/0.3.1...0.3.2
+[4]:               https://github.com/abargnesi/rantly/issues/13
+[Eric Bischoff]:   https://github.com/Bischoff
+[Jamie English]:   https://github.com/english
+[Oleksii Fedorov]: https://github.com/waterlink
