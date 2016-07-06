@@ -47,24 +47,24 @@ describe String do
   end
 end
 
-describe Array do
+describe Tuple do
 
-  it "not be able to shrink empty array" do
-    assert ![].shrinkable?
+  it "not be able to shrink empty tuple" do
+    assert !Tuple.new([]).shrinkable?
   end
 
-  it "shrink array by trying to shrink the first shrinkable element available" do
-    assert_equal [0,1], [1,1].shrink
-    assert_equal [0,0,1], [0,1,1].shrink
+  it "shrink tuple by trying to shrink the last shrinkable element available" do
+    assert_equal [1,0], Tuple.new([1,1]).shrink.array
+    assert_equal [1,0,0], Tuple.new([1,1,0]).shrink.array
   end
 
-  it "shrink array by 1 if none of the element in it is shrinkable" do
+  it "do not remove element from array when no element is shrinkable" do
     property_of {
       n = integer(1..10)
-      a = Array.new(n,0)
+      a = Tuple.new(Array.new(n,0))
       [n,a]
     }.check { |n,a|
-      assert_equal n-1, a.shrink.length
+      assert_equal n, a.shrink.length
     }
   end
 end
@@ -92,7 +92,7 @@ describe "Shrinker Test" do
     # The property we try to test is that non of the element is
     # larger than 1, and the array's length is less than 4.
     test = property_of {
-      a = Array.new(10,1)
+      a = Tuple.new(Array.new(10,1))
       i = Random::rand(a.length)
       a[i] = 1
       a
