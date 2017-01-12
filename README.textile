@@ -363,6 +363,6 @@ require 'rantly/shrinks'
 That's about it. Enjoy :)
 
 
-h1. Copyright
+h1. License
 
-Copyright (c) 2009 Howard Yeh. See LICENSE for details.
+Code published under MIT License, Copyright (c) 2009 Howard Yeh. See "LICENSE":https://github.com/abargnesi/rantly/LICENSE
