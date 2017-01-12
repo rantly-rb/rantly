@@ -396,6 +396,6 @@ property_of {
 Normal arrays or hashes are not shrinked.
 
 
-h1. Copyright
+h1. License
 
-Copyright (c) 2009 Howard Yeh. See LICENSE for details.
+Code published under MIT License, Copyright (c) 2009 Howard Yeh. See "LICENSE":https://github.com/abargnesi/rantly/LICENSE
