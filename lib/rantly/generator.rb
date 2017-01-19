@@ -271,10 +271,14 @@ class Rantly
               Chars::CLASSES[char_class]
             end
     raise "bad arg" unless chars
-    str = ""
-    size.times do
-      str << choose(*chars)
+
+    char_strings = chars.map { |c| c.chr }
+    str = Array.new(size)
+    current_index = 0
+    while current_index < size
+      str[current_index] = char_strings.sample
+      current_index += 1
     end
-    str
+    str.join
   end
 end
