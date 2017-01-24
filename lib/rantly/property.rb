@@ -51,7 +51,7 @@ class Rantly::Property
         io.puts "minimal failed data (depth #{@depth}) is:"
         pretty_print @shrunk_failed_data
       end
-      raise boom
+      raise $!, "failure: #{i} tests, on:\n#{test_data}\n\n#{boom}\n", $@
     end
   end
 
