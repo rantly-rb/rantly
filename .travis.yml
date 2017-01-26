@@ -1,11 +1,17 @@
 language: ruby
-sudo: false
-cache: bundler
+after_success:
+  - coveralls
 rvm:
     - 2.0.0
-    - 2.1.6
-    - 2.2.2
-    - 2.3.0
-    - rbx-2
-    - rbx
-    - jruby
+    - 2.1.9
+    - 2.2.6
+    - 2.3.3
+    - 2.4.0
+    - rbx-2.5.8
+    - rbx-3.70
+    - jruby-1.7.26
+    - jruby-9.1.7.0
+matrix:
+  allow_failures:
+    - rvm: rbx-2.5.8
+    - rvm: rbx-3.70

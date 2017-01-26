@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
 group :development, :test do
-  gem 'minitest', "~> 5.7.0"
-  gem 'jeweler'
-  gem 'simplecov'
-  gem 'coveralls', :require => false
+  gem 'rake',      '~> 12.0.0'
+  gem 'minitest',  '~> 5.10.0'
+  gem 'simplecov', '>= 0'
+  gem 'coveralls', '>= 0', :require => false
 end
