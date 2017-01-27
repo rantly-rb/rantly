@@ -1,9 +1,4 @@
-require 'rubygems'
-require 'minitest/autorun'
-
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-
+# Require simplecov and coveralls before rantly application code.
 require 'simplecov'
 SimpleCov.start
 
@@ -15,4 +10,6 @@ begin
 rescue LoadError
 end
 
+# Require rantly.
+require 'minitest/autorun'
 require 'rantly'

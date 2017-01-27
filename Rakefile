@@ -1,20 +1,4 @@
-require 'rubygems'
 require 'rake'
-
-begin
-  require 'jeweler'
-  Jeweler::Tasks.new do |gem|
-    gem.name = "rantly"
-    gem.summary = %Q{Ruby Imperative Random Data Generator and Quickcheck}
-    gem.email = ["hayeah@gmail.com", "abargnesi@gmail.com", "ebischoff@nerim.net"]
-    gem.homepage = "https://github.com/abargnesi/rantly"
-    gem.authors = ["Howard Yeh", "Anthony Bargnesi", "Eric Bischoff"]
-
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
-  end
-rescue LoadError
-  puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
-end
 
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
