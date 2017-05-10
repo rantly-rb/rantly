@@ -387,7 +387,7 @@ Use <code>Deflating</code> class if you want an array whose elements are individ
 <pre><code>
 property_of {
   len = range(0, 10)
-  Deflated.new( array(len) { integer } )
+  Deflating.new( array(len) { integer } )
 }.check {
   # .. property check here ..
 }
