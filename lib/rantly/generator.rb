@@ -141,8 +141,15 @@ class Rantly
     range(0)
   end
 
-  def float
-    rand
+  def float(distribution=nil, center=0)
+    case distribution
+    when :normal
+      # Sum of 6 draws from a uniform distribution give as a draw of a normal
+      # distribution centered in 3 (central limit theorem).
+      [rand, rand, rand, rand, rand, rand].reduce(0, :+) - 3 + center
+    else
+      rand
+    end
   end
 
   def range(lo=nil,hi=nil)
