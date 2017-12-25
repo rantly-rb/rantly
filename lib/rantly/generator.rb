@@ -121,7 +121,7 @@ class Rantly
   end
 
   # wanna avoid going into Bignum when calling range with these.
-  INTEGER_MAX = (2**(0.size * 8 -2) -1) / 2
+  INTEGER_MAX = (2**(0.size * 8 - 2) - 1) / 2
   INTEGER_MIN = -(INTEGER_MAX)
   def integer(limit=nil)
     case limit
