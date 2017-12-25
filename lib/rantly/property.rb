@@ -81,12 +81,4 @@ class Rantly::Property
     end
     return min_data, max_depth, iteration
   end
-
-  def report
-    distribs = self.classifiers.sort { |a,b| b[1] <=> a[1] }
-    total = distribs.inject(0) { |sum,pair| sum + pair[1]}
-    distribs.each do |(classifier,count)|
-      format "%10.5f%% of => %s", count, classifier
-    end
-  end
 end
