@@ -255,14 +255,7 @@ describe Rantly::Property do
     property_of {
       sized(10) { array { freq(:integer,:string,:float)}  }
     }.check { |arr|
-      assert arr.all? { |o|
-        case o
-        when Fixnum, Float, String
-          true
-        else
-          false
-        end
-      }
+      assert arr.all? { |o| [Fixnum, Float, String].include? o.class }
     }
   end
 
