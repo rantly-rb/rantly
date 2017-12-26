@@ -136,7 +136,7 @@ describe Rantly::Property do
     }
     property_of {
       i0 = range(0,100)
-      i1,s = call Proc.new {
+      i1 = call Proc.new {
         range(i0+1,i0+100)
       }
       [i0,i1]
