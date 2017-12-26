@@ -143,6 +143,7 @@ describe Rantly::Property do
     }.check { |(i0,i1)|
       assert i0.is_a?(Fixnum) && i1.is_a?(Fixnum)
       assert i1 > i0
+      assert i1 <= (i0 + 100)
     }
   end
 
