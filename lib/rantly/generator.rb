@@ -42,7 +42,7 @@ class Rantly
     end
 
     def to_s
-      "Exceed gen limit #{@limit}: #{@nfailed} failed guards)"
+      "Exceed gen limit #{@limit}: #{@nfailed} failed guards"
     end
   end
 
