@@ -1,8 +1,8 @@
-!https://badge.fury.io/rb/rantly.svg!:https://badge.fury.io/rb/rantly
+[![Gem version](https://badge.fury.io/rb/rantly.svg)](https://badge.fury.io/rb/rantly)
 
-!https://travis-ci.org/abargnesi/rantly.svg?branch=master!:https://travis-ci.org/abargnesi/rantly
+[![Build Status](https://travis-ci.org/abargnesi/rantly.svg?branch=master)](https://travis-ci.org/abargnesi/rantly)
 
-h1. Imperative Random Data Generator and Quickcheck
+# Imperative Random Data Generator and Quickcheck
 
 You can use Rantly to generate random test data, and use its Test::Unit extension for property-based testing.
 
@@ -10,13 +10,14 @@ Rantly is basically a recursive descent interpreter, each of its method returns 
 
 Its implementation has no alien mathematics inside. Completely side-effect-free-free.
 
-h1. Install
 
-<pre><code>
+# Install
+
+```
 $ gem install rantly
-</code></pre>
+```
 
-<pre><code>
+```
 $ irb -rrantly
 > Rantly { [integer,float] } # same as Rantly.value { integer }
 => [20991307, 0.025756845811823]
@@ -24,32 +25,33 @@ $ irb -rrantly
 => [-376856492, 0.452245765751706]
 > Rantly(5) { integer } # same as Rantly.map(5) { integer }
 => [-1843396915550491870, -1683855015308353854, -2291347782549033959, -951461511269053584, 483265231542292652]
-</code></pre>
+```
 
-h1. Data Generation
 
-h2. Getting Random Data Values
+# Data Generation
 
-<pre><code>
+## Getting Random Data Values
+
+```
 Rantly#map(n,limit=10,&block)
   call the generator n times, and collect values
 Rantly#each(n,limit=10,&block)
   call a random block n times
 Rantly#value(limit=10,&block)
   call a random block once, and get its value.
-</code></pre>
+```
 
 To collect an array of random data,
 
-<pre><code>
+```
 # we want 5 random integers
 > Rantly(5) { integer }
 => [-380638946, -29645239, 344840868, 308052180, -154360970]
-</code></pre>
+```
 
 To iterate over random data,
 
-<pre><code>
+```
 > Rantly.each(5) { puts integer }
 296971291
 504994512
@@ -57,38 +59,38 @@ To iterate over random data,
 113152364
 502842783
 => nil
-</code></pre>
+```
 
 To get one value of random data,
 
-<pre><code>
+```
 > Rantly { integer }
 => 278101042
-</code></pre>
+```
 
-The optional argument @limit@ is used with generator guard. By default, if you want to generate n items, the generator tries at most n * 10 times.
+The optional argument `limit` is used with generator guard. By default, if you want to generate n items, the generator tries at most n * 10 times.
 
 This almost always succeeds,
 
-<pre><code>
+```
 > Rantly(5) { i = integer; guard i > 0; i }
 => [511765059, 250554234, 305947804, 127809156, 285960387]
-</code></pre>
+```
 
 This always fails,
 
-<pre><code>
+```
 > Rantly(10) { guard integer.is_a?(Float) }
 Rantly::TooManyTries: Exceed gen limit 100: 101 failed guards)
-</code></pre>
+```
 
-h2. Random Generating Methods
+## Random Generating Methods
 
-The API is similiar to QuickCheck, but not exactly the same. In particular @choose@ picks a random element from an array, and @range@ picks a integer from an interval.
+The API is similiar to QuickCheck, but not exactly the same. In particular `choose` picks a random element from an array, and `range` picks a integer from an interval.
 
-h3. Simple Randomness
+## Simple Randomness
 
-<pre><code>
+```
 Rantly#integer(n=nil)
   random positive or negative integer. Fixnum only.
 Rantly#range(lo,hi)
@@ -101,105 +103,104 @@ Rantly#literal(value)
   No-op. returns value.
 Rantly#choose(*vals)
   Pick one value from among vals.
-</code></pre>
+```
 
-h3. Meta Randomness
+## Meta Randomness
 
 A rant generator is just a mini interpreter. It's often useful to go meta,
 
-<pre><code>
+```
 Rantly#call(gen)
   If gen is a Symbol, just do a method call with send.
   If gen is an Array, the first element of the array is the method name, the rest are args.
   If gen is a Proc, instance_eval it with the generator.
-</code></pre>
+```
 
-<pre><code>
+```
 > Rantly { call(:integer) }
 => -240998958
-</code></pre>
+```
 
-<pre><code>
+```
 > Rantly { call([:range,0,10]) }
 => 2
-</code></pre>
+```
 
-<pre><code>
+```
 > Rantly { call(Proc.new { [integer] })}
 => [522807620]
-</code></pre>
+```
 
-The @call@ method is useful to implement other abstractions (See next subsection).
+The `call` method is useful to implement other abstractions (See next subsection).
 
-<pre><code>
+```
 Rantly#branch(*args)
   Pick a random arg among args, and Rantly#call it.
-</code></pre>
+```
 
 50-50 chance getting an integer or float,
 
-<pre><code>
+```
 > Rantly { branch :integer, :float }
 => 0.0489446702931332
 > Rantly { branch :integer, :float }
 => 494934533
-</code></pre>
+```
 
 
-h3. Frequencies
+## Frequencies
 
-<pre><code>
+```
 Rantly#freq(*pairs)
   Takes a list of 2-tuples, the first of which is the weight, and the second a Rantly#callable value, and returns a random value picked from the pairs. Follows the distribution pattern specified by the weights.
-</code></pre>
+```
 
 Twice as likely to get a float than integer. Never gets a ranged integer.
 
-<pre><code>
+```
 > Rantly { freq [1,:integer], [2,:float], [0,:range,0,10] }
-</code></pre>
+```
 
-If the "pair" is not an array, but just a symbol, @freq@ assumes that the weight is 1.
+If the "pair" is not an array, but just a symbol, `freq` assumes that the weight is 1.
 
-<pre><code>
+```
 # 50-50 between integer and float
 > Rantly { freq :integer, :float }
-</code></pre>
+```
 
-If a "pair" is an Array, but the first element is not an Integer, @freq@ assumes that it's a Rantly method-call with arguments, and the weight is one.
+If a "pair" is an Array, but the first element is not an Integer, `freq` assumes that it's a Rantly method-call with arguments, and the weight is one.
 
-<pre><code>
+```
 # 50-50 chance generating integer limited by 10, or by 20.
 > Rantly { freq [:integer,10], [:integer 20] }
-</code></pre>
+```
 
 
+## Sized Structure
 
-h3. Sized Structure
+A Rantly generator keeps track of how large a datastructure it should generate with its `size` attribute.
 
-A Rantly generator keeps track of how large a datastructure it should generate with its @size@ attribute.
-
-<pre><code>
+```
 Rantly#size
  returns the current size
 Rantly#sized(n,&block)
  sets the size for the duration of recursive call of block. Block is instance_eval with the generator.
-</code></pre>
+```
 
 Rantly provides two methods that depends on the size
 
-<pre><code>
+```
 Rantly#array(size=default_size,&block)
   returns a sized array consisted of elements by Rantly#calling random branches.
 Rantly#string(char_class=:print)
   returns a sized random string, consisted of only chars from a char_class.
 Rantly#dict(size=default_size,&block)
   returns a sized random hash. The generator block should generate tuples of keys and values (arrays that have two elements, the first one is used as key, and the second as value).
-</code></pre>
+```
 
 The avaiable char classes for strings are:
 
-<pre><code>
+```
 :alnum
 :alpha
 :blank
@@ -213,31 +214,31 @@ The avaiable char classes for strings are:
 :upper
 :xdigit
 :ascii
-</code></pre>
+```
 
-<pre><code>
+```
 # sized 10 array of integers
 > Rantly { array(10) { integer }}
 => [417733046, -375385433, 0.967812380000118, 26478621, 0.888588160450082, 250944144, 305584916, -151858342, 0.308123867823313, 0.316824642414253]
-</code></pre>
+```
 
 If you set the size once, it applies to all subsequent recursive structures. Here's a sized 10 array of sized 10 strings,
 
-<pre><code>
+```
 > Rantly { sized(10) { array {string}} }
 => ["1c}C/,9I#}", "hpA/UWPJ\\j", "H'~ERtI`|]", "%OUaW\\%uQZ", "Z2QdY=G~G!", "H<o|<FARGQ", "g>ojnxGDT3", "]a:L[B>bhb", "_Kl=&{tH^<", "ly]Yfb?`6c"]
-</code></pre>
+```
 
 Or a sized 10 array of sized 5 strings,
 
-<pre><code>
+```
 > Rantly {array(10){sized(5) {string}}}
 => ["S\"jf ", "d\\F-$", "-_8pa", "IN0iF", "SxRV$", ".{kQ7", "6>;fo", "}.D8)", "P(tS'", "y0v/v"]
-</code></pre>
+```
 
 Generate a hash that has 5 elements,
 
-<pre><code>
+```
 > Rantly { dict { [string,integer] }}
 {"bR\\qHn"=>247003509502595457,
  "-Mp '."=>653206579583741142,
@@ -245,57 +246,58 @@ Generate a hash that has 5 elements,
  "+SMn:r"=>-1159506450084197716,
  "^3gYfQ"=>-2154064981943219558,
  "= :/\\,"=>433790301059833691}
-</code></pre>
+```
 
-The @dict@ generator retries if a key is duplicated. If it fails to generate a unique key after too many tries, it gives up by raising an error:
+The `dict` generator retries if a key is duplicated. If it fails to generate a unique key after too many tries, it gives up by raising an error:
 
-<pre><code>
+```
 > Rantly { dict { ["a",integer] }}
 Rantly::TooManyTries: Exceed gen limit 60: 60 failed guards)
-</code></pre>
+```
 
-h1. Property Testing
+
+# Property Testing
 
 Rantly extends Test::Unit and MiniTest::Test (5.0)/MiniTest::Unit::TestCase (< 5.0) for property testing. The extensions are in their own modules. So you need to require them explicitly:
 
-<pre><code>
+```
 require 'rantly/testunit_extensions' # for 'test/unit'
 require 'rantly/minitest_extensions' # for 'minitest'
 require 'rantly/rspec_extensions'    # for RSpec
-</code></pre>
+```
 
 They define:
 
-<pre><code>
+```
 Test::Unit::Assertions#property_of(&block)
   The block is used to generate random data with a generator. The method returns a Rantly::Property instance, that has the method 'check'.
-</code></pre>
+```
 
 Property assertions within Test::Unit could be done like this,
 
-<pre><code>
+```
 # checks that integer only generates fixnum.
 property_of {
   integer
 }.check { |i|
   assert(i.is_a?(Integer), "integer property did not return Integer type")
 }
-</code></pre>
+```
 
 Property assertions within Minitest could be done like this,
 
-<pre><code>
+```
 # checks that integer only generates fixnum.
 property_of {
   integer
 }.check { |i|
   assert_kind_of Integer, i, "integer property did not return Integer type"
 }
-</code></pre>
+```
 
 Property assertions within RSpec could be done like this,
 
-<pre><code>
+```
 # checks that integer only generates fixnum.
 it "integer property only returns Integer type" do
    property_of {
@@ -304,61 +306,61 @@ it "integer property only returns Integer type" do
      expect(i).to be_a(Integer)
    }
 end
-</code></pre>
+```
 
 The check block takes the generated data as its argument. One idiom I find useful is to include a parameter of the random data for the check argument. For example, if I want to check that Rantly#array generates the right sized array, I could say,
 
-<pre><code>
+```
 property_of {
   len = integer
   [len,array(len){integer}]
 }.check { |(len,arr)|
   assert_equal len, arr.length
 }
-</code></pre>
+```
 
 To control the number of property tests to generate, you have three options. In order of precedence:
 
-# Pass an integer argument to @check@
+1. Pass an integer argument to `check`
 
-<pre><code>
+```
 property_of {
   integer
 }.check(9000) { |i|
   assert_kind_of Integer, i
 }
-</code></pre>
+```
 
-#_ Set the @RANTLY_COUNT@ environment variable
+2. Set the `RANTLY_COUNT` environment variable
 
-<pre><code>
+```
 RANTLY_COUNT=9000 ruby my_property_test.rb
-</code></pre>
+```
 
-#_ If neither of the above are set, the default will be to run the @check@ block 100 times.
+3. If neither of the above are set, the default will be to run the `check` block 100 times.
 
 If you wish to have quiet output from Rantly, set environmental variable:
-<pre><code>
+```
 RANTLY_VERBOSE=0 # silent
 RANTLY_VERBOSE=1 # verbose and default if env is not set
-</code></pre>
+```
 This will silence the puts, print, and pretty_print statements in property.rb.
 
-h1. Shrinking
+# Shrinking
 
-Shrinking reduces the value of common types to some terminal lower bound. These functions are added to the Ruby types <code>Integer</code>, <code>String</code>, <code>Array</code>, and <code>Hash</code>.
+Shrinking reduces the value of common types to some terminal lower bound. These functions are added to the Ruby types `Integer`, `String`, `Array`, and `Hash`.
 
-For example a <code>String</code> is shrinkable until it is empty (e.g. <code>""</code>),
+For example a `String` is shrinkable until it is empty (e.g. `""`),
 
-<pre><code>
+```
 "foo".shrinkable?     # => true
 "foo".shrink          # => "fo"
 "fo".shrink           # => "f"
 "f".shrink            # => ""
 "".shrinkable?        # => false
-</code></pre>
+```
 
-Shrinking allows <code>Property#check</code> to find a reduced value that still fails the condition. The value is not truely minimal because:
+Shrinking allows `Property#check` to find a reduced value that still fails the condition. The value is not truely minimal because:
 
 * we do not perform a complete in-depth traversal of the failure tree
 * we limit the search to a maximum 1024 shrinking operations
@@ -367,35 +369,35 @@ but is usually reduced enough to start debugging.
 
 Enable shrinking with
 
-<pre><code>
+```
 require 'rantly/shrinks'
-</code></pre>
+```
 
-Use <code>Tuple</code> class if you want an array whose elements are individually shrinked, but are not removed. Example:
+Use `Tuple` class if you want an array whose elements are individually shrinked, but are not removed. Example:
 
-<pre><code>
+```
 property_of {
   len = range(0, 10)
   Tuple.new( array(len) { integer } )
 }.check {
   # .. property check here ..
 }
-</code></pre>
+```
 
-Use <code>Deflating</code> class if you want an array whose elements are individully shrinked whenever possible, and removed otherwise. Example:
+Use `Deflating` class if you want an array whose elements are individully shrinked whenever possible, and removed otherwise. Example:
 
-<pre><code>
+```
 property_of {
   len = range(0, 10)
   Deflating.new( array(len) { integer } )
 }.check {
   # .. property check here ..
 }
-</code></pre>
+```
 
 Normal arrays or hashes are not shrinked.
 
 
-h1. License
+# License
 
-Code published under MIT License, Copyright (c) 2009 Howard Yeh. See "LICENSE":https://github.com/abargnesi/rantly/LICENSE
+Code published under MIT License, Copyright (c) 2009 Howard Yeh. See [LICENSE](https://github.com/abargnesi/rantly/LICENSE)
