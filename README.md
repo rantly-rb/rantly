@@ -13,11 +13,11 @@ Its implementation has no alien mathematics inside. Completely side-effect-free-
 
 # Install
 
-```
+```ruby
 $ gem install rantly
 ```
 
-```
+```ruby
 $ irb -rrantly
 > Rantly { [integer,float] } # same as Rantly.value { integer }
 => [20991307, 0.025756845811823]
@@ -32,7 +32,7 @@ $ irb -rrantly
 
 ## Getting Random Data Values
 
-```
+```ruby
 Rantly#map(n,limit=10,&block)
   call the generator n times, and collect values
 Rantly#each(n,limit=10,&block)
@@ -43,7 +43,7 @@ Rantly#value(limit=10,&block)
 
 To collect an array of random data,
 
-```
+```ruby
 # we want 5 random integers
 > Rantly(5) { integer }
 => [-380638946, -29645239, 344840868, 308052180, -154360970]
@@ -51,7 +51,7 @@ To collect an array of random data,
 
 To iterate over random data,
 
-```
+```ruby
 > Rantly.each(5) { puts integer }
 296971291
 504994512
@@ -63,7 +63,7 @@ To iterate over random data,
 
 To get one value of random data,
 
-```
+```ruby
 > Rantly { integer }
 => 278101042
 ```
@@ -72,14 +72,14 @@ The optional argument `limit` is used with generator guard. By default, if you w
 
 This almost always succeeds,
 
-```
+```ruby
 > Rantly(5) { i = integer; guard i > 0; i }
 => [511765059, 250554234, 305947804, 127809156, 285960387]
 ```
 
 This always fails,
 
-```
+```ruby
 > Rantly(10) { guard integer.is_a?(Float) }
 Rantly::TooManyTries: Exceed gen limit 100: 101 failed guards)
 ```
@@ -90,7 +90,7 @@ The API is similiar to QuickCheck, but not exactly the same. In particular `choo
 
 ## Simple Randomness
 
-```
+```ruby
 Rantly#integer(n=nil)
   random positive or negative integer. Fixnum only.
 Rantly#range(lo,hi)
@@ -109,38 +109,38 @@ Rantly#choose(*vals)
 
 A rant generator is just a mini interpreter. It's often useful to go meta,
 
-```
+```ruby
 Rantly#call(gen)
   If gen is a Symbol, just do a method call with send.
   If gen is an Array, the first element of the array is the method name, the rest are args.
   If gen is a Proc, instance_eval it with the generator.
 ```
 
-```
+```ruby
 > Rantly { call(:integer) }
 => -240998958
 ```
 
-```
+```ruby
 > Rantly { call([:range,0,10]) }
 => 2
 ```
 
-```
+```ruby
 > Rantly { call(Proc.new { [integer] })}
 => [522807620]
 ```
 
 The `call` method is useful to implement other abstractions (See next subsection).
 
-```
+```ruby
 Rantly#branch(*args)
   Pick a random arg among args, and Rantly#call it.
 ```
 
 50-50 chance getting an integer or float,
 
-```
+```ruby
 > Rantly { branch :integer, :float }
 => 0.0489446702931332
 > Rantly { branch :integer, :float }
@@ -150,27 +150,27 @@ Rantly#branch(*args)
 
 ## Frequencies
 
-```
+```ruby
 Rantly#freq(*pairs)
   Takes a list of 2-tuples, the first of which is the weight, and the second a Rantly#callable value, and returns a random value picked from the pairs. Follows the distribution pattern specified by the weights.
 ```
 
 Twice as likely to get a float than integer. Never gets a ranged integer.
 
-```
+```ruby
 > Rantly { freq [1,:integer], [2,:float], [0,:range,0,10] }
 ```
 
 If the "pair" is not an array, but just a symbol, `freq` assumes that the weight is 1.
 
-```
+```ruby
 # 50-50 between integer and float
 > Rantly { freq :integer, :float }
 ```
 
 If a "pair" is an Array, but the first element is not an Integer, `freq` assumes that it's a Rantly method-call with arguments, and the weight is one.
 
-```
+```ruby
 # 50-50 chance generating integer limited by 10, or by 20.
 > Rantly { freq [:integer,10], [:integer 20] }
 ```
@@ -180,7 +180,7 @@ If a "pair" is an Array, but the first element is not an Integer, `freq` assumes
 
 A Rantly generator keeps track of how large a datastructure it should generate with its `size` attribute.
 
-```
+```ruby
 Rantly#size
  returns the current size
 Rantly#sized(n,&block)
@@ -189,7 +189,7 @@ Rantly#sized(n,&block)
 
 Rantly provides two methods that depends on the size
 
-```
+```ruby
 Rantly#array(size=default_size,&block)
   returns a sized array consisted of elements by Rantly#calling random branches.
 Rantly#string(char_class=:print)
@@ -200,7 +200,7 @@ Rantly#dict(size=default_size,&block)
 
 The avaiable char classes for strings are:
 
-```
+```ruby
 :alnum
 :alpha
 :blank
@@ -216,7 +216,7 @@ The avaiable char classes for strings are:
 :ascii
 ```
 
-```
+```ruby
 # sized 10 array of integers
 > Rantly { array(10) { integer }}
 => [417733046, -375385433, 0.967812380000118, 26478621, 0.888588160450082, 250944144, 305584916, -151858342, 0.308123867823313, 0.316824642414253]
@@ -224,21 +224,21 @@ The avaiable char classes for strings are:
 
 If you set the size once, it applies to all subsequent recursive structures. Here's a sized 10 array of sized 10 strings,
 
-```
+```ruby
 > Rantly { sized(10) { array {string}} }
 => ["1c}C/,9I#}", "hpA/UWPJ\\j", "H'~ERtI`|]", "%OUaW\\%uQZ", "Z2QdY=G~G!", "H<o|<FARGQ", "g>ojnxGDT3", "]a:L[B>bhb", "_Kl=&{tH^<", "ly]Yfb?`6c"]
 ```
 
 Or a sized 10 array of sized 5 strings,
 
-```
+```ruby
 > Rantly {array(10){sized(5) {string}}}
 => ["S\"jf ", "d\\F-$", "-_8pa", "IN0iF", "SxRV$", ".{kQ7", "6>;fo", "}.D8)", "P(tS'", "y0v/v"]
 ```
 
 Generate a hash that has 5 elements,
 
-```
+```ruby
 > Rantly { dict { [string,integer] }}
 {"bR\\qHn"=>247003509502595457,
  "-Mp '."=>653206579583741142,
@@ -250,7 +250,7 @@ Generate a hash that has 5 elements,
 
 The `dict` generator retries if a key is duplicated. If it fails to generate a unique key after too many tries, it gives up by raising an error:
 
-```
+```ruby
 > Rantly { dict { ["a",integer] }}
 Rantly::TooManyTries: Exceed gen limit 60: 60 failed guards)
 ```
@@ -260,7 +260,7 @@ Rantly::TooManyTries: Exceed gen limit 60: 60 failed guards)
 
 Rantly extends Test::Unit and MiniTest::Test (5.0)/MiniTest::Unit::TestCase (< 5.0) for property testing. The extensions are in their own modules. So you need to require them explicitly:
 
-```
+```ruby
 require 'rantly/testunit_extensions' # for 'test/unit'
 require 'rantly/minitest_extensions' # for 'minitest'
 require 'rantly/rspec_extensions'    # for RSpec
@@ -268,14 +268,14 @@ require 'rantly/rspec_extensions'    # for RSpec
 
 They define:
 
-```
+```ruby
 Test::Unit::Assertions#property_of(&block)
   The block is used to generate random data with a generator. The method returns a Rantly::Property instance, that has the method 'check'.
 ```
 
 Property assertions within Test::Unit could be done like this,
 
-```
+```ruby
 # checks that integer only generates fixnum.
 property_of {
   integer
@@ -286,7 +286,7 @@ property_of {
 
 Property assertions within Minitest could be done like this,
 
-```
+```ruby
 # checks that integer only generates fixnum.
 property_of {
   integer
@@ -297,7 +297,7 @@ property_of {
 
 Property assertions within RSpec could be done like this,
 
-```
+```ruby
 # checks that integer only generates fixnum.
 it "integer property only returns Integer type" do
    property_of {
@@ -310,7 +310,7 @@ end
 
 The check block takes the generated data as its argument. One idiom I find useful is to include a parameter of the random data for the check argument. For example, if I want to check that Rantly#array generates the right sized array, I could say,
 
-```
+```ruby
 property_of {
   len = integer
   [len,array(len){integer}]
@@ -323,7 +323,7 @@ To control the number of property tests to generate, you have three options. In 
 
 1. Pass an integer argument to `check`
 
-```
+```ruby
 property_of {
   integer
 }.check(9000) { |i|
@@ -333,14 +333,14 @@ property_of {
 
 2. Set the `RANTLY_COUNT` environment variable
 
-```
+```ruby
 RANTLY_COUNT=9000 ruby my_property_test.rb
 ```
 
 3. If neither of the above are set, the default will be to run the `check` block 100 times.
 
 If you wish to have quiet output from Rantly, set environmental variable:
-```
+```ruby
 RANTLY_VERBOSE=0 # silent
 RANTLY_VERBOSE=1 # verbose and default if env is not set
 ```
@@ -352,7 +352,7 @@ Shrinking reduces the value of common types to some terminal lower bound. These 
 
 For example a `String` is shrinkable until it is empty (e.g. `""`),
 
-```
+```ruby
 "foo".shrinkable?     # => true
 "foo".shrink          # => "fo"
 "fo".shrink           # => "f"
@@ -369,13 +369,13 @@ but is usually reduced enough to start debugging.
 
 Enable shrinking with
 
-```
+```ruby
 require 'rantly/shrinks'
 ```
 
 Use `Tuple` class if you want an array whose elements are individually shrinked, but are not removed. Example:
 
-```
+```ruby
 property_of {
   len = range(0, 10)
   Tuple.new( array(len) { integer } )
@@ -386,7 +386,7 @@ property_of {
 
 Use `Deflating` class if you want an array whose elements are individully shrinked whenever possible, and removed otherwise. Example:
 
-```
+```ruby
 property_of {
   len = range(0, 10)
   Deflating.new( array(len) { integer } )
