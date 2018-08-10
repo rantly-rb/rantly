@@ -397,6 +397,12 @@ property_of {
 Normal arrays or hashes are not shrinked.
 
 
+# Contributors
+
+Thanks to [all contributors](https://github.com/rantly-rb/rantly/graphs/contributors). :cupid: New contributors are welcome! :wink:
+
+
 # License
 
-Code published under MIT License, Copyright (c) 2009 Howard Yeh. See [LICENSE](https://github.com/abargnesi/rantly/LICENSE)
+Code published under MIT License, Copyright (c) 2009 Howard Yeh. See [LICENSE](https://github.com/abargnesi/rantly/LICENSE).
+
