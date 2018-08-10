@@ -1,6 +1,6 @@
 [![Gem version](https://badge.fury.io/rb/rantly.svg)](https://badge.fury.io/rb/rantly)
 
-[![Build Status](https://travis-ci.org/abargnesi/rantly.svg?branch=master)](https://travis-ci.org/abargnesi/rantly)
+[![Build Status](https://travis-ci.org/rantly-rb/rantly.svg?branch=master)](https://travis-ci.org/rantly-rb/rantly)
 
 # Imperative Random Data Generator and Quickcheck
 
