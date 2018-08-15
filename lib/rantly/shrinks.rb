@@ -191,4 +191,8 @@ class Hash
     self.any?{|_,v| v.respond_to?(:shrinkable?) && v.shrinkable? } ||
       !self.empty?
   end
+
+  def retry?
+    false
+  end
 end
