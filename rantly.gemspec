@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.email            = ["anamma06@gmail.com", "hayeah@gmail.com", "abargnesi@gmail.com", "ebischoff@nerim.net"]
   s.extra_rdoc_files = [
     "LICENSE",
-    "README.textile",
+    "README.md",
     "CHANGELOG.md"
   ]
   s.files            = [
@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
     ".travis.yml",
     "Gemfile",
     "LICENSE",
-    "README.textile",
+    "README.md",
     "CHANGELOG.md",
     "Rakefile",
     "VERSION.yml",
