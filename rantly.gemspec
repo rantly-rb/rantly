@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name             = "rantly"
   s.summary          = "Ruby Imperative Random Data Generator and Quickcheck"
-  s.homepage         = "https://github.com/abargnesi/rantly"
+  s.homepage         = "https://github.com/rantly-rb/rantly"
   s.version          = "1.1.0"
   s.require_paths    = ["lib"]
   s.authors          = ["Ana María Martínez Gómez", "Howard Yeh", "Anthony Bargnesi", "Eric Bischoff"]
