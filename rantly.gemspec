@@ -4,8 +4,8 @@ Gem::Specification.new do |s|
   s.homepage         = "https://github.com/abargnesi/rantly"
   s.version          = "1.1.0"
   s.require_paths    = ["lib"]
-  s.authors          = ["Howard Yeh", "Anthony Bargnesi", "Eric Bischoff"]
-  s.email            = ["hayeah@gmail.com", "abargnesi@gmail.com", "ebischoff@nerim.net"]
+  s.authors          = ["Ana María Martínez Gómez", "Howard Yeh", "Anthony Bargnesi", "Eric Bischoff"]
+  s.email            = ["anamma06@gmail.com", "hayeah@gmail.com", "abargnesi@gmail.com", "ebischoff@nerim.net"]
   s.extra_rdoc_files = [
     "LICENSE",
     "README.textile",
