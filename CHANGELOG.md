@@ -3,6 +3,20 @@ All notable changes to rantly will be documented in this file. The curated log b
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.2.0](https://github.com/abargnesi/rantly/compare/1.1.0...1.2.0) - 2018-08-29
+### New features
+- Allow to generate floats using Gaussian distribution
+  - [Issue #29](https://github.com/rantly-rb/rantly/issues/29)
+  - thanks [Ana María Martínez Gómez][Ana María Martínez Gómez] and [Víctor Gallego][Víctor Gallego]
+### Bug fixes
+- `NoMethodError` - undefined method `retry?` - when a test using `dict` fails
+  - [Issue #39](https://github.com/rantly-rb/rantly/issues/39)
+  - thanks [Ana María Martínez Gómez][Ana María Martínez Gómez]
+### Changes
+- Correct typo in _Too many tries_ message
+  - thanks [Ana María Martínez Gómez][Ana María Martínez Gómez]
+
+
 ## [1.1.0][1.1.0] - 2017-04-18
 ### Improved
 - Include failed example and number of example run in failure message.
@@ -44,3 +58,4 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 [Jamie English]:            https://github.com/english
 [Oleksii Fedorov]:          https://github.com/waterlink
 [Ana María Martínez Gómez]: https://github.com/Ana06
+[Víctor Gallego]:           https://github.com/vicgalle
