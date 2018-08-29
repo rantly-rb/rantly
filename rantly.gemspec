@@ -3,6 +3,7 @@ Gem::Specification.new do |s|
   s.summary          = "Ruby Imperative Random Data Generator and Quickcheck"
   s.homepage         = "https://github.com/rantly-rb/rantly"
   s.version          = "1.1.0"
+  s.license          = "MIT"
   s.require_paths    = ["lib"]
   s.authors          = ["Ana María Martínez Gómez", "Howard Yeh", "Anthony Bargnesi", "Eric Bischoff"]
   s.email            = ["anamma06@gmail.com", "hayeah@gmail.com", "abargnesi@gmail.com", "ebischoff@nerim.net"]
