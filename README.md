@@ -404,5 +404,5 @@ Thanks to [all contributors](https://github.com/rantly-rb/rantly/graphs/contribu
 
 # License
 
-Code published under MIT License, Copyright (c) 2009 Howard Yeh. See [LICENSE](https://github.com/abargnesi/rantly/LICENSE).
+Code published under MIT License, Copyright (c) 2009 Howard Yeh. See [LICENSE](/LICENSE).
 
