@@ -12,6 +12,8 @@ Its implementation has no alien mathematics inside. Completely side-effect-free-
 
 # Install
 
+Rantly requires Ruby 2.4 or higher. To install Ruby:
+
 ```ruby
 $ gem install rantly
 ```
