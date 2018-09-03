@@ -285,10 +285,7 @@ class Rantly
     char_strings = chars.map { |c| c.chr }
     str = Array.new(size)
     current_index = 0
-    while current_index < size
-      str[current_index] = char_strings.sample
-      current_index += 1
-    end
+    size.times { |i| str[i] = char_strings.sample }
     str.join
   end
 end
