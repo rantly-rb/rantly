@@ -4,11 +4,10 @@ cache: bundler
 after_success:
   - coveralls
 rvm:
-    - 2.5.1
     - 2.4.0
+    - 2.5.1
     - ruby-head
-    - jruby-1.7.26
-    - jruby-9.1.7.0
+    - jruby-9.2.0.0
     - jruby-head
 
 matrix:
