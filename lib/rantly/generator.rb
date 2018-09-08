@@ -149,7 +149,7 @@ class Rantly
       raise "The distribution scale should be greater than zero" unless params[:scale] > 0
       # Sum of 6 draws from a uniform distribution give as a draw of a normal
       # distribution centered in 3 (central limit theorem).
-      ([rand, rand, rand, rand, rand, rand].reduce(0, :+) - 3) * params[:scale] + params[:center]
+      ([rand, rand, rand, rand, rand, rand].sum - 3) * params[:scale] + params[:center]
     else
       rand
     end
@@ -285,10 +285,7 @@ class Rantly
     char_strings = chars.map { |c| c.chr }
     str = Array.new(size)
     current_index = 0
-    while current_index < size
-      str[current_index] = char_strings.sample
-      current_index += 1
-    end
+    size.times { |i| str[i] = char_strings.sample }
     str.join
   end
 end

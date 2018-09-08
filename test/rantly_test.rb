@@ -63,7 +63,7 @@ describe Rantly::Property do
       normal_points =  Array.new(100){ float(:normal, { center: center }) }
       [center, normal_points]
     }.check{ |center, normal_points|
-      average_center = normal_points.reduce(0, :+) / 100
+      average_center = normal_points.sum / 100
       assert average_center.between?(center - 0.5, center + 0.5)
     }
   end
