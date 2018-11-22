@@ -1,3 +1,5 @@
+![img](https://github.com/richardbmx/rantly/blob/master/banners.png?raw=true)
+
 [![Gem version](https://badge.fury.io/rb/rantly.svg)](https://badge.fury.io/rb/rantly)
 [![Build Status](https://travis-ci.org/rantly-rb/rantly.svg?branch=master)](https://travis-ci.org/rantly-rb/rantly)
 
@@ -404,6 +406,8 @@ Normal arrays or hashes are not shrinked.
 # Contributors
 
 Thanks to [all contributors](https://github.com/rantly-rb/rantly/graphs/contributors). :cupid: New contributors are welcome! :wink:
+
+Logotype designed by: [@Richardbmx](https://github.com/richardbmx)
 
 
 # License
