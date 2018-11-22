@@ -407,7 +407,7 @@ Normal arrays or hashes are not shrinked.
 
 Thanks to [all contributors](https://github.com/rantly-rb/rantly/graphs/contributors). :cupid: New contributors are welcome! :wink:
 
-Logotype designed by: @Richardbmx
+Logotype designed by: [@Richardbmx](https://github.com/richardbmx)
 
 
 # License
