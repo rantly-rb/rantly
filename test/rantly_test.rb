@@ -25,21 +25,6 @@ describe Rantly::Property do
     }
   end
 
-  it "generate integer in range" do
-    property_of {
-      i = integer
-      [i,range(i,i)]
-    }.check { |(a,b)|
-      assert_equal a, b
-    }
-    property_of {
-      lo, hi = [integer(100),integer(100)].sort
-      [lo,hi,range(lo,hi)]
-    }.check { |(lo,hi,int)|
-      assert((lo..hi).include?(int))
-    }
-  end
-
   it "generate Fixnum only" do
     property_of  { integer }.check { |i| assert i.is_a?(Integer) }
   end

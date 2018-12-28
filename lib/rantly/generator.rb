@@ -158,7 +158,13 @@ class Rantly
   def range(lo=nil,hi=nil)
     lo ||= INTEGER_MIN
     hi ||= INTEGER_MAX
-    rand(hi+1-lo) + lo
+
+    if lo.is_a?(Integer) && hi.is_a?(Integer)
+      rand(hi+1-lo) + lo
+    else
+      # Assume floats
+      rand * (hi-lo) + lo
+    end
   end
 
   def call(gen,*args)
