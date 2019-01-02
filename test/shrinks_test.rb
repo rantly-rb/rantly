@@ -88,6 +88,7 @@ end
 describe "Shrinker Test" do
 
   it "shrink data to smallest value that fails assertion" do
+    print "\n### TESTING A FAILING CASE, do not get scared"
     # We try to generate an array of 10 elements, filled with ones.
     # The property we try to test is that non of the element is
     # larger than 1, and the array's length is less than 4.
