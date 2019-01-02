@@ -11,6 +11,7 @@ describe Rantly::Property do
   end
 
   it "fail test generation" do
+    print "\n### TESTING A FAILING CASE, do not get scared"
     assert_raises(Rantly::TooManyTries) {
       property_of { guard range(0,1) < 0 }.check
     }
