@@ -41,8 +41,8 @@ class Rantly
       @nfailed
     end
 
-    def to_s
-      "Exceed gen limit #{@limit}: #{@nfailed} failed guards"
+    def limit
+      @limit
     end
   end
 

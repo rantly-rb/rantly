@@ -36,22 +36,22 @@ class Rantly::Property
         i += 1
       end
       io.puts
-      io.puts "success: #{i} tests"
+      io.puts "SUCCESS - #{i} successful tests"
     rescue Rantly::TooManyTries => e
       io.puts
-      io.puts "too many tries: #{e.tries}"
-      raise e
+      io.puts "FAILURE - #{i} successful tests, too many tries: #{e.tries}"
+      raise e.exception("#{i} successful tests, too many tries: #{e.tries} (limit: #{e.limit})")
     rescue Exception => boom
       io.puts
-      io.puts "failure: #{i} tests, on:"
+      io.puts "FAILURE - #{i} successful tests, failed on:"
       pretty_print test_data
       @failed_data = test_data
       if @failed_data.respond_to?(:shrink)
         @shrunk_failed_data, @depth = shrinkify(assertion, @failed_data)
-        io.puts "minimal failed data (depth #{@depth}) is:"
+        io.puts "Minimal failed data (depth #{@depth}) is:"
         pretty_print @shrunk_failed_data
       end
-      raise boom.exception("failure: #{i} tests, on:\n#{test_data}\n\n#{boom}\n")
+      raise boom.exception("#{i} successful tests, failed on:\n#{test_data}\n\n#{boom}\n")
     end
   end
 
