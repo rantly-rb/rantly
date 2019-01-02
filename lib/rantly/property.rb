@@ -57,9 +57,6 @@ class Rantly::Property
 
   # Explore the failures tree
   def shrinkify(assertion, data, depth=0, iteration=0)
-    io.puts "Shrinking at depth #{depth}:"
-    pretty_print data
-
     min_data = data
     max_depth = depth
     if data.shrinkable?
