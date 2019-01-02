@@ -6,9 +6,9 @@ end
 
 require 'rantly/generator'
 
-def Rantly(n=1,&block)
+def Rantly(n = 1, &block)
   if n > 1
-    Rantly.map(n,&block)
+    Rantly.map(n, &block)
   else
     Rantly.value(&block)
   end

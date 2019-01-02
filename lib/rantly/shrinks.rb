@@ -2,15 +2,15 @@
 class Integer
   def shrink
     shrunk = if self > 8
-      self / 2
-    elsif self > 0
-      self - 1
-    elsif self < -8
-      (self + 1) / 2
-    elsif self < 0
-      self + 1
-    else
-      0
+               self / 2
+             elsif self > 0
+               self - 1
+             elsif self < -8
+               (self + 1) / 2
+             elsif self < 0
+               self + 1
+             else
+               0
     end
     return shrunk
   end
@@ -90,6 +90,7 @@ class Tuple
       if e.respond_to?(:shrinkable?) && e.shrinkable?
         break
       end
+
       @position -= 1
     end
     if @position >= 0
@@ -104,7 +105,7 @@ class Tuple
   end
 
   def shrinkable?
-    @array.any? {|e| e.respond_to?(:shrinkable?) && e.shrinkable? }
+    @array.any? { |e| e.respond_to?(:shrinkable?) && e.shrinkable? }
   end
 end
 
@@ -172,8 +173,8 @@ end
 
 class Hash
   def shrink
-    if self.any?{|_,v| v.respond_to?(:shrinkable?) && v.shrinkable? }
-      key,_ = self.detect{|_,v| v.respond_to?(:shrinkable?) && v.shrinkable? }
+    if self.any? { |_, v| v.respond_to?(:shrinkable?) && v.shrinkable? }
+      key, _ = self.detect { |_, v| v.respond_to?(:shrinkable?) && v.shrinkable? }
       clone = self.dup
       clone[key] = clone[key].shrink
       return clone
@@ -188,7 +189,7 @@ class Hash
   end
 
   def shrinkable?
-    self.any?{|_,v| v.respond_to?(:shrinkable?) && v.shrinkable? } ||
+    self.any? { |_, v| v.respond_to?(:shrinkable?) && v.shrinkable? } ||
       !self.empty?
   end
 

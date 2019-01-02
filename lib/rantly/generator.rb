@@ -1,5 +1,4 @@
 class Rantly
-
   class << self
     attr_writer :default_size
     def singleton
@@ -11,16 +10,16 @@ class Rantly
       @default_size || 6
     end
 
-    def each(n,limit=10,&block)
-      gen.each(n,limit,&block)
+    def each(n, limit = 10, &block)
+      gen.each(n, limit, &block)
     end
 
-    def map(n,limit=10,&block)
-      gen.map(n,limit,&block)
+    def map(n, limit = 10, &block)
+      gen.map(n, limit, &block)
     end
 
-    def value(limit=10,&block)
-      gen.value(limit,&block)
+    def value(limit = 10, &block)
+      gen.value(limit, &block)
     end
 
     def gen
@@ -32,7 +31,7 @@ class Rantly
   end
 
   class TooManyTries < RuntimeError
-    def initialize(limit,nfailed)
+    def initialize(limit, nfailed)
       @limit = limit
       @nfailed = nfailed
     end
@@ -47,30 +46,31 @@ class Rantly
   end
 
   # limit attempts to 10 times of how many things we want to generate
-  def each(n,limit=10,&block)
-    generate(n,limit,block)
+  def each(n, limit = 10, &block)
+    generate(n, limit, block)
   end
 
-  def map(n,limit=10,&block)
+  def map(n, limit = 10, &block)
     acc = []
-    generate(n,limit,block) do |val|
+    generate(n, limit, block) do |val|
       acc << val
     end
     acc
   end
 
-  def value(limit=10,&block)
-    generate(1,limit,block) do |val|
+  def value(limit = 10, &block)
+    generate(1, limit, block) do |val|
       return val
     end
   end
 
-  def generate(n,limit_arg,gen_block,&handler)
+  def generate(n, limit_arg, gen_block, &handler)
     limit = n * limit_arg
     nfailed = 0
     nsuccess = 0
     while nsuccess < n
-      raise TooManyTries.new(limit_arg*n,nfailed) if limit < 0
+      raise TooManyTries.new(limit_arg * n, nfailed) if limit < 0
+
       begin
         val = self.instance_eval(&gen_block)
       rescue GuardFailure
@@ -111,8 +111,9 @@ class Rantly
     @size || Rantly.default_size
   end
 
-  def sized(n,&block)
+  def sized(n, &block)
     raise "size needs to be greater than zero" if n < 0
+
     old_size = @size
     @size = n
     r = self.instance_eval(&block)
@@ -123,30 +124,32 @@ class Rantly
   # wanna avoid going into Bignum when calling range with these.
   INTEGER_MAX = (2**(0.size * 8 - 2) - 1) / 2
   INTEGER_MIN = -(INTEGER_MAX)
-  def integer(limit=nil)
+  def integer(limit = nil)
     case limit
     when Range
       hi = limit.end
       lo = limit.begin
     when Integer
       raise "n should be greater than zero" if limit < 0
+
       hi, lo = limit, -limit
     else
       hi, lo = INTEGER_MAX, INTEGER_MIN
     end
-    range(lo,hi)
+    range(lo, hi)
   end
 
   def positive_integer
     range(0)
   end
 
-  def float(distribution=nil, params={})
+  def float(distribution = nil, params = {})
     case distribution
     when :normal
       params[:center] ||= 0
       params[:scale] ||= 1
       raise "The distribution scale should be greater than zero" unless params[:scale] > 0
+
       # Sum of 6 draws from a uniform distribution give as a draw of a normal
       # distribution centered in 3 (central limit theorem).
       ([rand, rand, rand, rand, rand, rand].sum - 3) * params[:scale] + params[:center]
@@ -155,19 +158,20 @@ class Rantly
     end
   end
 
-  def range(lo=nil,hi=nil)
+  def range(lo = nil, hi = nil)
     lo ||= INTEGER_MIN
     hi ||= INTEGER_MAX
-    rand(hi+1-lo) + lo
+    rand(hi + 1 - lo) + lo
   end
 
-  def call(gen,*args)
+  def call(gen, *args)
     case gen
     when Symbol
-      return self.send(gen,*args)
+      return self.send(gen, *args)
     when Array
       raise "empty array" if gen.empty?
-      return self.send(gen[0],*gen[1..-1])
+
+      return self.send(gen[0], *gen[1..-1])
     when Proc
       return self.instance_eval(&gen)
     else
@@ -180,7 +184,7 @@ class Rantly
   end
 
   def choose(*vals)
-    vals[range(0,vals.length-1)]
+    vals[range(0, vals.length - 1)]
   end
 
   def literal(value)
@@ -188,14 +192,14 @@ class Rantly
   end
 
   def boolean
-    range(0,1) == 0 ? true : false
+    range(0, 1) == 0 ? true : false
   end
 
   def freq(*pairs)
     pairs = pairs.map do |pair|
       case pair
       when Symbol, String, Proc
-        [1,pair]
+        [1, pair]
       when Array
         unless pair.first.is_a?(Integer)
           [1] + pair
@@ -204,34 +208,34 @@ class Rantly
         end
       end
     end
-    total = pairs.inject(0) { |sum,p| sum + p.first }
+    total = pairs.inject(0) { |sum, p| sum + p.first }
     raise(RuntimeError, "Illegal frequency:#{pairs.inspect}") if total == 0
-    pos = range(1,total)
+
+    pos = range(1, total)
     pairs.each do |p|
       weight, gen, *args = p
       if pos <= p[0]
-        return self.call(gen,*args)
+        return self.call(gen, *args)
       else
         pos -= weight
       end
     end
   end
 
-  def array(n=self.size,&block)
+  def array(n = self.size, &block)
     n.times.map { self.instance_eval(&block) }
   end
 
-  def dict(n=self.size,&block)
+  def dict(n = self.size, &block)
     h = {}
     each(n) do
-      k,v = instance_eval(&block)
+      k, v = instance_eval(&block)
       h[k] = v if guard(!h.has_key?(k))
     end
     h
   end
 
   module Chars
-
     class << self
       ASCII = (0..127).to_a.each_with_object("") { |i, obj| obj << i }
 
@@ -254,7 +258,6 @@ class Rantly
     XDIGIT = Chars.of(/[[:xdigit:]]/)
     ASCII = Chars.of(/./)
 
-
     CLASSES = {
       :alnum => ALNUM,
       :alpha => ALPHA,
@@ -270,10 +273,9 @@ class Rantly
       :xdigit => XDIGIT,
       :ascii => ASCII,
     }
-
   end
 
-  def string(char_class=:print)
+  def string(char_class = :print)
     chars = case char_class
             when Regexp
               Chars.of(char_class)
