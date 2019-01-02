@@ -1,5 +1,3 @@
-![img](https://github.com/rantly-rb/rantly/blob/master/banners.png?raw=true)
-
 [![Gem version](https://badge.fury.io/rb/rantly.svg)](https://badge.fury.io/rb/rantly)
 [![Build Status](https://travis-ci.org/rantly-rb/rantly.svg?branch=master)](https://travis-ci.org/rantly-rb/rantly)
 
@@ -10,6 +8,8 @@ You can use Rantly to generate random test data, and use its Test::Unit extensio
 Rantly is basically a recursive descent interpreter, each of its method returns a random value of some type (string, integer, float, etc.).
 
 Its implementation has no alien mathematics inside. Completely side-effect-free-free.
+
+![img](/logo/Rantly.png)
 
 
 # Install
@@ -407,7 +407,7 @@ Normal arrays or hashes are not shrinked.
 
 Thanks to [all contributors](https://github.com/rantly-rb/rantly/graphs/contributors). :cupid: New contributors are welcome! :wink:
 
-Logotype designed by: [@Richardbmx](https://github.com/richardbmx)
+[Logotype](/logo) designed by: [@Richardbmx](https://github.com/richardbmx)
 
 
 # License
