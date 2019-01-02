@@ -284,7 +284,6 @@ class Rantly
 
     char_strings = chars.map { |c| c.chr }
     str = Array.new(size)
-    current_index = 0
     size.times { |i| str[i] = char_strings.sample }
     str.join
   end
