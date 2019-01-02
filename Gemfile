@@ -5,4 +5,6 @@ group :development, :test do
   gem 'minitest',  '~> 5.10.0'
   gem 'simplecov', '>= 0'
   gem 'coveralls', '>= 0', :require => false
+
+  gem 'rubocop'
 end
