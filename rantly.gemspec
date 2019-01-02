@@ -39,10 +39,5 @@ Gem::Specification.new do |s|
     "test/test_helper.rb"
   ]
   s.required_ruby_version = '>= 2.4.0'
-
-  s.add_development_dependency('rake',      '~> 12.0.0')
-  s.add_development_dependency('minitest',  '~> 5.10.0')
-  s.add_development_dependency('simplecov', '>= 0')
-  s.add_development_dependency('coveralls', '>= 0')
 end
 
