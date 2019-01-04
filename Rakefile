@@ -29,7 +29,7 @@ Rake::RDocTask.new do |rdoc|
     config = YAML.load(File.read('VERSION.yml'))
     version = "#{config[:major]}.#{config[:minor]}.#{config[:patch]}"
   else
-    version = ""
+    version = ''
   end
 
   rdoc.rdoc_dir = 'rdoc'

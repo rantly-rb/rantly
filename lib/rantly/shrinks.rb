@@ -12,7 +12,7 @@ class Integer
              else
                0
     end
-    return shrunk
+    shrunk
   end
 
   def retry?
@@ -27,12 +27,12 @@ end
 # String : shrink to ""
 class String
   def shrink
-    shrunk = self.dup
-    if self.size > 0
-      idx = Random::rand(self.size)
-      shrunk[idx] = ""
+    shrunk = dup
+    unless empty?
+      idx = Random.rand(size)
+      shrunk[idx] = ''
     end
-    return shrunk
+    shrunk
   end
 
   def retry?
@@ -40,7 +40,7 @@ class String
   end
 
   def shrinkable?
-    self != ""
+    self != ''
   end
 end
 
@@ -64,32 +64,28 @@ class Tuple
   end
 
   def size
-    self.length
+    length
   end
 
   def to_s
-    @array.to_s.insert(1, "T ")
+    @array.to_s.insert(1, 'T ')
   end
 
   def inspect
-    self.to_s
+    to_s
   end
 
   def each(&block)
     @array.each(&block)
   end
 
-  def array
-    return @array
-  end
+  attr_reader :array
 
   def shrink
     shrunk = @array.dup
     while @position >= 0
       e = @array.at(@position)
-      if e.respond_to?(:shrinkable?) && e.shrinkable?
-        break
-      end
+      break if e.respond_to?(:shrinkable?) && e.shrinkable?
 
       @position -= 1
     end
@@ -97,7 +93,7 @@ class Tuple
       shrunk[@position] = e.shrink
       @position -= 1
     end
-    return Tuple.new(shrunk)
+    Tuple.new(shrunk)
   end
 
   def retry?
@@ -129,24 +125,22 @@ class Deflating
   end
 
   def size
-    self.length
+    length
   end
 
   def to_s
-    @array.to_s.insert(1, "D ")
+    @array.to_s.insert(1, 'D ')
   end
 
   def inspect
-    self.to_s
+    to_s
   end
 
   def each(&block)
     @array.each(&block)
   end
 
-  def array
-    return @array
-  end
+  attr_reader :array
 
   def shrink
     shrunk = @array.dup
@@ -159,7 +153,7 @@ class Deflating
       end
       @position -= 1
     end
-    return Deflating.new(shrunk)
+    Deflating.new(shrunk)
   end
 
   def retry?
@@ -173,24 +167,24 @@ end
 
 class Hash
   def shrink
-    if self.any? { |_, v| v.respond_to?(:shrinkable?) && v.shrinkable? }
-      key, _ = self.detect { |_, v| v.respond_to?(:shrinkable?) && v.shrinkable? }
-      clone = self.dup
+    if any? { |_, v| v.respond_to?(:shrinkable?) && v.shrinkable? }
+      key, = detect { |_, v| v.respond_to?(:shrinkable?) && v.shrinkable? }
+      clone = dup
       clone[key] = clone[key].shrink
-      return clone
-    elsif !self.empty?
-      key = self.keys.first
-      h2 = self.dup
+      clone
+    elsif !empty?
+      key = keys.first
+      h2 = dup
       h2.delete(key)
-      return h2
+      h2
     else
-      return self
+      self
     end
   end
 
   def shrinkable?
-    self.any? { |_, v| v.respond_to?(:shrinkable?) && v.shrinkable? } ||
-      !self.empty?
+    any? { |_, v| v.respond_to?(:shrinkable?) && v.shrinkable? } ||
+      !empty?
   end
 
   def retry?
