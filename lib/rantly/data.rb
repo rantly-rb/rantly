@@ -1,6 +1,6 @@
 module Rantly::Data
   def email
-    "#{string(:alnum)}@#{string(:alnum)}.#{sized(3){string(:alpha)}}".downcase
+    "#{string(:alnum)}@#{string(:alnum)}.#{sized(3) { string(:alpha) }}".downcase
   end
 
   def password

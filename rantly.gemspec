@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
     "README.md",
     "CHANGELOG.md"
   ]
-  s.files            = [
+  s.files = [
     ".document",
     ".travis.yml",
     "Gemfile",
@@ -40,4 +40,3 @@ Gem::Specification.new do |s|
   ]
   s.required_ruby_version = '>= 2.4.0'
 end
-

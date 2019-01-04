@@ -5,8 +5,8 @@ require 'stringio'
 class Rantly::Property
   attr_reader :failed_data, :shrunk_failed_data, :io
 
-  VERBOSITY = ENV.fetch('RANTLY_VERBOSE'){ 1 }.to_i
-  RANTLY_COUNT = ENV.fetch('RANTLY_COUNT'){ 100 }.to_i
+  VERBOSITY = ENV.fetch('RANTLY_VERBOSE') { 1 }.to_i
+  RANTLY_COUNT = ENV.fetch('RANTLY_COUNT') { 100 }.to_i
 
   def io
     @io ||= if VERBOSITY >= 1
@@ -24,11 +24,11 @@ class Rantly::Property
     @property = property
   end
 
-  def check(n=RANTLY_COUNT,limit=10,&assertion)
+  def check(n = RANTLY_COUNT, limit = 10, &assertion)
     i = 0
     test_data = nil
     begin
-      Rantly.singleton.generate(n,limit,@property) do |val|
+      Rantly.singleton.generate(n, limit, @property) do |val|
         test_data = val
         assertion.call(val) if assertion
         io.puts "" if i % 100 == 0
@@ -56,7 +56,7 @@ class Rantly::Property
   end
 
   # Explore the failures tree
-  def shrinkify(assertion, data, depth=0, iteration=0)
+  def shrinkify(assertion, data, depth = 0, iteration = 0)
     min_data = data
     max_depth = depth
     if data.shrinkable?
