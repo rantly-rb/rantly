@@ -36,7 +36,7 @@ describe Rantly::Property do
       lo, hi = [integer(100), integer(100)].sort
       [lo, hi, range(lo, hi)]
     }.check { |(lo, hi, int)|
-      assert((lo..hi).include?(int))
+      assert((lo..hi).cover?(int))
     }
   end
 

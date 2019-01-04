@@ -80,7 +80,7 @@ class Rantly
       end
       nsuccess += 1
       limit -= 1
-      handler.call(val) if handler
+      yield(val) if handler
     end
   end
 

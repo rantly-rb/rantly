@@ -30,7 +30,7 @@ class Rantly::Property
     begin
       Rantly.singleton.generate(n, limit, @property) do |val|
         test_data = val
-        assertion.call(val) if assertion
+        yield(val) if assertion
         io.puts "" if i % 100 == 0
         io.print "." if i % 10 == 0
         i += 1
