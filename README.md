@@ -2,6 +2,7 @@
 
 [![Gem version](https://badge.fury.io/rb/rantly.svg)](https://badge.fury.io/rb/rantly)
 [![Build Status](https://travis-ci.org/rantly-rb/rantly.svg?branch=master)](https://travis-ci.org/rantly-rb/rantly)
+[![Coverage Status](https://coveralls.io/repos/github/rantly-rb/rantly/badge.svg?branch=master)](https://coveralls.io/github/rantly-rb/rantly?branch=master)
 
 # Imperative Random Data Generator and Quickcheck
 
