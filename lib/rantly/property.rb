@@ -31,8 +31,8 @@ class Rantly::Property
       Rantly.singleton.generate(n, limit, @property) do |val|
         test_data = val
         yield(val) if assertion
-        io.puts "" if i % 100 == 0
-        io.print "." if i % 10 == 0
+        io.puts '' if i % 100 == 0
+        io.print '.' if i % 10 == 0
         i += 1
       end
       io.puts
@@ -60,7 +60,7 @@ class Rantly::Property
     min_data = data
     max_depth = depth
     if data.shrinkable?
-      while iteration < 1024 do
+      while iteration < 1024
         # We assume that data.shrink is non-destructive
         shrunk_data = data.shrink
         begin
@@ -73,9 +73,9 @@ class Rantly::Property
             max_depth = branch_depth
           end
         end
-        break if !data.retry?
+        break unless data.retry?
       end
     end
-    return min_data, max_depth, iteration
+    [min_data, max_depth, iteration]
   end
 end
