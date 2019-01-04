@@ -5,147 +5,146 @@ module RantlyTest
 end
 
 describe Rantly::Property do
-
   before do
     Rantly.gen.reset
   end
 
+  it 'fail test generation' do
+    print "\n### TESTING A FAILING CASE, do not get scared"
+    assert_raises(Rantly::TooManyTries) do
+      property_of { guard range(0, 1).negative? }.check
+    end
+  end
+
   # call
 
-  it "call Symbol as method call (no arg)" do
-    property_of {call(:integer)}.check { |i| i.is_a?(Integer)}
+  it 'call Symbol as method call (no arg)' do
+    property_of { call(:integer) }.check { |i| i.is_a?(Integer) }
   end
 
-  it "call Symbol as method call (with arg)" do
-    property_of {
-      n = range(0,100)
-      [n,call(:integer,n)]
-    }.check { |(n,i)|
+  it 'call Symbol as method call (with arg)' do
+    property_of do
+      n = range(0, 100)
+      [n, call(:integer, n)]
+    end.check do |(n, i)|
       assert n.abs >= i.abs
-    }
+    end
   end
 
-  it "call Array by calling first element as method, the rest as args" do
-    assert_raises(RuntimeError) {
-      Rantly.gen.value {
+  it 'call Array by calling first element as method, the rest as args' do
+    assert_raises(RuntimeError) do
+      Rantly.gen.value do
         call []
-      }
-    }
-    property_of {
+      end
+    end
+    property_of do
       i = integer
-      [i,call(choose([:literal,i],[:range,i,i]))]
-    }.check { |(a,b)|
+      [i, call(choose([:literal, i], [:range, i, i]))]
+    end.check do |(a, b)|
       assert_equal a, b
-    }
+    end
   end
 
-  it "call Proc with generator.instance_eval" do
-    property_of {
-      call Proc.new { true }
-    }.check { |o|
+  it 'call Proc with generator.instance_eval' do
+    property_of do
+      call proc { true }
+    end.check do |o|
       assert_equal true, o
-    }
-    property_of {
-      i0 = range(0,100)
-      i1 = call Proc.new {
-        range(i0+1,i0+100)
+    end
+    property_of do
+      i0 = range(0, 100)
+      i1 = call proc {
+        range(i0 + 1, i0 + 100)
       }
-      [i0,i1]
-    }.check { |(i0,i1)|
-      assert i0.is_a?(Fixnum) && i1.is_a?(Fixnum)
+      [i0, i1]
+    end.check do |(i0, i1)|
+      assert i0.is_a?(Integer) && i1.is_a?(Integer)
       assert i1 > i0
       assert i1 <= (i0 + 100)
-    }
+    end
   end
 
-  it "raise if calling on any other value" do
-    assert_raises(RuntimeError) {
+  it 'raise if calling on any other value' do
+    assert_raises(RuntimeError) do
       Rantly.gen.call 0
-    }
+    end
   end
 
   # branch
 
-  it "branch by Rantly#calling one of the args" do
-    property_of {
+  it 'branch by Rantly#calling one of the args' do
+    property_of do
       branch :integer, :integer, :integer
-    }.check { |o|
-      assert o.is_a?(Fixnum)
-    }
-    property_of {
+    end.check do |o|
+      assert o.is_a?(Integer)
+    end
+    property_of do
       sized(10) { branch :integer, :string }
-    }.check { |o|
-      assert o.is_a?(Fixnum) || o.is_a?(String)
-    }
+    end.check do |o|
+      assert o.is_a?(Integer) || o.is_a?(String)
+    end
   end
 
   # choose
 
-  it "choose a value from args " do
-    property_of {
+  it 'choose a value from args ' do
+    property_of do
       choose
-    }.check {|o|
+    end.check do |o|
       assert_nil o
-    }
-    property_of {
+    end
+    property_of do
       choose 1
-    }.check { |o|
+    end.check do |o|
       assert_equal 1, o
-    }
-    property_of {
-      choose 1,2
-    }.check { |o|
-      assert o == 1 || o == 2
-    }
-    property_of {
+    end
+    property_of do
+      choose 1, 2
+    end.check do |o|
+      assert [1, 2].include? o
+    end
+    property_of do
       arr = sized(10) { array { integer } }
       choose(*arr)
-    }.check { |o|
-      assert o.is_a?(Fixnum)
-    }
-    property_of {
+    end.check do |o|
+      assert o.is_a?(Integer)
+    end
+    property_of do
       # array of array of ints
-      arr = sized(10) { array { array { integer }}}
+      arr = sized(10) { array { array { integer } } }
       # choose an array from an array of arrays of ints
       choose(*arr)
-    }.check { |arr|
+    end.check do |arr|
       assert arr.is_a?(Array)
-      assert arr.all? { |o| o.is_a?(Fixnum)}
-    }
+      assert arr.all? { |o| o.is_a?(Integer) }
+    end
   end
 
   # freq
 
-  it "not pick an element with 0 frequency" do
-    property_of {
-      sized(10) {
-        array { freq([0,:string],[1,:integer]) }
-      }
-    }.check { |arr|
-      assert arr.all? { |o| o.is_a?(Integer)}
-    }
+  it 'not pick an element with 0 frequency' do
+    property_of do
+      sized(10) do
+        array { freq([0, :string], [1, :integer]) }
+      end
+    end.check do |arr|
+      assert arr.all? { |o| o.is_a?(Integer) }
+    end
   end
 
-  it "handle degenerate freq pairs" do
-    assert_raises(RuntimeError) {
-      Rantly.gen.value {
+  it 'handle degenerate freq pairs' do
+    assert_raises(RuntimeError) do
+      Rantly.gen.value do
         freq
-      }
-    }
-    property_of {
+      end
+    end
+    property_of do
       i = integer
-      [i,freq([:literal,i])]
-    }.check { |(a,b)|
+      [i, freq([:literal, i])]
+    end.check do |(a, b)|
       assert_equal a, b
-    }
+    end
   end
-
-  # it "raise if generating an array without size" do
-  #   assert_raises(RuntimeError) {
-  #     Rantly.gen.value { array(:integer) }
-  #   }
-  # end
-
 end
 
 # TODO: Determine type of tests required here.
