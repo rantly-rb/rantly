@@ -161,10 +161,10 @@ class Rantly
     hi ||= INTEGER_MAX
 
     if lo.is_a?(Integer) && hi.is_a?(Integer)
-      rand(hi+1-lo) + lo
+      rand(hi + 1 - lo) + lo
     else
       # Assume floats
-      rand * (hi-lo) + lo
+      rand * (hi - lo) + lo
     end
   end
 
