@@ -36,12 +36,6 @@ Lint/RescueException:
   Exclude:
     - 'lib/rantly/property.rb'
 
-# Offense count: 7
-# Cop supports --auto-correct.
-Lint/UnifiedInteger:
-  Exclude:
-    - 'test/rantly_test.rb'
-
 # Offense count: 1
 Lint/UselessAssignment:
   Exclude:

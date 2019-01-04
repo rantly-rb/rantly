@@ -152,7 +152,7 @@ describe Rantly::Property do
       }
       [i0, i1]
     }.check { |(i0, i1)|
-      assert i0.is_a?(Fixnum) && i1.is_a?(Fixnum)
+      assert i0.is_a?(Integer) && i1.is_a?(Integer)
       assert i1 > i0
       assert i1 <= (i0 + 100)
     }
@@ -170,12 +170,12 @@ describe Rantly::Property do
     property_of {
       branch :integer, :integer, :integer
     }.check { |o|
-      assert o.is_a?(Fixnum)
+      assert o.is_a?(Integer)
     }
     property_of {
       sized(10) { branch :integer, :string }
     }.check { |o|
-      assert o.is_a?(Fixnum) || o.is_a?(String)
+      assert o.is_a?(Integer) || o.is_a?(String)
     }
   end
 
@@ -201,7 +201,7 @@ describe Rantly::Property do
       arr = sized(10) { array { integer } }
       choose(*arr)
     }.check { |o|
-      assert o.is_a?(Fixnum)
+      assert o.is_a?(Integer)
     }
     property_of {
       # array of array of ints
@@ -210,7 +210,7 @@ describe Rantly::Property do
       choose(*arr)
     }.check { |arr|
       assert arr.is_a?(Array)
-      assert arr.all? { |o| o.is_a?(Fixnum) }
+      assert arr.all? { |o| o.is_a?(Integer) }
     }
   end
 
@@ -266,7 +266,7 @@ describe Rantly::Property do
     property_of {
       sized(10) { array { freq(:integer, :string, :float) } }
     }.check { |arr|
-      assert arr.all? { |o| [Fixnum, Float, String].include? o.class }
+      assert arr.all? { |o| [Integer, Float, String].include? o.class }
     }
   end
 
