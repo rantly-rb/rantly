@@ -47,7 +47,10 @@ module Rantly::Silly::Love
 
   def sentence
     freq \
-      proc { "when #{how_i_feel}, my #{pedestal_label}, i feel the need to #{stalk_action}, but this is not because #{how_i_feel}, but rather a symptom of my being your #{whoami}." },
+      proc {
+        "when #{how_i_feel}, my #{pedestal_label}, i feel the need to #{stalk_action},"\
+             "but this is not because #{how_i_feel}, but rather a symptom of my being your #{whoami}."
+      },
       proc { "because you are my #{pedestal_label}, and i am your #{whoami}, no, rather your #{whoami}, #{fragment}." },
       proc { "do not think that saying '#{how_i_feel}' suffices to show the depth of how #{how_i_feel}, because more than that, #{fantasy}" },
       proc { "as a #{whoami}, that #{how_i_feel} is never quite enough for you, my #{double_plus_good} #{pedestal_label}." }
@@ -96,7 +99,8 @@ module Rantly::Silly::Love
         "we would #{make} #{babies}, so #{effect}."
       },
       proc {
-        do_thing = choose 'kiss', 'hug', 'read poetry to each other', 'massage', "whisper empty nothings into each others' ears", 'be with each other, and oblivious to the entire world'
+        do_thing = choose('kiss', 'hug', 'read poetry to each other', 'massage', "whisper empty nothings into each others' ears",
+                          'be with each other, and oblivious to the entire world')
         affect = choose 'joy', 'mindfulness', 'calm', 'sanctity'
         "we would #{do_thing} with #{double_plus_good} #{affect}"
       }

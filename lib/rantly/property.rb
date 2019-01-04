@@ -3,7 +3,7 @@ require 'pp'
 require 'stringio'
 
 class Rantly::Property
-  attr_reader :failed_data, :shrunk_failed_data, :io
+  attr_reader :failed_data, :shrunk_failed_data
 
   VERBOSITY = ENV.fetch('RANTLY_VERBOSE') { 1 }.to_i
   RANTLY_COUNT = ENV.fetch('RANTLY_COUNT') { 100 }.to_i
@@ -31,8 +31,8 @@ class Rantly::Property
       Rantly.singleton.generate(n, limit, @property) do |val|
         test_data = val
         yield(val) if assertion
-        io.puts '' if i % 100 == 0
-        io.print '.' if i % 10 == 0
+        io.puts '' if (i % 100).zero?
+        io.print '.' if (i % 10).zero?
         i += 1
       end
       io.puts

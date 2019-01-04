@@ -12,7 +12,7 @@ describe Rantly::Property do
   it 'fail test generation' do
     print "\n### TESTING A FAILING CASE, do not get scared"
     assert_raises(Rantly::TooManyTries) do
-      property_of { guard range(0, 1) < 0 }.check
+      property_of { guard range(0, 1).negative? }.check
     end
   end
 
@@ -70,7 +70,7 @@ describe Rantly::Property do
 
   it 'generate Boolean' do
     property_of { boolean }.check do |t|
-      assert t == true || t == false
+      assert [true, false].include? t
     end
   end
 
@@ -195,7 +195,7 @@ describe Rantly::Property do
     property_of do
       choose 1, 2
     end.check do |o|
-      assert o == 1 || o == 2
+      assert [1, 2].include? o
     end
     property_of do
       arr = sized(10) { array { integer } }

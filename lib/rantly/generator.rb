@@ -67,7 +67,7 @@ class Rantly
     nfailed = 0
     nsuccess = 0
     while nsuccess < n
-      raise TooManyTries.new(limit_arg * n, nfailed) if limit < 0
+      raise TooManyTries.new(limit_arg * n, nfailed) if limit.zero?
 
       begin
         val = instance_eval(&gen_block)
@@ -98,11 +98,9 @@ class Rantly
   end
 
   def guard(test)
-    if test
-      true
-    else
-      raise GuardFailure
-    end
+    return true if test
+
+    raise GuardFailure
   end
 
   def size
@@ -110,7 +108,7 @@ class Rantly
   end
 
   def sized(n, &block)
-    raise 'size needs to be greater than zero' if n < 0
+    raise 'size needs to be greater than zero' if n.negative?
 
     old_size = @size
     @size = n
@@ -128,7 +126,7 @@ class Rantly
       hi = limit.end
       lo = limit.begin
     when Integer
-      raise 'n should be greater than zero' if limit < 0
+      raise 'n should be greater than zero' if limit.negative?
 
       hi = limit
       lo = -limit
@@ -148,7 +146,7 @@ class Rantly
     when :normal
       params[:center] ||= 0
       params[:scale] ||= 1
-      raise 'The distribution scale should be greater than zero' unless params[:scale] > 0
+      raise 'The distribution scale should be greater than zero' if params[:scale].negative?
 
       # Sum of 6 draws from a uniform distribution give as a draw of a normal
       # distribution centered in 3 (central limit theorem).
@@ -192,7 +190,7 @@ class Rantly
   end
 
   def boolean
-    range(0, 1) == 0
+    range(0, 1).zero?
   end
 
   def freq(*pairs)
@@ -209,16 +207,14 @@ class Rantly
       end
     end
     total = pairs.inject(0) { |sum, p| sum + p.first }
-    raise("Illegal frequency:#{pairs.inspect}") if total == 0
+    raise("Illegal frequency:#{pairs.inspect}") if total.zero?
 
     pos = range(1, total)
     pairs.each do |p|
       weight, gen, *args = p
-      if pos <= p[0]
-        return call(gen, *args)
-      else
-        pos -= weight
-      end
+      return call(gen, *args) if pos <= p[0]
+
+      pos -= weight
     end
   end
 
