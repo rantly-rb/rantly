@@ -3,7 +3,7 @@ require 'pp'
 require 'stringio'
 
 class Rantly::Property
-  attr_reader :failed_data, :shrunk_failed_data, :io
+  attr_reader :failed_data, :shrunk_failed_data
 
   VERBOSITY = ENV.fetch('RANTLY_VERBOSE') { 1 }.to_i
   RANTLY_COUNT = ENV.fetch('RANTLY_COUNT') { 100 }.to_i

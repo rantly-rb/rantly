@@ -63,11 +63,10 @@ RSpec.describe 'my circular buffer' do
           case o.operation
 
           when :get
+            value = `#{PROGRAM} get 2>/dev/null`
             if model.count == 0
-              value = `#{PROGRAM} get 2>/dev/null`
               expect($CHILD_STATUS).to_not be_success
             else
-              value = `#{PROGRAM} get 2>/dev/null`
               expect($CHILD_STATUS).to be_success
               value1 = value.to_i
               value2 = model.shift
