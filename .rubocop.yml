@@ -11,6 +11,8 @@ Metrics/AbcSize:
 
 Metrics/BlockLength:
   Max: 50
+  Exclude:
+    - 'test/*' # Rantly syntax
 
 Metrics/ClassLength:
   Max: 200
