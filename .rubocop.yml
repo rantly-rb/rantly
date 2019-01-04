@@ -3,6 +3,7 @@ inherit_from: .rubocop_todo.yml
 AllCops:
   TargetRubyVersion: 2.4
 
+
 ### METRICS ###
 
 Metrics/AbcSize:
@@ -20,3 +21,15 @@ Metrics/MethodLength:
 Metrics/LineLength:
   Max: 180
 
+
+### STYLE ###
+
+# Rantly syntax
+Style/MultilineBlockChain:
+  Exclude:
+    - 'examples/***/**/*'
+    - 'test/*'
+
+Style/NumericPredicate:
+  Exclude:
+    - 'lib/rantly/shrinks.rb' # TODO: Use infinite range with case in Ruby 2.6

@@ -95,7 +95,7 @@ describe 'Shrinker Test' do
     end
     assert_raises MiniTest::Assertion do
       test.check do |a|
-        assert(a.array.none? { |e| e > 0 } && a.length < 4, 'contains 1')
+        assert(a.array.none?(&:positive?) && a.length < 4, 'contains 1')
       end
     end
 

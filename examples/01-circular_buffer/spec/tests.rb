@@ -52,11 +52,10 @@ RSpec.describe 'my circular buffer' do
       model = []
       size = test[1]
       `rm -f #{FILE}`
-      if size == 0
-        `#{PROGRAM} init #{size} 2>/dev/null`
+      `#{PROGRAM} init #{size} 2>/dev/null`
+      if size.zero?
         expect($CHILD_STATUS).to_not be_success
       else
-        `#{PROGRAM} init #{size} 2>/dev/null`
         expect($CHILD_STATUS).to be_success
         operations = test[0]
         operations.each do |o|
@@ -64,7 +63,7 @@ RSpec.describe 'my circular buffer' do
 
           when :get
             value = `#{PROGRAM} get 2>/dev/null`
-            if model.count == 0
+            if model.empty?
               expect($CHILD_STATUS).to_not be_success
             else
               expect($CHILD_STATUS).to be_success
@@ -74,11 +73,10 @@ RSpec.describe 'my circular buffer' do
             end
 
           when :put
+            `#{PROGRAM} put #{o.parameter} 2>/dev/null`
             if model.count >= size
-              `#{PROGRAM} put #{o.parameter} 2>/dev/null`
               expect($CHILD_STATUS).to_not be_success
             else
-              `#{PROGRAM} put #{o.parameter} 2>/dev/null`
               expect($CHILD_STATUS).to be_success
               model.push(o.parameter)
             end
