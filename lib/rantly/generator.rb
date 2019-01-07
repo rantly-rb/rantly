@@ -180,7 +180,7 @@ class Rantly
   end
 
   def choose(*vals)
-    vals[range(0, vals.length - 1)]
+    vals[range(0, vals.length - 1)] if vals.length.positive?
   end
 
   def literal(value)

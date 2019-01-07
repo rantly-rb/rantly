@@ -8,6 +8,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Add support for float ranges to `range` generator & return `nil` for invalid ranges
   - [Issue #60](https://github.com/rantly-rb/rantly/issues/60)
   - thanks [Trevor Brown][Trevor Brown] and [Ana María Martínez Gómez][Ana María Martínez Gómez]
+- `choose` generator returns `nil` when no values are given
+  - thanks [Ana María Martínez Gómez][Ana María Martínez Gómez]
 - Only support for Ruby >= 2.4 and JRuby >= 9.2
   - [Issue #42](https://github.com/rantly-rb/rantly/issues/42) and [issue #37](https://github.com/rantly-rb/rantly/issues/37)
 - Do not render all shrinking levels, only the failing case and the minimal failed data.
