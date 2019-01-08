@@ -3,13 +3,30 @@ All notable changes to rantly will be documented in this file. The curated log b
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Master](https://github.com/rantly-rb/rantly/compare/1.2.0...master) (unreleased)
+## [Master](https://github.com/rantly-rb/rantly/compare/2.0.0...master) (unreleased)
+
+### New features
+
+### Bug fixes
+
 ### Changes
-- Add support for float ranges to `range` generator & return `nil` for invalid ranges
+
+
+## [2.0.0](https://github.com/rantly-rb/rantly/compare/1.2.0...2.0.0) - 2019-01-08
+
+### New features
+- Add support for float ranges to `range` generator
   - [Issue #60](https://github.com/rantly-rb/rantly/issues/60)
-  - thanks [Trevor Brown][Trevor Brown] and [Ana María Martínez Gómez][Ana María Martínez Gómez]
+  - thanks [Trevor Brown][Trevor Brown]
+
+### Bug fixes
+- `range` generator returns `nil` for invalid ranges
+  - [Issue #60](https://github.com/rantly-rb/rantly/issues/60)
+  - thanks [Ana María Martínez Gómez][Ana María Martínez Gómez]
 - `choose` generator returns `nil` when no values are given
   - thanks [Ana María Martínez Gómez][Ana María Martínez Gómez]
+
+### Changes
 - Only support for Ruby >= 2.4 and JRuby >= 9.2
   - [Issue #42](https://github.com/rantly-rb/rantly/issues/42) and [issue #37](https://github.com/rantly-rb/rantly/issues/37)
 - Do not render all shrinking levels, only the failing case and the minimal failed data.
