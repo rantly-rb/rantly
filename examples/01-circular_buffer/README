@@ -2,7 +2,7 @@ HOW TO RUN
 
   $ cd examples-01-circular-buffer
   $ gcc -o circular_buffer circular_buffer_bugged.c
-  $ rspec tests/tests.rb
+  $ rspec spec/tests.rb
 
 
 WHAT IT DOES

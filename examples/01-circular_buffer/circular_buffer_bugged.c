@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 
 #define FILE_NAME "circular_buffer.txt"
 #define RECORD_SIZE 9L
