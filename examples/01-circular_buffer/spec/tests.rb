@@ -1,6 +1,7 @@
 require 'rantly'
 require 'rantly/rspec_extensions'
 require 'rantly/shrinks'
+require 'English'
 
 PROGRAM = './circular_buffer'.freeze
 FILE = 'circular_buffer.txt'.freeze
