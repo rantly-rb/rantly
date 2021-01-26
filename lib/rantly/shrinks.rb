@@ -1,18 +1,17 @@
 # Integer : shrink to zero
 class Integer
   def shrink
-    shrunk = if self > 8
-               self / 2
-             elsif self > 0
-               self - 1
-             elsif self < -8
-               (self + 1) / 2
-             elsif self < 0
-               self + 1
-             else
-               0
+    if self > 8
+      self / 2
+    elsif self > 0
+      self - 1
+    elsif self < -8
+      (self + 1) / 2
+    elsif self < 0
+      self + 1
+    else
+      0
     end
-    shrunk
   end
 
   def retry?

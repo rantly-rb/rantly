@@ -7,4 +7,5 @@ group :development, :test do
   gem 'simplecov', '>= 0'
 
   gem 'rubocop'
+  gem 'rubocop-performance', require: false
 end

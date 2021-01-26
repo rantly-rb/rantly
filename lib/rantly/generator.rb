@@ -1,6 +1,7 @@
 class Rantly
   class << self
     attr_writer :default_size
+
     def singleton
       @singleton ||= Rantly.new
       @singleton
