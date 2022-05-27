@@ -267,9 +267,10 @@ Rantly::TooManyTries: Exceed gen limit 60: 60 failed guards)
 Rantly extends Test::Unit and MiniTest::Test (5.0)/MiniTest::Unit::TestCase (< 5.0) for property testing. The extensions are in their own modules. So you need to require them explicitly:
 
 ```ruby
-require 'rantly/testunit_extensions' # for 'test/unit'
-require 'rantly/minitest_extensions' # for 'minitest'
-require 'rantly/rspec_extensions'    # for RSpec
+require 'rantly/testunit_extensions'    # for 'test/unit'
+require 'rantly/minitest_extensions'    # for 'minitest'
+require 'rantly/rspec_extensions'       # for RSpec
+require 'rantly/rspec_rails_extensions' # for rspec-rails
 ```
 
 They define:
