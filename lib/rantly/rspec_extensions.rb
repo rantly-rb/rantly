@@ -1,4 +1,4 @@
-require 'rspec'
+require 'rspec/core'
 require 'rantly/property'
 
 class RSpec::Core::ExampleGroup
