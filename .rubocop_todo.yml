@@ -22,7 +22,12 @@ Lint/AmbiguousBlockAssociation:
     - 'test/rantly_test.rb'
 
 # Offense count: 1
-Lint/HandleExceptions:
+Lint/MissingSuper:
+  Exclude:
+    - 'lib/rantly/generator.rb'
+
+# Offense count: 1
+Lint/SuppressedException:
   Exclude:
     - 'test/test_helper.rb'
 
@@ -44,10 +49,20 @@ Metrics/BlockNesting:
     - 'lib/rantly/property.rb'
 
 # Offense count: 1
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - 'lib/rantly/generator.rb'
+
+# Offense count: 1
 # Configuration parameters: CountComments, Max, ExcludedMethods.
 Metrics/MethodLength:
   Exclude:
     - 'lib/rantly/property.rb'
+
+# Offense count: 1
+Metrics/PerceivedComplexity:
+  Exclude:
+    - 'lib/rantly/generator.rb'
 
 # Offense count: 1
 # Configuration parameters: Blacklist.
@@ -67,7 +82,7 @@ Naming/MethodName:
 # Offense count: 22
 # Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
 # AllowedNames: io, id, to, by, on, in, at, ip, db
-Naming/UncommunicativeMethodParamName:
+Naming/MethodParameterName:
   Exclude:
     - 'lib/rantly.rb'
     - 'lib/rantly/generator.rb'

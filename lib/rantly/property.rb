@@ -5,12 +5,12 @@ require 'stringio'
 class Rantly::Property
   attr_reader :failed_data, :shrunk_failed_data
 
-  VERBOSITY = ENV.fetch('RANTLY_VERBOSE') { 1 }.to_i
-  RANTLY_COUNT = ENV.fetch('RANTLY_COUNT') { 100 }.to_i
+  VERBOSITY = ENV.fetch('RANTLY_VERBOSE', 1).to_i
+  RANTLY_COUNT = ENV.fetch('RANTLY_COUNT', 100).to_i
 
   def io
     @io ||= if VERBOSITY >= 1
-              STDOUT
+              $stdout
             else
               StringIO.new
             end
@@ -41,7 +41,7 @@ class Rantly::Property
       io.puts
       io.puts "FAILURE - #{i} successful tests, too many tries: #{e.tries}"
       raise e.exception("#{i} successful tests, too many tries: #{e.tries} (limit: #{e.limit})")
-    rescue Exception => boom
+    rescue Exception => e
       io.puts
       io.puts "FAILURE - #{i} successful tests, failed on:"
       pretty_print test_data
@@ -51,7 +51,7 @@ class Rantly::Property
         io.puts "Minimal failed data (depth #{@depth}) is:"
         pretty_print @shrunk_failed_data
       end
-      raise boom.exception("#{i} successful tests, failed on:\n#{test_data}\n\n#{boom}\n")
+      raise e.exception("#{i} successful tests, failed on:\n#{test_data}\n\n#{e}\n")
     end
   end
 
