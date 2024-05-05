@@ -38,5 +38,5 @@ Gem::Specification.new do |s|
     'test/shrinks_test.rb',
     'test/test_helper.rb'
   ]
-  s.required_ruby_version = '>= 2.4.0'
+  s.required_ruby_version = '>= 3.3.0'
 end
