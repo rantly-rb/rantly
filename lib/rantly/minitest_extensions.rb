@@ -1,11 +1,11 @@
 require 'minitest'
 require 'rantly/property'
-require "minitest/unit" unless defined?(MiniTest)
+require "minitest/unit" unless defined?(Minitest)
 
-test_class = if defined?(MiniTest::Test)
-               MiniTest::Test
+test_class = if defined?(Minitest::Test)
+               Minitest::Test
              else
-               MiniTest::Unit::TestCase
+               Minitest::Unit::TestCase
              end
 
 test_class.class_eval do

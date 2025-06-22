@@ -93,7 +93,7 @@ describe 'Shrinker Test' do
       a[i] = 1
       a
     end
-    assert_raises MiniTest::Assertion do
+    assert_raises Minitest::Assertion do
       test.check do |a|
         assert(a.array.none?(&:positive?) && a.length < 4, 'contains 1')
       end
