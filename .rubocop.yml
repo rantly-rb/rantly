@@ -37,3 +37,6 @@ Style/MultilineBlockChain:
 Style/NumericPredicate:
   Exclude:
     - 'lib/rantly/shrinks.rb' # TODO: Use infinite range with case in Ruby 2.6
+
+Style/HashSyntax:
+  EnforcedShorthandSyntax: never
