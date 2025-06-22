@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Require simplecov and coveralls before rantly application code.
 require 'simplecov'
 SimpleCov.start

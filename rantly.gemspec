@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Gem::Specification.new do |s|
   s.name             = 'rantly'
   s.summary          = 'Ruby Imperative Random Data Generator and Quickcheck'

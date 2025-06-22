@@ -3,7 +3,7 @@ require: rubocop-performance
 inherit_from: .rubocop_todo.yml
 
 AllCops:
-  TargetRubyVersion: 2.4
+  TargetRubyVersion: 3.3
 
 
 ### METRICS ###
@@ -37,3 +37,6 @@ Style/MultilineBlockChain:
 Style/NumericPredicate:
   Exclude:
     - 'lib/rantly/shrinks.rb' # TODO: Use infinite range with case in Ruby 2.6
+
+Style/HashSyntax:
+  EnforcedShorthandSyntax: never

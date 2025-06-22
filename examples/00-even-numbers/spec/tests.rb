@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rantly'
 require 'rantly/rspec_extensions'
 require 'rantly/shrinks'

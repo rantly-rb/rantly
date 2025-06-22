@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rantly'
 module Rantly::Check
   def check(n = 100, &block)
