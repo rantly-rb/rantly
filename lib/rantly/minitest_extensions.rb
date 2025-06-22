@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'minitest'
 require 'rantly/property'
 require 'minitest/unit' unless defined?(Minitest)

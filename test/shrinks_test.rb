@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 require 'rantly/shrinks'
 require 'rantly/minitest_extensions'

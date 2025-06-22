@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Rantly
   class << self
     attr_writer :default_size
@@ -168,7 +170,7 @@ class Rantly
     when Array
       raise 'empty array' if gen.empty?
 
-      send(gen[0], *gen[1..-1])
+      send(gen[0], *gen[1..])
     when Proc
       instance_eval(&gen)
     else

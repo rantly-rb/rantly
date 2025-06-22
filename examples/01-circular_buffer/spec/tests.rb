@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rantly'
 require 'rantly/rspec_extensions'
 require 'rantly/shrinks'
 require 'English'
 
-PROGRAM = './circular_buffer'.freeze
-FILE = 'circular_buffer.txt'.freeze
+PROGRAM = './circular_buffer'
+FILE = 'circular_buffer.txt'
 
 class Operation < Array
   def operation

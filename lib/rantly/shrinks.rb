@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Integer : shrink to zero
 class Integer
   def shrink
